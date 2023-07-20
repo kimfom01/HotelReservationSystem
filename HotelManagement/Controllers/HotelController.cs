@@ -8,9 +8,9 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class HotelController : ControllerBase
 {
-    private readonly Repository<Hotel> _repository;
+    private readonly IRepository<Hotel> _repository;
 
-    public HotelController(Repository<Hotel> repository)
+    public HotelController(IRepository<Hotel> repository)
     {
         _repository = repository;
     }

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace HotelManagement.Repositories;
 
-public class Repository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     private readonly Context _context;
     protected readonly DbSet<TEntity> DbSet;
