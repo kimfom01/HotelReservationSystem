@@ -17,6 +17,7 @@ public class Context : DbContext
     public DbSet<Room> Rooms { get; set; }
     public DbSet<RoomAmenity> RoomAmenities { get; set; }
     public DbSet<Service> Services { get; set; }
+    public DbSet<Maintenance> Maintenances { get; set; }
 
     public Context(DbContextOptions<Context> options) : base(options)
     {
