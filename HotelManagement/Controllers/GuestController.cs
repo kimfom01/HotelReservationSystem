@@ -57,7 +57,7 @@ public class GuestController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateHotel(Guest guest)
+    public async Task<IActionResult> UpdateGuest(Guest guest)
     {
         await _repository.Update(guest);
         await _repository.SaveChanges();
@@ -67,7 +67,7 @@ public class GuestController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostHotel(Guest guest)
+    public async Task<IActionResult> PostGuest(Guest guest)
     {
         var added = await _repository.Add(guest);
         await _repository.SaveChanges();

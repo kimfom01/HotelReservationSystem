@@ -32,7 +32,7 @@ public class RoomController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(200)]
-    public async Task<IActionResult> GetRoomss()
+    public async Task<IActionResult> GetRooms()
     {
         var rooms = await _repository.GetEntities(room => true);
 
@@ -67,7 +67,7 @@ public class RoomController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostHotel(Room room)
+    public async Task<IActionResult> PostRoom(Room room)
     {
         var added = await _repository.Add(room);
         await _repository.SaveChanges();
