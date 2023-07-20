@@ -9,7 +9,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Context>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseInMemoryDatabase("TemporaryDb"); // For testing purpose... will revert to postgres when needed
+
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
