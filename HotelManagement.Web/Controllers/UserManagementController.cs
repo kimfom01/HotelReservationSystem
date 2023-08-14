@@ -47,7 +47,46 @@ public class UserManagementController : Controller
         return new List<string>(await _userManager.GetRolesAsync(user));
     }
 
-    public async Task<IActionResult> Manage(string userId)
+    public async Task<IActionResult> ManageUser(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user is null)
+        {
+            ViewBag.ErrorMessage = $"User with id = {userId} cannot be found";
+            return NotFound($"User with id = {userId} cannot be found");
+        }
+
+        return View(user);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ManageUser(ApplicationUser manageUserUpdateInfo, string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user is null)
+        {
+            ViewBag.ErrorMessage = $"User with id = {userId} cannot be found";
+            return NotFound($"User with id = {userId} cannot be found");
+        }
+
+        user.FirstName = manageUserUpdateInfo.FirstName;
+        user.LastName = manageUserUpdateInfo.LastName;
+        user.Email = manageUserUpdateInfo.Email;
+        user.PhoneNumber = manageUserUpdateInfo.PhoneNumber;
+
+        var result = await _userManager.UpdateAsync(user);
+
+        if (result.Succeeded)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        return View();
+    }
+
+    public async Task<IActionResult> ManageRoles(string userId)
     {
         ViewBag.userId = userId;
 
@@ -86,7 +125,7 @@ public class UserManagementController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, string userId)
+    public async Task<IActionResult> ManageRoles(List<ManageUserRolesViewModel> model, string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
 
