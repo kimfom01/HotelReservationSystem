@@ -1,15 +1,17 @@
 ﻿using HotelManagement.Web.Models;
+using HotelManagement.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace HotelManagement.Web.Controllers;
+
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly IGuestService _guestService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IGuestService guestService)
     {
-        _logger = logger;
+        _guestService = guestService;
     }
 
     public IActionResult Index()
@@ -17,9 +19,11 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Privacy()
+    public async Task<IActionResult> Privacy()
     {
-        return View();
+        var guestList = await _guestService.FetchGuests();
+
+        return View(guestList);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
