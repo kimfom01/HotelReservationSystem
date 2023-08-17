@@ -1,4 +1,5 @@
 using HotelManagement.Web.Data;
+using HotelManagement.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<HotelManagementWebContext>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IGuestService, GuestService>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
