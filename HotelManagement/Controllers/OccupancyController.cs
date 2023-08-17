@@ -8,9 +8,9 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class OccupancyController : ControllerBase
 {
-    private readonly Repository<Occupancy> _repository;
+    private readonly IRepository<Occupancy> _repository;
 
-    public OccupancyController(Repository<Occupancy> repository)
+    public OccupancyController(IRepository<Occupancy> repository)
     {
         _repository = repository;
     }
