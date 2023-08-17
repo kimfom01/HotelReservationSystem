@@ -6,5 +6,5 @@ public class Service
     public string Name { get; set; }
     public decimal Price { get; set; }
     public int HotelId { get; set; }
-    public Hotel Hotel { get; set; }
+    public Hotel? Hotel { get; set; }
 }
