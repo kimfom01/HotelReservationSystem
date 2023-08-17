@@ -32,8 +32,8 @@ public static class ContextSeed
         {
             UserName = "superadmin@gmail.com",
             Email = "superadmin@gmail.com",
-            FirstName = "Kim",
-            LastName = "Fom",
+            FirstName = "Super",
+            LastName = "Admin",
             EmailConfirmed = true
         };
 
