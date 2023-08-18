@@ -1,0 +1,46 @@
+﻿@using HotelManagement.Web.Models.Dtos;
+@model IEnumerable<Reservation>
+
+@{
+    ViewData["Title"] = "Reservation Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Reservation Page</h1>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Checkin</th>
+            <th>Checkout</th>
+            <th>Price</th>
+            <th>Tax</th>
+            <th>Discount</th>
+            <th>Number of Guests</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reservation in Model)
+        {
+            <tr>
+                <td>@reservation.Id</td>
+                <td>@reservation.Date</td>
+                <td>@reservation.CheckIn</td>
+                <td>@reservation.CheckOut</td>
+                <td>@reservation.Price</td>
+                <td>@reservation.Tax</td>
+                <td>@reservation.Discount</td>
+                @* <td>@reservation.GuestId</td> *@
+                <td>@reservation.NumberOfGuests</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Reservation" 
+                    asp-action="ManageReservation" asp-route-userId="@reservation.Id">Manage Reservation</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
