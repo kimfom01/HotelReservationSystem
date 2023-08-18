@@ -1,4 +1,5 @@
 ﻿using HotelManagement.Web.Models;
+using HotelManagement.Web.Models.Dtos;
 using HotelManagement.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -7,9 +8,9 @@ namespace HotelManagement.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IGuestService _guestService;
+    private readonly IGenericApiService<Guest> _guestService;
 
-    public HomeController(IGuestService guestService)
+    public HomeController(IGenericApiService<Guest> guestService)
     {
         _guestService = guestService;
     }
@@ -21,7 +22,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Privacy()
     {
-        var guestList = await _guestService.FetchGuests();
+        var guestList = await _guestService.FetchEntities();
 
         return View(guestList);
     }
