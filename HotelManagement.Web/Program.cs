@@ -7,10 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("HotelManagementWebContextConnection")
     ?? throw new InvalidOperationException("Connection string 'HotelManagementWebContextConnection' not found.");
 
-builder.Services.AddDbContext<HotelManagementWebContext>(options => options.UseNpgsql(connectionString));
-
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<HotelManagementWebContext>();
+builder.Services.AddDbContext<HotelManagementWebContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+}).AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<HotelManagementWebContext>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IGuestService, GuestService>();
