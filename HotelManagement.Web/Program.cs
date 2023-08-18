@@ -18,8 +18,11 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 .AddEntityFrameworkStores<HotelManagementWebContext>();
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IGuestService, GuestService>();
-builder.Services.AddHttpClient();
+builder.Services.AddScoped(typeof(IGenericApiService<>), typeof(GenericApiService<>));
+builder.Services.AddScoped(sp =>
+{
+    return new HttpClient { BaseAddress = new Uri("https://localhost:7214/api/") };
+});
 
 var app = builder.Build();
 
