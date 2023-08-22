@@ -33,8 +33,11 @@ public static class ContextSeed
             UserName = "superadmin@gmail.com",
             Email = "superadmin@gmail.com",
             FirstName = "Super",
+            MiddleName = "User",
             LastName = "Admin",
-            EmailConfirmed = true
+            PhoneNumber = "+71234567890",
+            EmailConfirmed = true,
+            DateOfBirth = DateTime.Now,
         };
 
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -50,6 +53,7 @@ public static class ContextSeed
                 await userManager.AddToRoleAsync(superUser, Roles.Moderator.ToString());
                 await userManager.AddToRoleAsync(superUser, Roles.Admin.ToString());
                 await userManager.AddToRoleAsync(superUser, Roles.SuperAdmin.ToString());
+                await userManager.AddToRoleAsync(superUser, Roles.Guest.ToString());
             }
         }
     }
