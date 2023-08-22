@@ -1,4 +1,5 @@
 ﻿using HotelManagement.Web.Data;
+using HotelManagement.Web.Mappings;
 using HotelManagement.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,29 +13,27 @@ public class UserManagementController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ManualMapper _mapper;
 
-    public UserManagementController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public UserManagementController(
+        UserManager<ApplicationUser> userManager, 
+        RoleManager<IdentityRole> roleManager,
+        ManualMapper mapper
+        )
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _mapper = mapper;
     }
 
     public async Task<IActionResult> Index()
     {
         var users = await _userManager.Users.ToListAsync();
-        var userRolesViewModel = new List<UserRolesViewModel>();
+        var userRolesViewModel = new List<UserViewModel>();
 
         foreach (var user in users)
         {
-            var currentUserRolesViewModel = new UserRolesViewModel
-            {
-                UserId = user.Id,
-                UserName = user.UserName!,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email!,
-                Roles = await GetUserRoles(user)
-            };
+            UserViewModel currentUserRolesViewModel = await _mapper.MapToUserViewModel(user, GetUserRoles);
 
             userRolesViewModel.Add(currentUserRolesViewModel);
         }

@@ -1,4 +1,5 @@
 ﻿using HotelManagement.Web.Data;
+using HotelManagement.Web.Models;
 using HotelManagement.Web.Models.Dtos;
 
 namespace HotelManagement.Web.Mappings;
@@ -18,5 +19,19 @@ public class ManualMapper
         };
 
         return guest;
+    }
+
+    public async Task<UserViewModel> MapToUserViewModel(ApplicationUser? user, 
+        Func<ApplicationUser, Task<List<string>>> GetUserRoles)
+    {
+        return new UserViewModel
+        {
+            UserId = user.Id,
+            UserName = user.UserName!,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email!,
+            Roles = await GetUserRoles(user)
+        };
     }
 }
