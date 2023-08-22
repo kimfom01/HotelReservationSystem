@@ -3,6 +3,7 @@ using System;
 using HotelManagement.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelManagement.Web.Migrations
 {
     [DbContext(typeof(HotelManagementWebContext))]
-    partial class HotelManagementWebContextModelSnapshot : ModelSnapshot
+    [Migration("20230822122857_AddColumsToUser")]
+    partial class AddColumsToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
