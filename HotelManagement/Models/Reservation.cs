@@ -11,5 +11,7 @@ public class Reservation
     public double Discount { get; set; }
     public int GuestId { get; set; }
     public Guest? Guest { get; set; }
+    public int HotelId { get; set; }
+    public Hotel? Hotel { get; set; }
     public int NumberOfGuests { get; set; }
 }

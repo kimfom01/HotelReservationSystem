@@ -31,6 +31,12 @@ public class Reservation
     [JsonPropertyName("guest")]
     public Guest? Guest { get; set; }
 
+    [JsonPropertyName("hotelId")]
+    public int HotelId { get; set; }
+    
+    [JsonPropertyName("Hotel")]
+    public Hotel? Hotel { get; set; }
+
     [JsonPropertyName("numberOfGuests")]
     public int NumberOfGuests { get; set; }
 }
