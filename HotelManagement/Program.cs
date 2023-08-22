@@ -24,6 +24,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
