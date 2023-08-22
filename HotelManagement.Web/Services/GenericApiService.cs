@@ -12,7 +12,6 @@ public class GenericApiService<TEntity> : IGenericApiService<TEntity>
     {
         _client = client;
         _client.DefaultRequestHeaders.Accept.Clear();
-        _client.BaseAddress = new Uri("https://localhost:7214/api/");
         _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
