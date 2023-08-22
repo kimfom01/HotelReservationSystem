@@ -1,6 +1,6 @@
 namespace HotelManagement.Web.Models;
 
-public class UserRolesViewModel
+public class UserViewModel
 {
     public required string UserId { get; set; }
     public required string FirstName { get; set; }
