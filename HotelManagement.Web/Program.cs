@@ -1,4 +1,5 @@
 using HotelManagement.Web.Data;
+using HotelManagement.Web.Mappings;
 using HotelManagement.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +22,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped(typeof(IGenericApiService<>), typeof(GenericApiService<>));
 builder.Services.AddScoped(sp =>
 {
-    return new HttpClient { BaseAddress = new Uri("https://localhost:7214/api/") };
+    return new HttpClient
+    {
+        BaseAddress = new Uri(builder.Configuration.GetValue<string>("BaseAddress")
+        ?? throw new InvalidOperationException("BaseAddress not found."))
+    };
 });
+builder.Services.AddScoped<ManualMapper>();
 
 var app = builder.Build();
 
@@ -43,6 +49,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var scope = app.Services.CreateScope();
 var serviceProvider = scope.ServiceProvider;
