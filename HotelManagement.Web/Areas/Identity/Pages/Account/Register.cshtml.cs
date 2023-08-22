@@ -1,12 +1,16 @@
 ﻿#nullable disable
 
 using HotelManagement.Web.Data;
+using HotelManagement.Web.Mappings;
+using HotelManagement.Web.Models.Dtos;
+using HotelManagement.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
@@ -21,6 +25,8 @@ public class RegisterModel : PageModel
     private readonly ILogger<RegisterModel> _logger;
     private readonly IEmailSender _emailSender;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ManualMapper _mapper;
+    private readonly IGenericApiService<Guest> _apiService;
 
     public RegisterModel(
         UserManager<ApplicationUser> userManager,
@@ -28,7 +34,9 @@ public class RegisterModel : PageModel
         SignInManager<ApplicationUser> signInManager,
         ILogger<RegisterModel> logger,
         IEmailSender emailSender,
-        RoleManager<IdentityRole> roleManager)
+        RoleManager<IdentityRole> roleManager,
+        ManualMapper mapper,
+        IGenericApiService<Guest> apiService)
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -37,6 +45,8 @@ public class RegisterModel : PageModel
         _logger = logger;
         _emailSender = emailSender;
         _roleManager = roleManager;
+        _mapper = mapper;
+        _apiService = apiService;
     }
 
     [BindProperty]
@@ -53,8 +63,20 @@ public class RegisterModel : PageModel
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Middle Name")]
+        public string MiddleName { get; set; }
+
+        [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        [Required]
+        [DisplayName("Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [DisplayName("Date Of Birth")]
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         [EmailAddress]
@@ -91,10 +113,13 @@ public class RegisterModel : PageModel
             var user = CreateUser();
             user.FirstName = Input.FirstName;
             user.LastName = Input.LastName;
+            user.PhoneNumber = Input.PhoneNumber;
+            user.MiddleName = Input.MiddleName;
+            user.DateOfBirth = Input.DateOfBirth;
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-            
+
             var result = await _userManager.CreateAsync(user, Input.Password);
 
             if (result.Succeeded)
@@ -103,6 +128,7 @@ public class RegisterModel : PageModel
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 await _userManager.AddToRoleAsync(user, role.Name);
+                await SaveUserAsGuest(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
@@ -155,5 +181,12 @@ public class RegisterModel : PageModel
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
         return (IUserEmailStore<ApplicationUser>)_userStore;
+    }
+
+    private async Task SaveUserAsGuest(ApplicationUser user)
+    {
+        var guest = _mapper.MapUserToGuest(user);
+
+        var addedGuest = await _apiService.AddEntity(guest);
     }
 }
