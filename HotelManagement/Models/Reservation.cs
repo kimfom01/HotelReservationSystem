@@ -7,7 +7,7 @@ public class Reservation
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public decimal Price { get; set; }
-    public double Tax { get; set; }
+    public decimal Tax { get; set; }
     public double Discount { get; set; }
     public int GuestId { get; set; }
     public Guest? Guest { get; set; }
