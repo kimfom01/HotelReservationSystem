@@ -30,12 +30,13 @@ public class RoomController : ControllerBase
         return Ok(room);
     }
 
-    [HttpGet("hotel/{hotelId:int}")]
+    [HttpGet("hotel/{hotelId:int}/{capacity:int}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> GetRoomByHotelId(int hotelId)
+    public async Task<IActionResult> GetRoomByHotelId(int hotelId, int capacity)
     {
-        var room = await _repository.GetEntity(room => room.HotelId == hotelId);
+        var room = await _repository.GetEntity(room => room.HotelId == hotelId 
+                                                && room.Capacity == capacity);
 
         if (room is null)
         {
