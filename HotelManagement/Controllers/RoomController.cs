@@ -30,6 +30,21 @@ public class RoomController : ControllerBase
         return Ok(room);
     }
 
+    [HttpGet("hotel/{hotelId:int}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetRoomByHotelId(int hotelId)
+    {
+        var room = await _repository.GetEntity(room => room.HotelId == hotelId);
+
+        if (room is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(room);
+    }
+
     [HttpGet]
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetRooms()
