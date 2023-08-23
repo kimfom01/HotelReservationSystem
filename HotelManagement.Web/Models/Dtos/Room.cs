@@ -22,7 +22,7 @@ public class Room
     public string RoomType { get; set; }
 
     [JsonPropertyName("roomPrice")]
-    public int RoomPrice { get; set; }
+    public decimal RoomPrice { get; set; }
 
     [JsonPropertyName("availabilty")]
     public bool Availabilty { get; set; }

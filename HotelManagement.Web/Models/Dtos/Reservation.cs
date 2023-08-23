@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using HotelManagement.Web.Data;
+using System.Text.Json.Serialization;
 
 namespace HotelManagement.Web.Models.Dtos;
 
@@ -17,13 +18,13 @@ public class Reservation
     public DateTime CheckOut { get; set; }
 
     [JsonPropertyName("price")]
-    public int Price { get; set; }
+    public decimal Price { get; set; }
 
     [JsonPropertyName("tax")]
-    public int Tax { get; set; }
+    public decimal Tax { get; set; }
 
     [JsonPropertyName("discount")]
-    public int Discount { get; set; }
+    public double Discount { get; set; }
 
     [JsonPropertyName("guestId")]
     public int GuestId { get; set; }

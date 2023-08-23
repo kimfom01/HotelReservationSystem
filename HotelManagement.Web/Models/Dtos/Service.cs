@@ -11,7 +11,7 @@ public class Service
     public string Name { get; set; }
 
     [JsonPropertyName("price")]
-    public int Price { get; set; }
+    public decimal Price { get; set; }
 
     [JsonPropertyName("hotelId")]
     public int HotelId { get; set; }
