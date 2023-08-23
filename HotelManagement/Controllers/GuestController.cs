@@ -32,11 +32,32 @@ public class GuestController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
     public async Task<IActionResult> GetGuests()
     {
         var guests = await _repository.GetEntities(guest => true);
 
+        if (guests is null)
+        {
+            return NotFound();
+        }
+
         return Ok(guests);
+    }
+
+    [HttpGet("{emailAddress}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetGuestByEmailAddress(string emailAddress)
+    {
+        var guest = await _repository.GetEntity(guest => guest.Email == emailAddress);
+
+        if (guest is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(guest);
     }
 
     [HttpDelete("{id:int}")]
