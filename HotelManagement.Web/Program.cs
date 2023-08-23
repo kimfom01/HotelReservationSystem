@@ -20,6 +20,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped(typeof(IGenericApiService<>), typeof(GenericApiService<>));
+builder.Services.AddScoped<IRoomApiService, RoomApiService>();
+builder.Services.AddScoped<IGuestApiService, GuestApiService>();
 builder.Services.AddScoped(sp =>
 {
     return new HttpClient
