@@ -40,20 +40,19 @@ public class HotelController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> ManageHotel(int id)
+    public async Task<IActionResult> ManageHotel(int hotelId)
     {
-        var hotel = await _hotelService.FetchEntity(id);
+        var hotel = await _hotelService.FetchEntity(hotelId);
 
         if (hotel is null)
         {
-            return NotFound($"Hotel with id = {id} cannot be found");
+            return NotFound($"Hotel with id = {hotelId} cannot be found");
         }
 
         return View(hotel);
     }
 
-    [HttpPost("{id:int}")]
+    [HttpPost]
     public async Task<IActionResult> ManageHotel(Hotel newHotelInfo, int id)
     {
         var hotel = await _hotelService.FetchEntity(id);
