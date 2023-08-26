@@ -58,6 +58,11 @@ public class HotelController : Controller
     {
         var hotel = await _hotelService.FetchEntity(id);
 
+        if (hotel is null)
+        {
+            return View();
+        }
+
         hotel.Name = newHotelInfo.Name;
         hotel.Location = newHotelInfo.Location;
 
