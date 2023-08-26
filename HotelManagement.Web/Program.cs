@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("HotelManagementWebContextConnection")
     ?? throw new InvalidOperationException("Connection string 'HotelManagementWebContextConnection' not found.");
+var baseAddress = builder.Configuration.GetValue<string>("BaseAddress")
+        ?? throw new InvalidOperationException("BaseAddress not found.");
 
 builder.Services.AddDbContext<HotelManagementWebContext>(options =>
 {
@@ -26,8 +28,7 @@ builder.Services.AddScoped(sp =>
 {
     return new HttpClient
     {
-        BaseAddress = new Uri(builder.Configuration.GetValue<string>("BaseAddress")
-        ?? throw new InvalidOperationException("BaseAddress not found."))
+        BaseAddress = new Uri(baseAddress)
     };
 });
 builder.Services.AddScoped<ManualMapper>();
