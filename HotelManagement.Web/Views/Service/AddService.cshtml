@@ -1,0 +1,41 @@
+﻿@using HotelManagement.Web.Models.Dtos;
+@model Service
+
+@{
+    ViewBag.Title = "Add New Service";
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div class="card col-md-4">
+        <div class="card-header">
+            <h2>New Service</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Name" class="form-control" type="text"
+                       aria-required="true" placeholder="Name of service..." />
+                <label asp-for="@Model.Name">Name</label>
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Price" class="form-control" type="number"
+                       aria-required="true" placeholder="Price of service..." />
+                <label asp-for="@Model.Price">Price</label>
+                <span asp-validation-for="@Model.Price" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <!-- TODO: Convert to select list -->
+                <input asp-for="@Model.HotelId" class="form-control" type="number"
+                       aria-required="true" placeholder="Select hotel..." />
+                <label asp-for="@Model.HotelId">Hotel</label>
+                <span asp-validation-for="@Model.HotelId" class="text-danger"></span>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Add Service" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-primary">Cancel</a>
+        </div>
+    </div>
+</form>
