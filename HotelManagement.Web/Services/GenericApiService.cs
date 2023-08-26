@@ -45,8 +45,35 @@ public class GenericApiService<TEntity> : IGenericApiService<TEntity>
 
         var stream = await response.Content.ReadAsStreamAsync();
 
-        var guestList = await JsonSerializer.DeserializeAsync<IEnumerable<TEntity>>(stream);
+        var entityList = await JsonSerializer.DeserializeAsync<IEnumerable<TEntity>>(stream);
 
-        return guestList ?? Enumerable.Empty<TEntity>();
+        return entityList ?? Enumerable.Empty<TEntity>();
+    }
+
+    public async Task<TEntity?> FetchEntity(int id)
+    {
+        using var response = await _client.GetAsync($"{typeof(TEntity).Name}/{id}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return default;
+        }
+
+        var stream = await response.Content.ReadAsStreamAsync();
+
+        var entity = await JsonSerializer.DeserializeAsync<TEntity?>(stream);
+
+        return entity;
+    }
+
+    public async Task<bool> UpdateEntity(TEntity entity, int id)
+    {
+        var jsonString = JsonSerializer.Serialize(entity);
+
+        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+        using var result = await _client.PutAsync(typeof(TEntity).Name, content);
+
+        return result.IsSuccessStatusCode;
     }
 }
