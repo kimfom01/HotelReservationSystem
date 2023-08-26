@@ -1,12 +1,11 @@
-﻿using HotelManagement.Web.Models;
-using HotelManagement.Web.Models.Dtos;
+﻿using HotelManagement.Web.Models.Dtos;
 using HotelManagement.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Web.Controllers;
 
-[Authorize(Roles = nameof(Roles.SystemAdmin))]
+[Authorize(Roles = "SystemAdmin, HotelAdmin")]
 public class HotelController : Controller
 {
     private readonly IGenericApiService<Hotel> _hotelService;

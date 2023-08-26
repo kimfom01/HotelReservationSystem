@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelManagement.Web.Controllers;
 
-[Authorize(Roles = nameof(Roles.SystemAdmin))]
+[Authorize(Roles = "SystemAdmin")]
 public class UserManagementController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -16,7 +16,7 @@ public class UserManagementController : Controller
     private readonly ManualMapper _mapper;
 
     public UserManagementController(
-        UserManager<ApplicationUser> userManager, 
+        UserManager<ApplicationUser> userManager,
         RoleManager<IdentityRole> roleManager,
         ManualMapper mapper
         )
