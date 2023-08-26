@@ -66,7 +66,7 @@ public class GenericApiService<TEntity> : IGenericApiService<TEntity>
         return entity;
     }
 
-    public async Task<bool> UpdateEntity(TEntity entity, int id)
+    public async Task<bool> UpdateEntity(TEntity entity)
     {
         var jsonString = JsonSerializer.Serialize(entity);
 
