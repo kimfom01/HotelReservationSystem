@@ -1,0 +1,48 @@
+﻿@using HotelManagement.Web.Models.Dtos;
+@model Meal
+
+@{
+    ViewBag.Title = "Manage Meal";
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div class="card col-md-4">
+        <div class="card-header">
+            <h2>Manage Meal</h2>
+        </div>
+        <div class="card-body">
+            <input asp-for="@Model.Id" hidden />
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Name" class="form-control" type="text"
+                       aria-required="true" placeholder="Meal name..." />
+                <label asp-for="@Model.Name">Name</label>
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Type" class="form-control" type="text"
+                       aria-required="true" placeholder="Meal type..." />
+                <label asp-for="@Model.Type">Type</label>
+                <span asp-validation-for="@Model.Type" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.MealPrice" class="form-control" type="number"
+                       aria-required="true" placeholder="Meal price..." />
+                <label asp-for="@Model.MealPrice">Number of Guests</label>
+                <span asp-validation-for="@Model.MealPrice" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <!-- TODO: Convert to select list -->
+                <input asp-for="@Model.HotelId" class="form-control" type="number"
+                       aria-required="true" placeholder="Select hotel..." />
+                <label asp-for="@Model.HotelId">Hotel</label>
+                <span asp-validation-for="@Model.HotelId" class="text-danger"></span>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Update Meal" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-primary">Cancel</a>
+        </div>
+    </div>
+</form>

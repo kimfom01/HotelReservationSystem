@@ -1,0 +1,39 @@
+﻿@using HotelManagement.Web.Models.Dtos;
+@model List<Meal>
+
+@{
+    ViewBag.Title = "Meals";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a asp-controller="Meal" class="btn btn-primary"
+   asp-action="AddMeal">Add New Meal</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Meal Price</th>
+            <th>HotelId</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var meal in Model)
+        {
+            <tr>
+                <td>@meal.Name</td>
+                <td>@meal.Type</td>
+                <td>@meal.MealPrice</td>
+                <td>@meal.HotelId</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Meal"
+                       asp-action="ManageMeal" asp-route-mealId="@meal.Id">Manage Meal</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
