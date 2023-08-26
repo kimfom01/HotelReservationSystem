@@ -13,10 +13,8 @@ public static class ContextSeed
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            await roleManager.CreateAsync(new IdentityRole(Roles.SuperAdmin.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Moderator.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Basic.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.SystemAdmin.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.HotelAdmin.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Guest.ToString()));
         }
         catch (Exception ex)
@@ -30,9 +28,9 @@ public static class ContextSeed
     {
         var superUser = new ApplicationUser
         {
-            UserName = "superadmin@gmail.com",
-            Email = "superadmin@gmail.com",
-            FirstName = "Super",
+            UserName = "systemadmin@azurehotels.com",
+            Email = "systemadmin@azurehotels.com",
+            FirstName = "System",
             MiddleName = "User",
             LastName = "Admin",
             PhoneNumber = "+71234567890",
@@ -49,10 +47,8 @@ public static class ContextSeed
             if (user is null)
             {
                 await userManager.CreateAsync(superUser, "123Pa$$word.");
-                await userManager.AddToRoleAsync(superUser, Roles.Basic.ToString());
-                await userManager.AddToRoleAsync(superUser, Roles.Moderator.ToString());
-                await userManager.AddToRoleAsync(superUser, Roles.Admin.ToString());
-                await userManager.AddToRoleAsync(superUser, Roles.SuperAdmin.ToString());
+                await userManager.AddToRoleAsync(superUser, Roles.SystemAdmin.ToString());
+                await userManager.AddToRoleAsync(superUser, Roles.HotelAdmin.ToString());
                 await userManager.AddToRoleAsync(superUser, Roles.Guest.ToString());
             }
         }
