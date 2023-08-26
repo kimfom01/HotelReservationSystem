@@ -20,5 +20,5 @@ public class Pricing
     public int NumberOfGuests { get; set; }
 
     [JsonPropertyName("price")]
-    public int Price { get; set; }
+    public decimal Price { get; set; }
 }
