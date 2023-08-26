@@ -14,32 +14,38 @@
         </div>
         <div class="card-body">
             <div class="form-floating mb-3">
-                <input asp-for="@Model.FirstName" class="form-control" autocomplete="username" aria-required="true" placeholder="Your first name" />
+                <input asp-for="@Model.FirstName" class="form-control"
+                       autocomplete="username" aria-required="true" placeholder="Your first name" />
                 <label asp-for="@Model.FirstName">First Name</label>
                 <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="@Model.MiddleName" class="form-control" autocomplete="username" aria-required="true" placeholder="Your middle name" />
+                <input asp-for="@Model.MiddleName" class="form-control"
+                       autocomplete="username" aria-required="true" placeholder="Your middle name" />
                 <label asp-for="@Model.MiddleName">Middle Name</label>
                 <span asp-validation-for="@Model.MiddleName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="@Model.LastName" class="form-control" autocomplete="username" aria-required="true" placeholder="Your last name" />
+                <input asp-for="@Model.LastName" class="form-control"
+                       autocomplete="username" aria-required="true" placeholder="Your last name" />
                 <label asp-for="@Model.LastName">Last Name</label>
                 <span asp-validation-for="@Model.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="@Model.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <input asp-for="@Model.Email" class="form-control"
+                       autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label asp-for="@Model.Email">Email</label>
                 <span asp-validation-for="@Model.Email" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="@Model.PhoneNumber" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <input asp-for="@Model.PhoneNumber" class="form-control"
+                       autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label asp-for="@Model.PhoneNumber">PhoneNumber</label>
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="@Model.DateOfBirth" class="form-control" type="date" autocomplete="username" aria-required="true" placeholder="Your date of birth" />
+                <input asp-for="@Model.DateOfBirth" class="form-control" type="date"
+                       autocomplete="username" aria-required="true" placeholder="Your date of birth" />
                 <label asp-for="@Model.DateOfBirth">Date of Birth</label>
                 <span asp-validation-for="@Model.DateOfBirth" class="text-danger"></span>
             </div>
