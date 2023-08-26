@@ -1,4 +1,5 @@
-﻿@model HotelManagement.Web.Data.ApplicationUser
+﻿@using HotelManagement.Web.Data;
+@model ApplicationUser
 
 @{
     ViewBag.Title = "Manage User";
@@ -18,6 +19,11 @@
                 <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
+                <input asp-for="@Model.MiddleName" class="form-control" autocomplete="username" aria-required="true" placeholder="Your middle name" />
+                <label asp-for="@Model.MiddleName">Middle Name</label>
+                <span asp-validation-for="@Model.MiddleName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
                 <input asp-for="@Model.LastName" class="form-control" autocomplete="username" aria-required="true" placeholder="Your last name" />
                 <label asp-for="@Model.LastName">Last Name</label>
                 <span asp-validation-for="@Model.LastName" class="text-danger"></span>
@@ -31,6 +37,11 @@
                 <input asp-for="@Model.PhoneNumber" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label asp-for="@Model.PhoneNumber">PhoneNumber</label>
                 <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.DateOfBirth" class="form-control" type="date" autocomplete="username" aria-required="true" placeholder="Your date of birth" />
+                <label asp-for="@Model.DateOfBirth">Date of Birth</label>
+                <span asp-validation-for="@Model.DateOfBirth" class="text-danger"></span>
             </div>
             <div asp-validation-summary="All" class="text-danger"></div>
         </div>
