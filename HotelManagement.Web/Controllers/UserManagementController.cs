@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelManagement.Web.Controllers;
 
-[Authorize(Roles = "SuperAdmin")]
+[Authorize(Roles = nameof(Roles.SystemAdmin))]
 public class UserManagementController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -72,7 +72,9 @@ public class UserManagementController : Controller
 
         user.FirstName = manageUserUpdateInfo.FirstName;
         user.LastName = manageUserUpdateInfo.LastName;
+        user.MiddleName = manageUserUpdateInfo.MiddleName;
         user.Email = manageUserUpdateInfo.Email;
+        user.DateOfBirth = manageUserUpdateInfo.DateOfBirth;
         user.PhoneNumber = manageUserUpdateInfo.PhoneNumber;
 
         var result = await _userManager.UpdateAsync(user);
