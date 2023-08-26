@@ -66,7 +66,7 @@ public class HotelController : Controller
         hotel.Name = newHotelInfo.Name;
         hotel.Location = newHotelInfo.Location;
 
-        var success = await _hotelService.UpdateEntity(hotel, id);
+        var success = await _hotelService.UpdateEntity(hotel);
 
         if (success)
         {
