@@ -1,22 +1,119 @@
+/** {
+    border: 2px solid red;
+}*/
+
 html {
-  font-size: 14px;
+    font-size: 16px;
+    --primary-color: #1D494F;
+}
+
+@media (min-width: 425px) {
+    html {
+        font-size: 12px;
+    }
+
+    .landing-message {
+        font-size: 2rem;
+        font-weight: 900;
+    }
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
+
+    .landing-message {
+        font-size: 3rem;
+        font-weight: 900;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    color: var(--primary-color);
+}
+
+.button-primary {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+    .button-primary:hover {
+        background-color: #FFFFFF;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+    }
+
+.button-secondary {
+    background-color: #FFFFFF;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+    .button-secondary:hover {
+        background-color: var(--primary-color);
+        color: #FFFFFF;
+    }
+
+.hero-image {
+    width: calc(60vw / 2);
+}
+
+.landing-message {
+    font-size: 5rem;
+    font-weight: 900;
+}
+
+.left {
+    width: 30rem;
+}
+
+.admin-page {
+    display: grid;
+    grid-template-columns: 1.5fr 5fr;
+}
+
+.sidebar {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+
+.btn-nav {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.btn-nav:hover, .btn-nav:active {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+.nav-bar-items > li {
+    margin-left: 1.5rem;
+}
+
+.nav-bar-items p {
+    display: inline;
+    margin-left: 1.5rem;
+}
+.nav-bar-items a:hover {
+    background-color: #46696D;
 }
