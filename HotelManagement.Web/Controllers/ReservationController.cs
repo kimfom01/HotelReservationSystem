@@ -96,4 +96,9 @@ public class ReservationController : Controller
 
         return View(reservations);
     }
+
+    public async Task<IActionResult> ManageReservation(int reservationId)
+    {
+        return View();
+    }
 }
