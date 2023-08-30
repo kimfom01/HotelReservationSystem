@@ -2,7 +2,7 @@
 @model IEnumerable<Reservation>
 
 @{
-    ViewData["Title"] = "Reservation Page";
+    ViewData["Title"] = "Reservation";
 }
 
 <div class="text-center">
@@ -38,7 +38,7 @@
                 <td>@reservation.NumberOfGuests</td>
                 <td>
                     <a class="btn btn-primary" asp-controller="Reservation"
-                       asp-action="ManageReservation" asp-route-userId="@reservation.Id">Manage Reservation</a>
+                       asp-action="ManageReservation" asp-route-reservationId="@reservation.Id">Manage Reservation</a>
                 </td>
             </tr>
         }
