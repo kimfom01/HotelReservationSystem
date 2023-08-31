@@ -7,28 +7,6 @@ html {
     --primary-color: #1D494F;
 }
 
-@media (min-width: 425px) {
-    html {
-        font-size: 12px;
-    }
-
-    .landing-message {
-        font-size: 2rem;
-        font-weight: 900;
-    }
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-
-    .landing-message {
-        font-size: 3rem;
-        font-weight: 900;
-    }
-}
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -94,10 +72,10 @@ body {
     font-weight: bold;
 }
 
-.btn-nav:hover, .btn-nav:active {
-    color: #FFFFFF;
-    font-weight: bold;
-}
+    .btn-nav:hover, .btn-nav:active {
+        color: #FFFFFF;
+        font-weight: bold;
+    }
 
 .profile-image {
     width: 150px;
@@ -114,6 +92,158 @@ body {
     display: inline;
     margin-left: 1.5rem;
 }
+
 .nav-bar-items a:hover {
     background-color: #46696D;
+}
+
+@media (min-width: 280px) {
+    html {
+        font-size: 12px;
+    }
+
+    .landing-message {
+        font-size: 2.5rem;
+        font-weight: 900;
+    }
+
+    .landing {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero-image {
+        width: 90vw;
+    }
+
+    .left {
+        width: 10rem;
+        margin-bottom: 5rem;
+    }
+}
+
+@media (min-width: 320px) {
+    html {
+        font-size: 14px;
+    }
+
+    .landing-message {
+        font-size: 3rem;
+        font-weight: 900;
+    }
+
+    .landing {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero-image {
+        width: 90vw;
+    }
+
+    .left {
+        width: 20rem;
+        margin-bottom: 10rem;
+    }
+}
+
+@media (min-width: 425px) {
+    .landing-message {
+        font-size: 4rem;
+        font-weight: 900;
+    }
+
+    .landing {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero-image {
+        width: 85vw;
+    }
+
+    .left {
+        width: 20rem;
+        margin-bottom: 7.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+
+    .landing-message {
+        font-size: 2.5rem;
+        font-weight: 900;
+    }
+
+    .hero-image {
+        width: calc(100vw * 0.6);
+    }
+
+    .landing {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 1024px) {
+    html {
+        font-size: 16px;
+    }
+
+    .landing-message {
+        font-size: 3rem;
+        font-weight: 900;
+    }
+
+    .hero-image {
+        width: calc(100vw * 0.6);
+    }
+
+    .landing {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1440px) {
+    html {
+        font-size: 18px;
+    }
+
+    .landing-message {
+        font-size: 4rem;
+        font-weight: 900;
+    }
+
+    .hero-image {
+        width: calc(100vw * 0.4);
+    }
+
+    .landing {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 2650px) {
+    html {
+        font-size: 18px;
+    }
+
+    .landing-message {
+        font-size: 3rem;
+        font-weight: 900;
+    }
+
+    .hero-image {
+        width: 20vw;
+    }
+
+    .landing {
+        display: flex;
+        flex-direction: row;
+    }
 }
