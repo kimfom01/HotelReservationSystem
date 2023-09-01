@@ -37,8 +37,10 @@
                 @* <td>@reservation.GuestId</td> *@
                 <td>@reservation.NumberOfGuests</td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="Reservation"
-                       asp-action="ManageReservation" asp-route-reservationId="@reservation.Id">Manage Reservation</a>
+                    <a class="btn button-primary" asp-controller="Reservation"
+                       asp-action="ManageReservation" asp-route-reservationId="@reservation.Id">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
                 </td>
             </tr>
         }
