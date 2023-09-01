@@ -8,7 +8,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<a asp-controller="Meal" class="btn btn-primary"
+<a asp-controller="Meal" class="btn button-primary"
    asp-action="AddMeal">Add New Meal</a>
 
 <table class="table table-striped">
@@ -30,8 +30,10 @@
                 <td>@meal.MealPrice</td>
                 <td>@meal.HotelId</td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="Meal"
-                       asp-action="ManageMeal" asp-route-mealId="@meal.Id">Manage Meal</a>
+                    <a class="btn button-primary" asp-controller="Meal"
+                       asp-action="ManageMeal" asp-route-mealId="@meal.Id">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
                 </td>
             </tr>
         }
