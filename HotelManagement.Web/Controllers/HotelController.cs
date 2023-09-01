@@ -67,7 +67,7 @@ public class HotelController : Controller
 
         var success = await _hotelService.UpdateEntity(hotel);
 
-        if (success)
+        if (!success)
         {
             return View();
         }
