@@ -32,7 +32,6 @@
                 <span asp-validation-for="@Model.CheckOut" class="text-danger"></span>
             </div>
             <div class="form-control mb-3">
-                @* <label asp-for="@Model.HotelId" class="form-label">Select a Hotel</label> *@
                 <select asp-for="@Model.HotelId" class="form-select" required asp-items="Model.Hotels">
                     <option value="">-- Select a Hotel --</option>
                 </select>
