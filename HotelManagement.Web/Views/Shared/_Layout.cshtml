@@ -42,7 +42,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         @if (SignInManager.IsSignedIn(User))
         {
             var user = await UserManager.GetUserAsync(User);
@@ -53,9 +53,9 @@
             || roles.Contains(Roles.HotelAdmin.ToString()))
             {
                 <div class="admin-page">
-                    <div class="navbar-default navbar-left sidebar me-5">
+                    <div class="navbar-default navbar-left left sidebar me-5">
                         <div class="sidebar-nav navbar-collapse">
-                            <div class="d-flex justify-content-center my-5">
+                            <div class="d-flex justify-content-center my-4">
                                 <div class="d-flex profile-image align-items-center">admin profile image</div>
                             </div>
                             <partial name="_SideBarPartial" />
@@ -69,7 +69,7 @@
                 </div>
             }
         }
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 container">
             @RenderBody()
         </main>
     </div>
