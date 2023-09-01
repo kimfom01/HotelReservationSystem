@@ -62,7 +62,7 @@ public class ReservationController : Controller
             GuestId = guestId,
             HotelId = reservationViewModel.HotelId,
             NumberOfGuests = reservationViewModel.NumberOfGuests,
-            Price = room!.RoomPrice,
+            Price = room.RoomPrice,
             Tax = tax,
             Discount = discount,
         };
@@ -99,6 +99,54 @@ public class ReservationController : Controller
 
     public async Task<IActionResult> ManageReservation(int reservationId)
     {
-        return View();
+        var hotels = await _hotelService.FetchEntities();
+
+        var reservation = await _reservationService.FetchEntity(reservationId);
+
+        if (reservation is null)
+        {
+            return NotFound($"Reservation with id = {reservationId} cannot be found");
+        }
+
+        var reservationViewModel = new ReservationViewModel
+        {
+            Date = reservation.Date,
+            CheckIn = reservation.CheckIn,
+            CheckOut = reservation.CheckOut,
+            HotelId = reservation.HotelId,
+            NumberOfGuests = reservation.NumberOfGuests,
+            Hotels = new SelectList(hotels, "Id", "Name")
+        };
+
+        return View(reservationViewModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ManageReservation(ReservationViewModel reservationViewModel, int reservationId)
+    {
+
+        var reservation = await _reservationService.FetchEntity(reservationId);
+
+        if (reservation is null)
+        {
+            return NotFound($"Reservation with id = {reservationId} cannot be found");
+        }
+
+        var room = await _roomService.FetchRoomByHotelId(reservationViewModel.HotelId, reservationViewModel.NumberOfGuests);
+
+        reservation.CheckIn = reservationViewModel.CheckIn;
+        reservation.CheckOut = reservationViewModel.CheckOut;
+        reservation.HotelId = reservationViewModel.HotelId;
+        reservation.NumberOfGuests = reservationViewModel.NumberOfGuests;
+        reservation.Price = room.RoomPrice;
+
+        var success = await _reservationService.UpdateEntity(reservation);
+
+        if (!success)
+        {
+            return View();
+        }
+
+        return RedirectToAction(nameof(ViewReservationList));
     }
 }
