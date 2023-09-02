@@ -36,9 +36,12 @@ public class ReservationController : Controller
     {
         var hotels = await _hotelService.FetchEntities();
 
+        int[] capacities = { 3, 4, 5 };
+
         var reservationViewModel = new ReservationViewModel
         {
-            Hotels = new SelectList(hotels, "Id", "Name")
+            Hotels = new SelectList(hotels, "Id", "Name"),
+            Capacities = new SelectList(capacities)
         };
 
         return View(reservationViewModel);
@@ -48,6 +51,11 @@ public class ReservationController : Controller
     public async Task<IActionResult> Index(ReservationViewModel reservationViewModel)
     {
         var room = await _roomService.FetchRoomByHotelId(reservationViewModel.HotelId, reservationViewModel.NumberOfGuests);
+
+        if (room is null)
+        {
+            return View();
+        }
 
         var tax = 100M; //Don't know where these data come from lol
         var discount = 0.0;

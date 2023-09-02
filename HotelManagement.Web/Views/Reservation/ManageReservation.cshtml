@@ -22,12 +22,12 @@
                 <span asp-validation-for="@Model.NumberOfGuests" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="@Model.CheckIn" class="form-control" type="date" aria-required="true" value="@DateTime.Now" placeholder="Check in date" />
+                <input asp-for="@Model.CheckIn" class="form-control" type="date" aria-required="true" placeholder="Check in date" />
                 <label asp-for="@Model.CheckIn">Check-In Date</label>
                 <span asp-validation-for="@Model.CheckIn" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="@Model.CheckOut" class="form-control" type="date" aria-required="true" value="@DateTime.Now" placeholder="Check out date" />
+                <input asp-for="@Model.CheckOut" class="form-control" type="date" aria-required="true" placeholder="Check out date" />
                 <label asp-for="@Model.CheckOut">Check-Out Date</label>
                 <span asp-validation-for="@Model.CheckOut" class="text-danger"></span>
             </div>

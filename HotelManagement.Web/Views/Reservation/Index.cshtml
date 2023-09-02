@@ -16,10 +16,10 @@
             <h2>Reservation Form</h2>
         </div>
         <div class="card-body">
-            <div class="form-floating mb-3">
-                <input asp-for="@Model.NumberOfGuests" class="form-control" type="number" aria-required="true" placeholder="Your first name" />
-                <label asp-for="@Model.NumberOfGuests">Number of Guests</label>
-                <span asp-validation-for="@Model.NumberOfGuests" class="text-danger"></span>
+            <div class="form-control mb-3">
+                <select asp-for="@Model.NumberOfGuests" class="form-select" required asp-items="Model.Capacities">
+                    <option value="">-- Select Number of Guests --</option>
+                </select>
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="@Model.CheckIn" class="form-control" type="date" aria-required="true" value="@DateTime.Now" placeholder="Check in date" />
