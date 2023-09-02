@@ -15,6 +15,7 @@ public class Room
 
     [JsonPropertyName("roomNumber")]
     public int RoomNumber { get; set; }
+
     [JsonPropertyName("capacity")]
     public int Capacity { get; set; }
 

@@ -56,4 +56,27 @@ public class RoomController : Controller
 
         return View(roomViewModel);
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> AddRoom(RoomViewModel roomViewModel)
+    {
+        var room = new Room
+        {
+            HotelId = roomViewModel.HotelId,
+            RoomNumber = roomViewModel.RoomNumber,
+            Capacity = roomViewModel.Capacity,
+            RoomType = roomViewModel.RoomType,
+            RoomPrice = roomViewModel.RoomPrice,
+            Availabilty = roomViewModel.Availabilty
+        };
+
+        var addedRoom = await _roomService.AddEntity(room);
+
+        if (addedRoom is null)
+        {
+            return View();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
 }

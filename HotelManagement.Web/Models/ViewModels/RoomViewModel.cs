@@ -11,6 +11,6 @@ public class RoomViewModel
     public int Capacity { get; set; }
     public string? RoomType { get; set; }
     public decimal RoomPrice { get; set; }
-    public bool? Availabilty { get; set; }
+    public bool Availabilty { get; set; }
     public int RoomId { get; set; }
 }
