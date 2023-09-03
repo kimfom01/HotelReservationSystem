@@ -1,0 +1,45 @@
+﻿@using HotelManagement.Web.Models.ViewModels;
+@model MaintenanceViewModel
+
+@{
+    ViewBag.Title = "Manage Maintenance";
+    Layout = "_Layout";
+}
+
+<div class="card col-md-4">
+    <form method="post">
+        <div class="card-header">
+            <h2>Manage Maintenance</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.MaintenanceType" class="form-control" type="text"
+                       aria-required="true" placeholder="Maintenance Type..." />
+                <label asp-for="@Model.MaintenanceType">Maintenance Type</label>
+                <span asp-validation-for="@Model.MaintenanceType" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.StartDate" class="form-control" type="date"
+                       aria-required="true" placeholder="Start date..." />
+                <label asp-for="@Model.StartDate">Start Date</label>
+                <span asp-validation-for="@Model.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.EndDate" class="form-control" type="date"
+                       aria-required="true" placeholder="End date..." />
+                <label asp-for="@Model.EndDate">End Date</label>
+                <span asp-validation-for="@Model.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-control mb-3">
+                <select asp-for="@Model.RoomId" class="form-select" required asp-items="Model.Rooms">
+                    <option value="">-- Select a Room --</option>
+                </select>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Update Maintenance" class="btn button-primary" />
+            <a asp-action="Index" class="btn button-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
