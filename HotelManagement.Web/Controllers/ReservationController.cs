@@ -75,7 +75,14 @@ public class ReservationController : Controller
             Discount = discount,
         };
 
-        await _reservationService.AddEntity(reservation);
+        var reserved = await _reservationService.AddEntity(reservation);
+
+        if (reserved is null)
+        {
+            return View();
+        }
+
+        // set room status
 
         return RedirectToAction(nameof(ViewReservationList));
     }
