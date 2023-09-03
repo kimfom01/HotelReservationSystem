@@ -1,0 +1,39 @@
+﻿@using HotelManagement.Web.Models.ViewModels;
+@model List<RoomAmenityViewModel>
+
+@{
+    ViewBag.Title = "Room Amenities";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a asp-controller="RoomAmenity" class="btn button-primary"
+   asp-action="AddRoomAmenity">Add New Room Amenity</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Room Type</th>
+            <th>Room Number</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var amenityVM in Model)
+        {
+            <tr>
+                <td>@amenityVM.Name</td>
+                <td>@amenityVM.RoomType</td>
+                <td>@amenityVM.RoomNumber</td>
+                <td>
+                    <a class="btn button-primary" asp-controller="RoomAmenity"
+                       asp-action="ManageRoomAmenity" asp-route-amenityId="@amenityVM.AmenityId">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
