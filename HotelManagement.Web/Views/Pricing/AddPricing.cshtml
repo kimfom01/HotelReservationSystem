@@ -1,5 +1,5 @@
-﻿@using HotelManagement.Web.Models.Dtos;
-@model Pricing
+﻿@using HotelManagement.Web.Models.ViewModels;
+@model PricingViewModel
 
 @{
     ViewBag.Title = "Add New Pricing";
@@ -12,12 +12,10 @@
             <h2>New Pricing</h2>
         </div>
         <div class="card-body">
-            <div class="form-floating mb-3">
-                <!-- TODO: Convert to select list -->
-                <input asp-for="@Model.RoomId" class="form-control" type="number"
-                       aria-required="true" placeholder="Enter room number..." />
-                <label asp-for="@Model.RoomId">Room Number</label>
-                <span asp-validation-for="@Model.RoomId" class="text-danger"></span>
+            <div class="form-control mb-3">
+                <select asp-for="@Model.RoomId" class="form-select" required asp-items="Model.Rooms">
+                    <option value="">-- Select a Room --</option>
+                </select>
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="@Model.Date" class="form-control" type="date"

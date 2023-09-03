@@ -1,7 +1,9 @@
 ﻿using HotelManagement.Web.Models.Dtos;
+using HotelManagement.Web.Models.ViewModels;
 using HotelManagement.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HotelManagement.Web.Controllers;
 
@@ -9,10 +11,14 @@ namespace HotelManagement.Web.Controllers;
 public class PricingController : Controller
 {
     private readonly IGenericApiService<Pricing> _pricingService;
+    private readonly IGenericApiService<Room> _roomService;
 
-    public PricingController(IGenericApiService<Pricing> pricingService)
+    public PricingController(
+        IGenericApiService<Pricing> pricingService,
+        IGenericApiService<Room> roomService)
     {
         _pricingService = pricingService;
+        _roomService = roomService;
     }
 
     public async Task<IActionResult> Index()
@@ -22,14 +28,29 @@ public class PricingController : Controller
         return View(pricings);
     }
 
-    public IActionResult AddPricing()
+    public async Task<IActionResult> AddPricing()
     {
-        return View();
+        var rooms = await _roomService.FetchEntities();
+
+        var pricingViewModel = new PricingViewModel
+        {
+            Rooms = new SelectList(rooms, "Id", "RoomType")
+        };
+
+        return View(pricingViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPricing(Pricing pricing)
+    public async Task<IActionResult> AddPricing(PricingViewModel pricingViewModel)
     {
+        var pricing = new Pricing
+        {
+            RoomId = pricingViewModel.RoomId,
+            Date = pricingViewModel.Date,
+            NumberOfGuests = pricingViewModel.NumberOfGuests,
+            Price = pricingViewModel.Price
+        };
+
         var addedPricing = await _pricingService.AddEntity(pricing);
 
         if (addedPricing is null)
@@ -42,18 +63,29 @@ public class PricingController : Controller
 
     public async Task<IActionResult> ManagePricing(int pricingId)
     {
-        var price = await _pricingService.FetchEntity(pricingId);
+        var pricing = await _pricingService.FetchEntity(pricingId);
 
-        if (price is null)
+        if (pricing is null)
         {
             return NotFound($"Pricing with id = {pricingId} cannot be found");
         }
 
-        return View(price);
+        var rooms = await _roomService.FetchEntities();
+
+        var pricingViewModel = new PricingViewModel
+        {
+            Rooms = new SelectList(rooms, "Id", "RoomType"),
+            Date = pricing.Date,
+            RoomId = pricing.RoomId,
+            NumberOfGuests = pricing.NumberOfGuests,
+            Price = pricing.Price
+        };
+
+        return View(pricingViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> ManagePricing(Pricing newPricingInfo, int pricingId)
+    public async Task<IActionResult> ManagePricing(PricingViewModel pricingViewModel, int pricingId)
     {
         var pricing = await _pricingService.FetchEntity(pricingId);
 
@@ -62,10 +94,10 @@ public class PricingController : Controller
             return View();
         }
 
-        pricing.RoomId = newPricingInfo.RoomId;
-        pricing.Date = newPricingInfo.Date;
-        pricing.NumberOfGuests = newPricingInfo.NumberOfGuests;
-        pricing.Price = newPricingInfo.Price;
+        pricing.RoomId = pricingViewModel.RoomId;
+        pricing.Date = pricingViewModel.Date;
+        pricing.NumberOfGuests = pricingViewModel.NumberOfGuests;
+        pricing.Price = pricingViewModel.Price;
 
         var success = await _pricingService.UpdateEntity(pricing);
 
