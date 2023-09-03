@@ -1,33 +1,73 @@
 ﻿using HotelManagement.Web.Models.Dtos;
+using HotelManagement.Web.Models.ViewModels;
 using HotelManagement.Web.Services;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HotelManagement.Web.Controllers;
 
 public class MealController : Controller
 {
     private readonly IGenericApiService<Meal> _mealService;
+    private readonly IGenericApiService<Hotel> _hotelService;
 
-    public MealController(IGenericApiService<Meal> mealService)
+    public MealController(
+        IGenericApiService<Meal> mealService,
+        IGenericApiService<Hotel> hotelService)
     {
         _mealService = mealService;
+        _hotelService = hotelService;
     }
 
     public async Task<IActionResult> Index()
     {
         var meals = await _mealService.FetchEntities();
 
-        return View(meals);
+        var mealViewModels = new List<MealViewModel>();
+
+        foreach (var meal in meals)
+        {
+            var hotel = await _hotelService.FetchEntity(meal.HotelId);
+
+            var mealVM = new MealViewModel
+            {
+                HotelName = hotel.Name,
+                Name = meal.Name,
+                Type = meal.Type,
+                MealPrice = meal.MealPrice,
+                MealId = meal.Id
+            };
+
+            mealViewModels.Add(mealVM);
+        }
+
+        return View(mealViewModels);
     }
 
-    public IActionResult AddMeal()
+    public async Task<IActionResult> AddMeal()
     {
-        return View();
+        var hotels = await _hotelService.FetchEntities();
+
+        var mealViewModel = new MealViewModel
+        {
+            Hotels = new SelectList(hotels, "Id", "Name")
+        };
+
+        return View(mealViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddMeal(Meal meal)
+    public async Task<IActionResult> AddMeal(MealViewModel mealViewModel)
     {
+        var meal = new Meal
+        {
+            Name = mealViewModel.Name,
+            Type = mealViewModel.Type,
+            MealPrice = mealViewModel.MealPrice,
+            HotelId = mealViewModel.HotelId,
+        };
+
         var addedMeal = await _mealService.AddEntity(meal);
 
         if (addedMeal is null)
@@ -47,11 +87,22 @@ public class MealController : Controller
             return NotFound($"Meal with id = {mealId} cannot be found");
         }
 
-        return View(meal);
+        var hotels = await _hotelService.FetchEntities();
+
+        var mealViewModel = new MealViewModel
+        {
+            Name = meal.Name,
+            Type = meal.Type,
+            MealPrice = meal.MealPrice,
+            HotelId = meal.HotelId,
+            Hotels = new SelectList(hotels, "Id", "Name")
+        };
+
+        return View(mealViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> ManageMeal(Meal newMealInfo, int mealId)
+    public async Task<IActionResult> ManageMeal(MealViewModel newMealInfo, int mealId)
     {
         var meal = await _mealService.FetchEntity(mealId);
 
