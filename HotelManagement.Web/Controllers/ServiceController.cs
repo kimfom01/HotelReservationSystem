@@ -1,32 +1,70 @@
 ﻿using HotelManagement.Web.Models.Dtos;
+using HotelManagement.Web.Models.ViewModels;
 using HotelManagement.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HotelManagement.Web.Controllers;
+
 public class ServiceController : Controller
 {
     private readonly IGenericApiService<Service> _serviceService;
+    private readonly IGenericApiService<Hotel> _hotelService;
 
-    public ServiceController(IGenericApiService<Service> serviceService)
+    public ServiceController(
+        IGenericApiService<Service> serviceService,
+        IGenericApiService<Hotel> hotelService)
     {
         _serviceService = serviceService;
+        _hotelService = hotelService;
     }
 
     public async Task<IActionResult> Index()
     {
         var services = await _serviceService.FetchEntities();
 
-        return View(services);
+        var serviceViewModels = new List<ServiceViewModel>();
+
+        foreach (var service in services)
+        {
+            var hotel = await _hotelService.FetchEntity(service.HotelId);
+
+            var serviceVM = new ServiceViewModel
+            {
+                ServiceId = service.Id,
+                Name = service.Name,
+                Price = service.Price,
+                HotelName = hotel.Name
+            };
+
+            serviceViewModels.Add(serviceVM);
+        }
+
+        return View(serviceViewModels);
     }
 
-    public IActionResult AddService()
+    public async Task<IActionResult> AddService()
     {
-        return View();
+        var hotels = await _hotelService.FetchEntities();
+
+        var serviceVM = new ServiceViewModel
+        {
+            Hotels = new SelectList(hotels, "Id", "Name")
+        };
+
+        return View(serviceVM);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddService(Service service)
+    public async Task<IActionResult> AddService(ServiceViewModel serviceVM)
     {
+        var service = new Service
+        {
+            Name = serviceVM.Name,
+            Price = serviceVM.Price,
+            HotelId = serviceVM.HotelId
+        };
+
         var addedService = await _serviceService.AddEntity(service);
 
         if (addedService is null)
@@ -46,11 +84,21 @@ public class ServiceController : Controller
             return NotFound($"Service with id = {serviceId} cannot be found");
         }
 
-        return View(service);
+        var hotels = await _hotelService.FetchEntities();
+
+        var serviceVM = new ServiceViewModel
+        {
+            Hotels = new SelectList(hotels, "Id", "Name"),
+            HotelId = service.HotelId,
+            Price = service.Price,
+            Name = service.Name
+        };
+
+        return View(serviceVM);
     }
 
     [HttpPost]
-    public async Task<IActionResult> ManageService(Service newServiceInfo, int serviceId)
+    public async Task<IActionResult> ManageService(ServiceViewModel serviceVM, int serviceId)
     {
         var service = await _serviceService.FetchEntity(serviceId);
 
@@ -59,9 +107,9 @@ public class ServiceController : Controller
             return View();
         }
 
-        service.Name = newServiceInfo.Name;
-        service.Price = newServiceInfo.Price;
-        service.HotelId = newServiceInfo.HotelId;
+        service.Name = serviceVM.Name;
+        service.Price = serviceVM.Price;
+        service.HotelId = serviceVM.HotelId;
 
         var success = await _serviceService.UpdateEntity(service);
 

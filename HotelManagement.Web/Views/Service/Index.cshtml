@@ -1,5 +1,5 @@
-﻿@using HotelManagement.Web.Models.Dtos;
-@model List<Service>
+﻿@using HotelManagement.Web.Models.ViewModels;
+@model List<ServiceViewModel>
 
 @{
     ViewBag.Title = "Services";
@@ -16,7 +16,7 @@
         <tr>
             <th>Name</th>
             <th>Price</th>
-            <th>HotelId</th>
+            <th>Hotel Name</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -26,10 +26,10 @@
             <tr>
                 <td>@service.Name</td>
                 <td>@service.Price</td>
-                <td>@service.HotelId</td>
+                <td>@service.HotelName</td>
                 <td>
                     <a class="btn button-primary" asp-controller="Service"
-                       asp-action="ManageService" asp-route-serviceId="@service.Id">
+                       asp-action="ManageService" asp-route-serviceId="@service.ServiceId">
                         <i class="bi bi-pencil-square"></i>
                     </a>
                 </td>
