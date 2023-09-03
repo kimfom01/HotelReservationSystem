@@ -2,7 +2,7 @@
 
 namespace HotelManagement.Web.Models.Dtos;
 
-public class Occupancy
+public class RoomStatus
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace HotelManagement.Models;
 
-public class Occupancy
+public class RoomStatus
 {
     public int Id { get; set; }
     public int RoomId { get; set; }

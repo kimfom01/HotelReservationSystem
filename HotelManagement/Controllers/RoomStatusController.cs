@@ -6,11 +6,11 @@ namespace HotelManagement.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class OccupancyController : ControllerBase
+public class RoomStatusController : ControllerBase
 {
-    private readonly IRepository<Occupancy> _repository;
+    private readonly IRepository<RoomStatus> _repository;
 
-    public OccupancyController(IRepository<Occupancy> repository)
+    public RoomStatusController(IRepository<RoomStatus> repository)
     {
         _repository = repository;
     }
@@ -18,31 +18,31 @@ public class OccupancyController : ControllerBase
     [HttpGet("{id:int}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> GetOccupancy(int id)
+    public async Task<IActionResult> GetRoomStatus(int id)
     {
-        var occupancy = await _repository.GetEntity(occ => occ.Id == id);
+        var status = await _repository.GetEntity(status => status.Id == id);
 
-        if (occupancy is null)
+        if (status is null)
         {
             return NotFound();
         }
 
-        return Ok(occupancy);
+        return Ok(status);
     }
 
     [HttpGet]
     [ProducesResponseType(200)]
-    public async Task<IActionResult> GetOccupancies()
+    public async Task<IActionResult> GetRoomStatuses()
     {
-        var occupancies = await _repository.GetEntities(occ => true);
+        var statuses = await _repository.GetEntities(status => true);
 
-        return Ok(occupancies);
+        return Ok(statuses);
     }
 
     [HttpDelete("{id:int}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> DeleteOccupancy(int id)
+    public async Task<IActionResult> DeleteRoomStatus(int id)
     {
         await _repository.Delete(id);
         int deltedCount = await _repository.SaveChanges();
@@ -57,9 +57,9 @@ public class OccupancyController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateOccupancy(Occupancy occupancy)
+    public async Task<IActionResult> UpdateRoomStatus(RoomStatus status)
     {
-        await _repository.Update(occupancy);
+        await _repository.Update(status);
         await _repository.SaveChanges();
 
         return NoContent();
@@ -67,11 +67,11 @@ public class OccupancyController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostOccupancy(Occupancy occupancy)
+    public async Task<IActionResult> PostRoomStatus(RoomStatus status)
     {
-        var added = await _repository.Add(occupancy);
+        var added = await _repository.Add(status);
         await _repository.SaveChanges();
 
-        return CreatedAtAction(nameof(GetOccupancy), new { id = added.Id }, added);
+        return CreatedAtAction(nameof(GetRoomStatus), new { id = added.Id }, added);
     }
 }

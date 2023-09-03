@@ -10,7 +10,7 @@ public class Context : DbContext
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<HotelAmenity> HotelAmenities { get; set; }
     public DbSet<Meal> Meals { get; set; }
-    public DbSet<Occupancy> Occupancies { get; set; }
+    public DbSet<RoomStatus> RoomStatuses { get; set; }
     public DbSet<Pricing> Pricings { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<ReservationRoom> ReservationRooms { get; set; }
