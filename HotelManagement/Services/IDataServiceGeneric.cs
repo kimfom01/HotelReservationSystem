@@ -1,8 +1,11 @@
-﻿namespace HotelManagement.Services;
+﻿using System.Linq.Expressions;
+
+namespace HotelManagement.Services;
 
 public interface IDataServiceGeneric<TEntity>
 {
     public Task<TEntity?> GetEntity(int id);
+    public Task<TEntity?> GetEntity(Expression<Func<TEntity, bool>> expression);
     public Task<IEnumerable<TEntity>?> GetEntities();
     public Task<int> DeleteEntity(int id);
     public Task UpdateEntity(TEntity entity);

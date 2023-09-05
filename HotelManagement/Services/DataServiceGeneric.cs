@@ -1,4 +1,5 @@
 ﻿using DataAccess.Repositories;
+using System.Linq.Expressions;
 
 namespace HotelManagement.Services;
 
@@ -29,6 +30,13 @@ public class DataServiceGeneric<TEntity> : IDataServiceGeneric<TEntity>
     public async Task<TEntity?> GetEntity(int id)
     {
         var entity = await _repository.GetEntity(id);
+
+        return entity;
+    }
+
+    public async Task<TEntity?> GetEntity(Expression<Func<TEntity, bool>> expression)
+    {
+        var entity = await _repository.GetEntity(expression);
 
         return entity;
     }
