@@ -57,4 +57,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         return await _context.SaveChangesAsync();
     }
+
+    public async Task<TEntity?> GetEntity(int id)
+    {
+        var entity = await DbSet.FindAsync(id);
+
+        return entity;
+    }
 }
