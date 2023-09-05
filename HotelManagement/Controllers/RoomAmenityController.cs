@@ -1,8 +1,9 @@
-﻿using HotelManagement.Models;
-using HotelManagement.Repositories;
+﻿using DataAccess.Models;
+using DataAccess.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class RoomAmenityController : ControllerBase
