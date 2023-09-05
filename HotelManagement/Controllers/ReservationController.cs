@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class ReservationController : ControllerBase
 {
-    private readonly IRepository<Reservation> _repository;
+    private readonly IDataServiceGeneric<Reservation> _dataService;
 
-    public ReservationController(IRepository<Reservation> repository)
+    public ReservationController(IDataServiceGeneric<Reservation> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetReservation(int id)
     {
-        var reserve = await _repository.GetEntity(reserve => reserve.Id == id);
+        var reserve = await _dataService.GetEntity(id);
 
         if (reserve is null)
         {
@@ -34,7 +34,7 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetReservations()
     {
-        var reservations = await _repository.GetEntities(reserve => true);
+        var reservations = await _dataService.GetEntities();
 
         return Ok(reservations);
     }
@@ -44,10 +44,9 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteReservation(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -59,8 +58,7 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateReservation(Reservation reservation)
     {
-        await _repository.Update(reservation);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(reservation);
 
         return NoContent();
     }
@@ -69,8 +67,7 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostReservation(Reservation reservation)
     {
-        var added = await _repository.Add(reservation);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(reservation);
 
         return CreatedAtAction(nameof(GetReservation), new { id = added.Id }, added);
     }

@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class MaintenanceController : ControllerBase
 {
-    private readonly IRepository<Maintenance> _repository;
+    private readonly IDataServiceGeneric<Maintenance> _dataService;
 
-    public MaintenanceController(IRepository<Maintenance> repository)
+    public MaintenanceController(IDataServiceGeneric<Maintenance> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class MaintenanceController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetMaintenance(int id)
     {
-        var maintenance = await _repository.GetEntity(maintenance => maintenance.Id == id);
+        var maintenance = await _dataService.GetEntity(id);
 
         if (maintenance is null)
         {
@@ -34,7 +34,7 @@ public class MaintenanceController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetMaintenances()
     {
-        var maintenances = await _repository.GetEntities(maintenance => true);
+        var maintenances = await _dataService.GetEntities();
 
         return Ok(maintenances);
     }
@@ -44,10 +44,9 @@ public class MaintenanceController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteMaintenance(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -59,8 +58,7 @@ public class MaintenanceController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateMaintenance(Maintenance maintenance)
     {
-        await _repository.Update(maintenance);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(maintenance);
 
         return NoContent();
     }
@@ -69,8 +67,7 @@ public class MaintenanceController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostMaintenance(Maintenance maintenance)
     {
-        var added = await _repository.Add(maintenance);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(maintenance);
 
         return CreatedAtAction(nameof(GetMaintenance), new { id = added.Id }, added);
     }

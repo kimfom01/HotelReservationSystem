@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class RoomController : ControllerBase
 {
-    private readonly IRepository<Room> _repository;
+    private readonly IDataServiceGeneric<Room> _dataService;
 
-    public RoomController(IRepository<Room> repository)
+    public RoomController(IDataServiceGeneric<Room> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetRoom(int id)
     {
-        var room = await _repository.GetEntity(room => room.Id == id);
+        var room = await _dataService.GetEntity(id);
 
         if (room is null)
         {
@@ -35,7 +35,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetRoomByHotelId(int hotelId, int capacity)
     {
-        var room = await _repository.GetEntity(room => room.HotelId == hotelId 
+        var room = await _dataService.GetEntity(room => room.HotelId == hotelId
                                                 && room.Capacity == capacity);
 
         if (room is null)
@@ -50,7 +50,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetRooms()
     {
-        var rooms = await _repository.GetEntities(room => true);
+        var rooms = await _dataService.GetEntities();
 
         return Ok(rooms);
     }
@@ -60,10 +60,9 @@ public class RoomController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteRoom(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -75,8 +74,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateRoom(Room room)
     {
-        await _repository.Update(room);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(room);
 
         return NoContent();
     }
@@ -85,8 +83,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostRoom(Room room)
     {
-        var added = await _repository.Add(room);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(room);
 
         return CreatedAtAction(nameof(GetRoom), new { id = added.Id }, added);
     }

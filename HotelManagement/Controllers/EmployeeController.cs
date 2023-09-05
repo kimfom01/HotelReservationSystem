@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class EmployeeController : ControllerBase
 {
-    private readonly IRepository<Employee> _repository;
+    private readonly IDataServiceGeneric<Employee> _dataService;
 
-    public EmployeeController(IRepository<Employee> repository)
+    public EmployeeController(IDataServiceGeneric<Employee> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetEmployee(int id)
     {
-        var employee = await _repository.GetEntity(emp => emp.Id == id);
+        var employee = await _dataService.GetEntity(id);
 
         if (employee is null)
         {
@@ -34,7 +34,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetEmployees()
     {
-        var employees = await _repository.GetEntities(emp => true);
+        var employees = await _dataService.GetEntities();
 
         return Ok(employees);
     }
@@ -44,8 +44,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteEmployee(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deltedCount = await _dataService.DeleteEntity(id);
 
         if (deltedCount <= 0)
         {
@@ -59,8 +58,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateEmployee(Employee employee)
     {
-        await _repository.Update(employee);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(employee);
 
         return NoContent();
     }
@@ -69,8 +67,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostEmployee(Employee employee)
     {
-        var added = await _repository.Add(employee);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(employee);
 
         return CreatedAtAction(nameof(GetEmployee), new { id = added.Id }, added);
     }

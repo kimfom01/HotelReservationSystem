@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class RoomStatusController : ControllerBase
 {
-    private readonly IRepository<RoomStatus> _repository;
+    private readonly IDataServiceGeneric<RoomStatus> _dataService;
 
-    public RoomStatusController(IRepository<RoomStatus> repository)
+    public RoomStatusController(IDataServiceGeneric<RoomStatus> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class RoomStatusController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetRoomStatus(int id)
     {
-        var status = await _repository.GetEntity(status => status.Id == id);
+        var status = await _dataService.GetEntity(status => status.Id == id);
 
         if (status is null)
         {
@@ -34,7 +34,7 @@ public class RoomStatusController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetRoomStatuses()
     {
-        var statuses = await _repository.GetEntities(status => true);
+        var statuses = await _dataService.GetEntities();
 
         return Ok(statuses);
     }
@@ -44,10 +44,9 @@ public class RoomStatusController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteRoomStatus(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -59,8 +58,7 @@ public class RoomStatusController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateRoomStatus(RoomStatus status)
     {
-        await _repository.Update(status);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(status);
 
         return NoContent();
     }
@@ -69,8 +67,7 @@ public class RoomStatusController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostRoomStatus(RoomStatus status)
     {
-        var added = await _repository.Add(status);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(status);
 
         return CreatedAtAction(nameof(GetRoomStatus), new { id = added.Id }, added);
     }

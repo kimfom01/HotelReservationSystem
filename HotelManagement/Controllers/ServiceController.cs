@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class ServiceController : ControllerBase
 {
-    private readonly IRepository<Service> _repository;
+    private readonly IDataServiceGeneric<Service> _dataService;
 
-    public ServiceController(IRepository<Service> repository)
+    public ServiceController(IDataServiceGeneric<Service> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class ServiceController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetService(int id)
     {
-        var service = await _repository.GetEntity(service => service.Id == id);
+        var service = await _dataService.GetEntity(service => service.Id == id);
 
         if (service is null)
         {
@@ -34,7 +34,7 @@ public class ServiceController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetServices()
     {
-        var services = await _repository.GetEntities(service => true);
+        var services = await _dataService.GetEntities();
 
         return Ok(services);
     }
@@ -44,10 +44,9 @@ public class ServiceController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteService(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -59,8 +58,7 @@ public class ServiceController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateService(Service service)
     {
-        await _repository.Update(service);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(service);
 
         return NoContent();
     }
@@ -69,8 +67,7 @@ public class ServiceController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostService(Service service)
     {
-        var added = await _repository.Add(service);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(service);
 
         return CreatedAtAction(nameof(GetService), new { id = added.Id }, added);
     }

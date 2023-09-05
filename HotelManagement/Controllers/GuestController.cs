@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class GuestController : ControllerBase
 {
-    private readonly IRepository<Guest> _repository;
+    private readonly IDataServiceGeneric<Guest> _dataService;
 
-    public GuestController(IRepository<Guest> repository)
+    public GuestController(IDataServiceGeneric<Guest> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetGuest(int id)
     {
-        var guest = await _repository.GetEntity(guest => guest.Id == id);
+        var guest = await _dataService.GetEntity(id);
 
         if (guest is null)
         {
@@ -35,7 +35,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetGuests()
     {
-        var guests = await _repository.GetEntities(guest => true);
+        var guests = await _dataService.GetEntities();
 
         if (guests is null)
         {
@@ -50,7 +50,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetGuestByEmailAddress(string emailAddress)
     {
-        var guest = await _repository.GetEntity(guest => guest.Email == emailAddress);
+        var guest = await _dataService.GetEntity(guest => guest.Email == emailAddress);
 
         if (guest is null)
         {
@@ -65,10 +65,9 @@ public class GuestController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteGuest(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -80,8 +79,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateGuest(Guest guest)
     {
-        await _repository.Update(guest);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(guest);
 
         return NoContent();
     }
@@ -90,8 +88,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostGuest(Guest guest)
     {
-        var added = await _repository.Add(guest);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(guest);
 
         return CreatedAtAction(nameof(GetGuest), new { id = added.Id }, added);
     }

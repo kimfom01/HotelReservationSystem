@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class MealController : ControllerBase
 {
-    private readonly IRepository<Meal> _repository;
+    private readonly IDataServiceGeneric<Meal> _dataService;
 
-    public MealController(IRepository<Meal> repository)
+    public MealController(IDataServiceGeneric<Meal> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class MealController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetMeal(int id)
     {
-        var meal = await _repository.GetEntity(meal => meal.Id == id);
+        var meal = await _dataService.GetEntity(id);
 
         if (meal is null)
         {
@@ -34,7 +34,7 @@ public class MealController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetMeals()
     {
-        var meals = await _repository.GetEntities(meal => true);
+        var meals = await _dataService.GetEntities();
 
         return Ok(meals);
     }
@@ -44,10 +44,9 @@ public class MealController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteMeal(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -59,8 +58,7 @@ public class MealController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateMeal(Meal meal)
     {
-        await _repository.Update(meal);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(meal);
 
         return NoContent();
     }
@@ -69,8 +67,7 @@ public class MealController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostMeal(Meal meal)
     {
-        var added = await _repository.Add(meal);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(meal);
 
         return CreatedAtAction(nameof(GetMeal), new { id = added.Id }, added);
     }

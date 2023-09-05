@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class HotelAmenityController : ControllerBase
 {
-    private readonly IRepository<HotelAmenity> _repository;
+    private readonly IDataServiceGeneric<HotelAmenity> _dataService;
 
-    public HotelAmenityController(IRepository<HotelAmenity> repository)
+    public HotelAmenityController(IDataServiceGeneric<HotelAmenity> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetAmenity(int id)
     {
-        var amenity = await _repository.GetEntity(amenity => amenity.Id == id);
+        var amenity = await _dataService.GetEntity(id);
 
         if (amenity is null)
         {
@@ -34,7 +34,7 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetAmenities()
     {
-        var amenities = await _repository.GetEntities(amenity => true);
+        var amenities = await _dataService.GetEntities();
 
         return Ok(amenities);
     }
@@ -44,10 +44,9 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteAmenity(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        var deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -59,8 +58,7 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdateAmenity(HotelAmenity amenity)
     {
-        await _repository.Update(amenity);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(amenity);
 
         return NoContent();
     }
@@ -69,8 +67,7 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostAmenity(HotelAmenity amenity)
     {
-        var added = await _repository.Add(amenity);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(amenity);
 
         return CreatedAtAction(nameof(GetAmenity), new { id = added.Id }, added);
     }

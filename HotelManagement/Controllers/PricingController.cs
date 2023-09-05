@@ -1,5 +1,5 @@
 ﻿using DataAccess.Models;
-using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagement.Controllers;
@@ -8,11 +8,11 @@ namespace HotelManagement.Controllers;
 [Route("api/[controller]")]
 public class PricingController : ControllerBase
 {
-    private readonly IRepository<Pricing> _repository;
+    private readonly IDataServiceGeneric<Pricing> _dataService;
 
-    public PricingController(IRepository<Pricing> repository)
+    public PricingController(IDataServiceGeneric<Pricing> dataService)
     {
-        _repository = repository;
+        _dataService = dataService;
     }
 
     [HttpGet("{id:int}")]
@@ -20,7 +20,7 @@ public class PricingController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetPricing(int id)
     {
-        var pricing = await _repository.GetEntity(pricing => pricing.Id == id);
+        var pricing = await _dataService.GetEntity(id);
 
         if (pricing is null)
         {
@@ -34,7 +34,7 @@ public class PricingController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetPricings()
     {
-        var pricings = await _repository.GetEntities(pricing => true);
+        var pricings = await _dataService.GetEntities();
 
         return Ok(pricings);
     }
@@ -44,10 +44,9 @@ public class PricingController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeletePricing(int id)
     {
-        await _repository.Delete(id);
-        int deltedCount = await _repository.SaveChanges();
+        int deletedCount = await _dataService.DeleteEntity(id);
 
-        if (deltedCount <= 0)
+        if (deletedCount <= 0)
         {
             return NotFound();
         }
@@ -59,8 +58,7 @@ public class PricingController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> UpdatePricing(Pricing pricing)
     {
-        await _repository.Update(pricing);
-        await _repository.SaveChanges();
+        await _dataService.UpdateEntity(pricing);
 
         return NoContent();
     }
@@ -69,8 +67,7 @@ public class PricingController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostPricing(Pricing pricing)
     {
-        var added = await _repository.Add(pricing);
-        await _repository.SaveChanges();
+        var added = await _dataService.PostEntity(pricing);
 
         return CreatedAtAction(nameof(GetPricing), new { id = added.Id }, added);
     }
