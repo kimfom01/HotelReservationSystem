@@ -1,5 +1,6 @@
 using DataAccess.Data;
 using DataAccess.Repositories;
+using HotelManagement.Services;
 using Microsoft.EntityFrameworkCore;
 
 var corsPolicy = "any origin";
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<Context>(options =>
 
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IDataServiceGeneric<>), typeof(DataServiceGeneric<>));
 
 var app = builder.Build();
 
