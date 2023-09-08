@@ -1,27 +1,6 @@
-﻿@using HotelManagement.Web.Models.Dtos;
-@using Humanizer;
-@model IEnumerable<Guest>
-
-@{
+﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
-
-
-<div>
-    <h3>Guest List</h3>
-    @foreach (var guest in Model)
-    {
-        <ul>
-            <li>@guest.Id</li>
-            <li>@guest.FirstName</li>
-            <li>@guest.MiddleName</li>
-            <li>@guest.LastName</li>
-            <li>@guest.Email</li>
-            <li>@guest.Phone</li>
-            <li>@guest.DateOfBirth.Humanize()</li>
-        </ul>
-    }
-</div>

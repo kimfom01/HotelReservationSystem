@@ -20,11 +20,9 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> Privacy()
+    public IActionResult Privacy()
     {
-        var guestList = await _guestService.FetchEntities();
-
-        return View(guestList);
+        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
