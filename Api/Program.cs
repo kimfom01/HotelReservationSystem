@@ -1,6 +1,6 @@
+using Api.Services;
 using DataAccess.Data;
 using DataAccess.Repositories;
-using HotelManagement.Services;
 using Microsoft.EntityFrameworkCore;
 
 var corsPolicy = "any origin";
