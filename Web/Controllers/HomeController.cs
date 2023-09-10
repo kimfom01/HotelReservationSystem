@@ -1,20 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Web.Models;
-using Web.Models.Dtos;
-using Web.Services;
 
 namespace HotelManagement.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IGenericApiService<Guest> _guestService;
-
-    public HomeController(IGenericApiService<Guest> guestService)
-    {
-        _guestService = guestService;
-    }
-
     public IActionResult Index()
     {
         return View();
