@@ -1,0 +1,46 @@
+﻿@using Web.Models.Dtos
+
+@model List<Guest>;
+
+@{
+    ViewBag.Title = "Guests";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a asp-asp-controller="Guest" class="btn button-primary"
+   asp-action="AddGuest">Add New Guest</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Date of Birth</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var guest in Model)
+        {
+            <tr>
+                <td>@guest.FirstName</td>
+                <td>@guest.MiddleName</td>
+                <td>@guest.LastName</td>
+                <td>@guest.Email</td>
+                <td>@guest.Phone</td>
+                <td>@guest.DateOfBirth</td>
+                <td>
+                    <a class="btn button-primary" asp-controller="Guest"
+                       asp-action="ManageGuest" asp-route-guestId="@guest.Id">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

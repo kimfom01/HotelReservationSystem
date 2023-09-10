@@ -1,0 +1,46 @@
+﻿@using Web.Models.ViewModels;
+@model ReservationViewModel
+
+@{
+    ViewData["Title"] = "Reservation";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Reservation Page</h1>
+</div>
+
+
+<div class="card col-md-4">
+    <form method="post">
+        <div class="card-header">
+            <h2>Reservation Form</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-control mb-3">
+                <select asp-for="@Model.NumberOfGuests" class="form-select" required asp-items="Model.Capacities">
+                    <option value="">-- Select Number of Guests --</option>
+                </select>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.CheckIn" class="form-control" type="date" aria-required="true" value="@DateTime.Now" placeholder="Check in date" />
+                <label asp-for="@Model.CheckIn">Check-In Date</label>
+                <span asp-validation-for="@Model.CheckIn" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.CheckOut" class="form-control" type="date" aria-required="true" value="@DateTime.Now" placeholder="Check out date" />
+                <label asp-for="@Model.CheckOut">Check-Out Date</label>
+                <span asp-validation-for="@Model.CheckOut" class="text-danger"></span>
+            </div>
+            <div class="form-control mb-3">
+                <select asp-for="@Model.HotelId" class="form-select" required asp-items="Model.Hotels">
+                    <option value="">-- Select a Hotel --</option>
+                </select>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Reserve" class="btn button-primary" />
+            <a asp-action="ViewReservationList" class="btn button-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
