@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace HotelManagement.Services;
+namespace Api.Services;
 
 public interface IDataServiceGeneric<TEntity>
 {

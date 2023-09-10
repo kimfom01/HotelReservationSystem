@@ -1,7 +1,7 @@
 ﻿using DataAccess.Repositories;
 using System.Linq.Expressions;
 
-namespace HotelManagement.Services;
+namespace Api.Services;
 
 public class DataServiceGeneric<TEntity> : IDataServiceGeneric<TEntity>
 {

@@ -1,8 +1,8 @@
-﻿using DataAccess.Models;
-using HotelManagement.Services;
+﻿using Api.Services;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HotelManagement.Controllers;
+namespace Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
