@@ -17,14 +17,18 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddDbContext<Context>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("BackendConnection"));
     //options.UseInMemoryDatabase("TemporaryDb"); // For testing purpose... will revert to postgres when needed
-
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IDataServiceGeneric<>), typeof(DataServiceGeneric<>));
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var serviceProvider = scope.ServiceProvider;
+var context = serviceProvider.GetRequiredService<Context>();
+await context.Database.EnsureCreatedAsync();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
