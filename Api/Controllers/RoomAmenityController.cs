@@ -1,16 +1,16 @@
-﻿using DataAccess.Models;
-using HotelManagement.Services;
+﻿using Api.Services;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HotelManagement.Controllers;
+namespace Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class HotelAmenityController : ControllerBase
+public class RoomAmenityController : ControllerBase
 {
-    private readonly IDataServiceGeneric<HotelAmenity> _dataService;
+    private readonly IDataServiceGeneric<RoomAmenity> _dataService;
 
-    public HotelAmenityController(IDataServiceGeneric<HotelAmenity> dataService)
+    public RoomAmenityController(IDataServiceGeneric<RoomAmenity> dataService)
     {
         _dataService = dataService;
     }
@@ -44,7 +44,7 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteAmenity(int id)
     {
-        var deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _dataService.DeleteEntity(id);
 
         if (deletedCount <= 0)
         {
@@ -56,7 +56,7 @@ public class HotelAmenityController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateAmenity(HotelAmenity amenity)
+    public async Task<IActionResult> UpdateAmenity(RoomAmenity amenity)
     {
         await _dataService.UpdateEntity(amenity);
 
@@ -65,7 +65,7 @@ public class HotelAmenityController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostAmenity(HotelAmenity amenity)
+    public async Task<IActionResult> PostHotel(RoomAmenity amenity)
     {
         var added = await _dataService.PostEntity(amenity);
 
