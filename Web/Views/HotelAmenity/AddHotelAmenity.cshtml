@@ -1,0 +1,32 @@
+﻿@using Web.Models.ViewModels;
+@model HotelAmenityViewModel
+
+@{
+    ViewBag.Title = "Add New Hotel Amenity";
+    Layout = "_Layout";
+}
+
+<div class="card col-md-4">
+    <form method="post">
+        <div class="card-header">
+            <h2>New Hotel Amenity</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Amenity" class="form-control" type="text" aria-required="true" placeholder="Amenity..." />
+                <label asp-for="@Model.Amenity">Hotel Amenity</label>
+                <span asp-validation-for="@Model.Amenity" class="text-danger"></span>
+            </div>
+            <div class="form-control mb-3">
+                <select asp-for="@Model.HotelId" class="form-select" required asp-items="Model.Hotels">
+                    <option value="">-- Select a Hotel --</option>
+                </select>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Add Amenity" class="btn button-primary" />
+            <a asp-action="Index" class="btn button-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

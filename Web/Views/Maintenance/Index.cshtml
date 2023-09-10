@@ -1,0 +1,41 @@
+﻿@using Web.Models.ViewModels;
+@model List<MaintenanceViewModel>
+
+@{
+    ViewBag.Title = "Maintenances";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a asp-controller="Maintenance" class="btn button-primary"
+   asp-action="AddMaintenance">Add New Maintenance</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Room Number</th>
+            <td>Start Date</td>
+            <td>End Date</td>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var maintenanceVM in Model)
+        {
+            <tr>
+                <td>@maintenanceVM.MaintenanceType</td>
+                <td>@maintenanceVM.RoomNumber</td>
+                <td>@maintenanceVM.StartDate</td>
+                <td>@maintenanceVM.EndDate</td>
+                <td>
+                    <a class="btn button-primary" asp-controller="Maintenance"
+                       asp-action="ManageMaintenance" asp-route-maintenanceId="@maintenanceVM.MaintenanceId">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

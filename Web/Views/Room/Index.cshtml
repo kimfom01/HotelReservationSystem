@@ -1,0 +1,45 @@
+﻿@using Web.Models.ViewModels;
+@model List<RoomViewModel>
+
+@{
+    ViewBag.Title = "Rooms";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a asp-controller="Room" class="btn button-primary"
+   asp-action="AddRoom">Add New Room</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Room Type</th>
+            <th>Room Price</th>
+            <th>Availability</th>
+            <th>Capacity</th>
+            <th>Hotel Name</th>
+            <th>Room Number</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var roomVM in Model)
+        {
+            <tr>
+                <td>@roomVM.RoomType</td>
+                <td>@roomVM.RoomPrice</td>
+                <td>@roomVM.Availabilty</td>
+                <td>@roomVM.Capacity</td>
+                <td>@roomVM.HotelName</td>
+                <td>@roomVM.RoomNumber</td>
+                <td>
+                    <a class="btn button-primary" asp-controller="Room"
+                       asp-action="ManageRoom" asp-route-roomId="@roomVM.RoomId">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

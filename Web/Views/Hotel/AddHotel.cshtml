@@ -1,0 +1,32 @@
+﻿@using Web.Models.Dtos;
+@model Hotel
+
+@{
+    ViewBag.Title = "Add New Hotel";
+    Layout = "_Layout";
+}
+
+<div class="card col-md-4">
+    <form method="post">
+        <div class="card-header">
+            <h2>New Hotel</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Name" class="form-control" type="text" aria-required="true" placeholder="Hotel name..." />
+                <label asp-for="@Model.Name">Name</label>
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Location" class="form-control" type="text" aria-required="true" placeholder="Hotel location..." />
+                <label asp-for="@Model.Location">Location</label>
+                <span asp-validation-for="@Model.Location" class="text-danger"></span>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Add Hotel" class="btn button-primary" />
+            <a asp-action="Index" class="btn button-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

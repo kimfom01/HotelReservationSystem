@@ -1,0 +1,45 @@
+﻿@using Web.Models.ViewModels;
+@model MealViewModel
+
+@{
+    ViewBag.Title = "Add New Meal";
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div class="card col-md-4">
+        <div class="card-header">
+            <h2>New Meal</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Name" class="form-control" type="text"
+                       aria-required="true" placeholder="Meal name..." />
+                <label asp-for="@Model.Name">Name</label>
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.Type" class="form-control" type="text"
+                       aria-required="true" placeholder="Meal type..." />
+                <label asp-for="@Model.Type">Type</label>
+                <span asp-validation-for="@Model.Type" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="@Model.MealPrice" class="form-control" type="number"
+                       aria-required="true" placeholder="Meal price..." />
+                <label asp-for="@Model.MealPrice">Number of Guests</label>
+                <span asp-validation-for="@Model.MealPrice" class="text-danger"></span>
+            </div>
+            <div class="form-control mb-3">
+                <select asp-for="@Model.HotelId" class="form-select" required asp-items="Model.Hotels">
+                    <option value="">-- Select a Hotel --</option>
+                </select>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Add Meal" class="btn button-primary" />
+            <a asp-action="Index" class="btn button-secondary">Cancel</a>
+        </div>
+    </div>
+</form>
