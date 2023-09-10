@@ -35,10 +35,13 @@ builder.Services.AddScoped<ManualMapper>();
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 using var scope = app.Services.CreateScope();
 var serviceProvider = scope.ServiceProvider;
 var context = serviceProvider.GetRequiredService<HotelManagementWebContext>();
 await context.Database.EnsureCreatedAsync();
+await context.Database.MigrateAsync();
 await ContextSeed.SeedRolesAsync(serviceProvider);
 await ContextSeed.SeedSuperAdminAsync(serviceProvider);
 
@@ -59,7 +62,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
-
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.Run();

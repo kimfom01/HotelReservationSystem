@@ -25,12 +25,13 @@ builder.Services.AddScoped(typeof(IDataServiceGeneric<>), typeof(DataServiceGene
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 using var scope = app.Services.CreateScope();
 var serviceProvider = scope.ServiceProvider;
 var context = serviceProvider.GetRequiredService<Context>();
 await context.Database.EnsureCreatedAsync();
-
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+await context.Database.MigrateAsync();
 
 if (app.Environment.IsDevelopment())
 {
