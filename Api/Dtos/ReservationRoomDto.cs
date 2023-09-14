@@ -1,8 +1,8 @@
 ﻿namespace Api.Dtos;
 
-public class RoomAmenity
+public class ReservationRoomDto
 {
     public int Id { get; set; }
+    public int ReservationId { get; set; }
     public int RoomId { get; set; }
-    public string Name { get; set; }
 }

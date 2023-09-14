@@ -1,6 +1,6 @@
 ﻿namespace Api.Dtos;
 
-public class RoomStatus
+public class RoomStatusDto
 {
     public int Id { get; set; }
     public int RoomId { get; set; }
