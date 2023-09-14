@@ -23,6 +23,9 @@ builder.Services.AddDbContext<Context>(options =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IDataServiceGeneric<>), typeof(DataServiceGeneric<>));
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IReservationRoomService, ReservationRoomService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
 
 var app = builder.Build();
 
