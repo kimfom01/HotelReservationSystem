@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web.Models.Dtos;
 using Web.Services;
 
 namespace HotelManagement.Web.Controllers;
+
+[Authorize(Roles = "SystemAdmin, HotelAdmin")]
 public class GuestController : Controller
 {
     private readonly IGenericApiService<Guest> _guestService;

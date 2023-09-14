@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Web.Models.Dtos;
 using Web.Models.ViewModels;
 using Web.Services;
 
 namespace HotelManagement.Web.Controllers;
 
+[Authorize(Roles = "SystemAdmin, HotelAdmin")]
 public class MaintenanceController : Controller
 {
     private readonly IGenericApiService<Maintenance> _maintenanceService;

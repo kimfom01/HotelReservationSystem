@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.Models.Dtos;
@@ -7,6 +8,7 @@ using Web.Services;
 
 namespace HotelManagement.Web.Controllers;
 
+[Authorize(Roles = "SystemAdmin, HotelAdmin")]
 public class MealController : Controller
 {
     private readonly IGenericApiService<Meal> _mealService;

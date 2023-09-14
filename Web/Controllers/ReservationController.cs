@@ -112,6 +112,7 @@ public class ReservationController : Controller
         return View(reservations);
     }
 
+    [Authorize(Roles = "SystemAdmin, HotelAdmin")]
     public async Task<IActionResult> ManageReservation(int reservationId)
     {
         var hotels = await _hotelService.FetchEntities();
@@ -137,6 +138,7 @@ public class ReservationController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "SystemAdmin, HotelAdmin")]
     public async Task<IActionResult> ManageReservation(ReservationViewModel reservationViewModel, int reservationId)
     {
 
