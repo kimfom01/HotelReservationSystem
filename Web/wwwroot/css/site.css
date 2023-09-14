@@ -95,6 +95,25 @@ body {
     background-color: #46696D;
 }
 
+.page-container {
+    position: relative;
+    min-height: 100%;
+}
+
+#content-wrap {
+    padding-bottom: 2.5rem;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+    padding: 5px 0;
+    background: var(--primary-color);
+    color: white;
+}
+
 @media (min-width: 280px) {
     html {
         font-size: 12px;

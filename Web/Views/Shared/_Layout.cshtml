@@ -43,41 +43,45 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
-        @if (SignInManager.IsSignedIn(User))
-        {
-            var user = await UserManager.GetUserAsync(User);
-
-            var roles = await UserManager.GetRolesAsync(user);
-
-            if (roles.Contains(Roles.SystemAdmin.ToString())
-            || roles.Contains(Roles.HotelAdmin.ToString()))
+    <div class="page-container">
+        <div class="container-fluid">
+            @if (SignInManager.IsSignedIn(User))
             {
-                <div class="admin-page">
-                    <div class="navbar-default navbar-left left sidebar me-5">
-                        <div class="sidebar-nav navbar-collapse">
-                            <div class="d-flex justify-content-center my-4">
-                                <div class="d-flex profile-image align-items-center">
-                                    <img class="profile-image" src="/images//admin-profile.jpeg" alt="admin-profile" />
+                var user = await UserManager.GetUserAsync(User);
+
+                var roles = await UserManager.GetRolesAsync(user);
+
+                if (roles.Contains(Roles.SystemAdmin.ToString())
+                || roles.Contains(Roles.HotelAdmin.ToString()))
+                {
+                    <div class="admin-page">
+                        <div class="navbar-default navbar-left left sidebar me-5">
+                            <div class="sidebar-nav navbar-collapse">
+                                <div class="d-flex justify-content-center my-4">
+                                    <div class="d-flex profile-image align-items-center">
+                                        <img class="profile-image" src="/images//admin-profile.jpeg" alt="admin-profile" />
+                                    </div>
                                 </div>
+                                <partial name="_SideBarPartial" />
                             </div>
-                            <partial name="_SideBarPartial" />
+                        </div>
+                        <div class="main-section">
+                            <main role="main">
+                                @RenderBody()
+                            </main>
                         </div>
                     </div>
-                    <div class="main-section">
-                        <main role="main" class="pb-3">
-                            @RenderBody()
-                        </main>
-                    </div>
-                </div>
+                }
             }
-        }
-        <main role="main" class="pb-3 container">
-            @RenderBody()
-        </main>
+            <div id="content-wrap">
+                <main role="main" class="container">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer id="footer" class="border-top footer">
         <div class="container">
             &copy; 2023 - Azure Hotels - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
