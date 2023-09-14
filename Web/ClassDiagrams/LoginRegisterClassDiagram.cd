@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Web.Areas.Identity.Pages.Account.LoginModel">
+    <Position X="1.5" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Web.Areas.Identity.Pages.Account.LoginModel.InputModel" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Areas\Identity\Pages\Account\Login.cshtml.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAgAABAAAAAMAAAAQAAAAIEAAAAAAA=</HashCode>
+      <FileName>Areas\Identity\Pages\Account\Login.cshtml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_logger" />
+      <Field Name="_signInManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Identity.SignInManager&lt;TUser&gt;" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Web.Areas.Identity.Pages.Account.RegisterModel">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Web.Areas.Identity.Pages.Account.RegisterModel.InputModel" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Areas\Identity\Pages\Account\Register.cshtml.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAADAAAAQAAAAAgAABBAAAgMgCAAQQAAAJEAAAAAAA=</HashCode>
+      <FileName>Areas\Identity\Pages\Account\Register.cshtml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_apiService" />
+      <Field Name="_emailSender" />
+      <Field Name="_emailStore" />
+      <Field Name="_logger" />
+      <Field Name="_mapper" />
+      <Field Name="_roleManager" />
+      <Field Name="_signInManager" />
+      <Field Name="_userManager" />
+      <Field Name="_userStore" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Web.Mappings.ManualMapper" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mappings\ManualMapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Identity.RoleManager&lt;TRole&gt;" Collapsed="true">
+    <Position X="10.5" Y="2.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Identity.UserManager&lt;TUser&gt;" Collapsed="true">
+    <Position X="10" Y="4.5" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Mvc.RazorPages.PageModel" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Microsoft.Extensions.Logging.ILogger&lt;TCategoryName&gt;" Collapsed="true">
+    <Position X="4.25" Y="2.75" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Web.Services.IGenericApiService&lt;TEntity&gt;" Collapsed="true">
+    <Position X="10.5" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAIAAAAAgAAA=</HashCode>
+      <FileName>Services\IGenericApiService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.AspNetCore.Identity.UI.Services.IEmailSender" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.AspNetCore.Identity.IUserEmailStore&lt;TUser&gt;" Collapsed="true">
+    <Position X="7.25" Y="6" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.AspNetCore.Identity.IUserStore&lt;TUser&gt;" Collapsed="true">
+    <Position X="3.75" Y="4.75" Width="1.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
