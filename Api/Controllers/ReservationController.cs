@@ -12,12 +12,16 @@ public class ReservationController : ControllerBase
 {
     private readonly IDataServiceGeneric<Reservation> _dataService;
     private readonly IMapper _mapper;
+    private readonly IReservationService _reservationService;
 
-    public ReservationController(IDataServiceGeneric<Reservation> dataService,
-        IMapper mapper)
+    public ReservationController(
+        IDataServiceGeneric<Reservation> dataService,
+        IMapper mapper,
+        IReservationService reservationService)
     {
         _dataService = dataService;
         _mapper = mapper;
+        _reservationService = reservationService;
     }
 
     [HttpGet("{id:int}")]
@@ -80,7 +84,12 @@ public class ReservationController : ControllerBase
     {
         var reservation = _mapper.Map<Reservation>(reservationDto);
 
-        var added = await _dataService.PostEntity(reservation);
+        var added = await _reservationService.MakeReservation(reservation);
+
+        if (added is null)
+        {
+            return Conflict("Unable to make reservation, no available rooms");
+        }
 
         var reservationResult = _mapper.Map<ReservationDto>(added);
 
