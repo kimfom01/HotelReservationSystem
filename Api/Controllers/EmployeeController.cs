@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class EmployeeController : ControllerBase
 {
     private readonly IDataServiceGeneric<Employee> _dataService;
+    private readonly IMapper _mapper;
 
-    public EmployeeController(IDataServiceGeneric<Employee> dataService)
+    public EmployeeController(IDataServiceGeneric<Employee> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class EmployeeController : ControllerBase
             return NotFound();
         }
 
-        return Ok(employee);
+        var employeeDto = _mapper.Map<EmployeeDto>(employee);
+
+        return Ok(employeeDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class EmployeeController : ControllerBase
     {
         var employees = await _dataService.GetEntities();
 
-        return Ok(employees);
+        var employeesDtos = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+
+        return Ok(employeesDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class EmployeeController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateEmployee(Employee employee)
+    public async Task<IActionResult> UpdateEmployee(EmployeeDto employeeDto)
     {
+        var employee = _mapper.Map<Employee>(employeeDto);
+
         await _dataService.UpdateEntity(employee);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class EmployeeController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostEmployee(Employee employee)
+    public async Task<IActionResult> PostEmployee(EmployeeDto employeeDto)
     {
+        var employee = _mapper.Map<Employee>(employeeDto);
+
         var added = await _dataService.PostEntity(employee);
 
-        return CreatedAtAction(nameof(GetEmployee), new { id = added.Id }, added);
+        var employeeDtoResult = _mapper.Map<EmployeeDto>(employee);
+
+        return CreatedAtAction(nameof(GetEmployee), new { id = employeeDtoResult.Id }, employeeDtoResult);
     }
 }

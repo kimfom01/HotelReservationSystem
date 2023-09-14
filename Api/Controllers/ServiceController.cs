@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class ServiceController : ControllerBase
 {
     private readonly IDataServiceGeneric<Service> _dataService;
+    private readonly IMapper _mapper;
 
-    public ServiceController(IDataServiceGeneric<Service> dataService)
+    public ServiceController(IDataServiceGeneric<Service> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class ServiceController : ControllerBase
             return NotFound();
         }
 
-        return Ok(service);
+        var serviceDto = _mapper.Map<ServiceDto>(service);
+
+        return Ok(serviceDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class ServiceController : ControllerBase
     {
         var services = await _dataService.GetEntities();
 
-        return Ok(services);
+        var servicesDtos = _mapper.Map<IEnumerable<ServiceDto>>(services);
+
+        return Ok(servicesDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class ServiceController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateService(Service service)
+    public async Task<IActionResult> UpdateService(ServiceDto serviceDto)
     {
+        var service = _mapper.Map<Service>(serviceDto);
+
         await _dataService.UpdateEntity(service);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class ServiceController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostService(Service service)
+    public async Task<IActionResult> PostService(ServiceDto serviceDto)
     {
+        var service = _mapper.Map<Service>(serviceDto);
+
         var added = await _dataService.PostEntity(service);
 
-        return CreatedAtAction(nameof(GetService), new { id = added.Id }, added);
+        var serviceDtoResult = _mapper.Map<ServiceDto>(added);
+
+        return CreatedAtAction(nameof(GetService), new { id = serviceDtoResult.Id }, serviceDtoResult);
     }
 }

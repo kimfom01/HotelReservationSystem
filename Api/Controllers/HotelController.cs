@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class HotelController : ControllerBase
 {
     private readonly IDataServiceGeneric<Hotel> _dataService;
+    private readonly IMapper _mapper;
 
-    public HotelController(IDataServiceGeneric<Hotel> dataService)
+    public HotelController(IDataServiceGeneric<Hotel> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class HotelController : ControllerBase
             return NotFound();
         }
 
-        return Ok(hotel);
+        var hotelDto = _mapper.Map<HotelDto>(hotel);
+
+        return Ok(hotelDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class HotelController : ControllerBase
     {
         var hotels = await _dataService.GetEntities();
 
-        return Ok(hotels);
+        var hotelsDtos = _mapper.Map<IEnumerable<HotelDto>>(hotels);
+
+        return Ok(hotelsDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class HotelController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateHotel(Hotel hotel)
+    public async Task<IActionResult> UpdateHotel(HotelDto hotelDto)
     {
+        var hotel = _mapper.Map<Hotel>(hotelDto);
+
         await _dataService.UpdateEntity(hotel);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class HotelController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostHotel(Hotel hotel)
+    public async Task<IActionResult> PostHotel(HotelDto hotelDto)
     {
+        var hotel = _mapper.Map<Hotel>(hotelDto);
+
         var added = await _dataService.PostEntity(hotel);
 
-        return CreatedAtAction(nameof(GetHotel), new { id = added.Id }, added);
+        var hotelResult = _mapper.Map<HotelDto>(added);
+
+        return CreatedAtAction(nameof(GetHotel), new { id = hotelResult.Id }, hotelResult);
     }
 }

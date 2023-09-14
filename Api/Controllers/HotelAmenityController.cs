@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class HotelAmenityController : ControllerBase
 {
     private readonly IDataServiceGeneric<HotelAmenity> _dataService;
+    private readonly IMapper _mapper;
 
-    public HotelAmenityController(IDataServiceGeneric<HotelAmenity> dataService)
+    public HotelAmenityController(IDataServiceGeneric<HotelAmenity> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class HotelAmenityController : ControllerBase
             return NotFound();
         }
 
-        return Ok(amenity);
+        var amenityDto = _mapper.Map<HotelAmenityDto>(amenity);
+
+        return Ok(amenityDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class HotelAmenityController : ControllerBase
     {
         var amenities = await _dataService.GetEntities();
 
-        return Ok(amenities);
+        var amenitiesDtos = _mapper.Map<IEnumerable<HotelAmenityDto>>(amenities);
+
+        return Ok(amenitiesDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class HotelAmenityController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateAmenity(HotelAmenity amenity)
+    public async Task<IActionResult> UpdateAmenity(HotelAmenityDto hotelAmenityDto)
     {
+        var amenity = _mapper.Map<HotelAmenity>(hotelAmenityDto);
+
         await _dataService.UpdateEntity(amenity);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class HotelAmenityController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostAmenity(HotelAmenity amenity)
+    public async Task<IActionResult> PostAmenity(HotelAmenityDto hotelAmenityDto)
     {
+        var amenity = _mapper.Map<HotelAmenity>(hotelAmenityDto);
+
         var added = await _dataService.PostEntity(amenity);
 
-        return CreatedAtAction(nameof(GetAmenity), new { id = added.Id }, added);
+        var amenityResult = _mapper.Map<HotelAmenityDto>(added);
+
+        return CreatedAtAction(nameof(GetAmenity), new { id = amenityResult.Id }, amenityResult);
     }
 }

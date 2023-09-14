@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class PricingController : ControllerBase
 {
     private readonly IDataServiceGeneric<Pricing> _dataService;
+    private readonly IMapper _mapper;
 
-    public PricingController(IDataServiceGeneric<Pricing> dataService)
+    public PricingController(IDataServiceGeneric<Pricing> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class PricingController : ControllerBase
             return NotFound();
         }
 
-        return Ok(pricing);
+        var pricingDto = _mapper.Map<PricingDto>(pricing);
+
+        return Ok(pricingDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class PricingController : ControllerBase
     {
         var pricings = await _dataService.GetEntities();
 
-        return Ok(pricings);
+        var pricingsDtos = _mapper.Map<IEnumerable<PricingDto>>(pricings);
+
+        return Ok(pricingsDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class PricingController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdatePricing(Pricing pricing)
+    public async Task<IActionResult> UpdatePricing(PricingDto pricingDto)
     {
+        var pricing = _mapper.Map<Pricing>(pricingDto);
+
         await _dataService.UpdateEntity(pricing);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class PricingController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostPricing(Pricing pricing)
+    public async Task<IActionResult> PostPricing(PricingDto pricingDto)
     {
+        var pricing = _mapper.Map<Pricing>(pricingDto);
+
         var added = await _dataService.PostEntity(pricing);
 
-        return CreatedAtAction(nameof(GetPricing), new { id = added.Id }, added);
+        var pricingResult = _mapper.Map<PricingDto>(added);
+
+        return CreatedAtAction(nameof(GetPricing), new { id = pricingResult.Id }, pricingResult);
     }
 }

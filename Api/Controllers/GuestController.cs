@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class GuestController : ControllerBase
 {
     private readonly IDataServiceGeneric<Guest> _dataService;
+    private readonly IMapper _mapper;
 
-    public GuestController(IDataServiceGeneric<Guest> dataService)
+    public GuestController(IDataServiceGeneric<Guest> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class GuestController : ControllerBase
             return NotFound();
         }
 
-        return Ok(guest);
+        var guestDto = _mapper.Map<GuestDto>(guest);
+
+        return Ok(guestDto);
     }
 
     [HttpGet]
@@ -42,7 +49,9 @@ public class GuestController : ControllerBase
             return NotFound();
         }
 
-        return Ok(guests);
+        var guestsDtos = _mapper.Map<IEnumerable<GuestDto>>(guests);
+
+        return Ok(guestsDtos);
     }
 
     [HttpGet("{emailAddress}")]
@@ -57,7 +66,9 @@ public class GuestController : ControllerBase
             return NotFound();
         }
 
-        return Ok(guest);
+        var guestDto = _mapper.Map<GuestDto>(guest);
+
+        return Ok(guestDto);
     }
 
     [HttpDelete("{id:int}")]
@@ -77,8 +88,10 @@ public class GuestController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateGuest(Guest guest)
+    public async Task<IActionResult> UpdateGuest(GuestDto guestDto)
     {
+        var guest = _mapper.Map<Guest>(guestDto);
+
         await _dataService.UpdateEntity(guest);
 
         return NoContent();
@@ -86,10 +99,14 @@ public class GuestController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostGuest(Guest guest)
+    public async Task<IActionResult> PostGuest(GuestDto guestDto)
     {
+        var guest = _mapper.Map<Guest>(guestDto);
+
         var added = await _dataService.PostEntity(guest);
 
-        return CreatedAtAction(nameof(GetGuest), new { id = added.Id }, added);
+        var guestDtoResult = _mapper.Map<GuestDto>(added);
+
+        return CreatedAtAction(nameof(GetGuest), new { id = guestDtoResult.Id }, guestDtoResult);
     }
 }

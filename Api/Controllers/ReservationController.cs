@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class ReservationController : ControllerBase
 {
     private readonly IDataServiceGeneric<Reservation> _dataService;
+    private readonly IMapper _mapper;
 
-    public ReservationController(IDataServiceGeneric<Reservation> dataService)
+    public ReservationController(IDataServiceGeneric<Reservation> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -20,14 +25,16 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetReservation(int id)
     {
-        var reserve = await _dataService.GetEntity(id);
+        var reservation = await _dataService.GetEntity(id);
 
-        if (reserve is null)
+        if (reservation is null)
         {
             return NotFound();
         }
 
-        return Ok(reserve);
+        var reservationDto = _mapper.Map<ReservationDto>(reservation);
+
+        return Ok(reservationDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class ReservationController : ControllerBase
     {
         var reservations = await _dataService.GetEntities();
 
-        return Ok(reservations);
+        var reservationsDtos = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
+
+        return Ok(reservationsDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class ReservationController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateReservation(Reservation reservation)
+    public async Task<IActionResult> UpdateReservation(ReservationDto reservationDto)
     {
+        var reservation = _mapper.Map<Reservation>(reservationDto);
+
         await _dataService.UpdateEntity(reservation);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class ReservationController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostReservation(Reservation reservation)
+    public async Task<IActionResult> PostReservation(ReservationDto reservationDto)
     {
+        var reservation = _mapper.Map<Reservation>(reservationDto);
+
         var added = await _dataService.PostEntity(reservation);
 
-        return CreatedAtAction(nameof(GetReservation), new { id = added.Id }, added);
+        var reservationResult = _mapper.Map<ReservationDto>(added);
+
+        return CreatedAtAction(nameof(GetReservation), new { id = reservationResult.Id }, reservationResult);
     }
 }

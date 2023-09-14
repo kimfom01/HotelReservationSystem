@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class MaintenanceController : ControllerBase
 {
     private readonly IDataServiceGeneric<Maintenance> _dataService;
+    private readonly IMapper _mapper;
 
-    public MaintenanceController(IDataServiceGeneric<Maintenance> dataService)
+    public MaintenanceController(IDataServiceGeneric<Maintenance> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class MaintenanceController : ControllerBase
             return NotFound();
         }
 
-        return Ok(maintenance);
+        var maintenanceDto = _mapper.Map<MaintenanceDto>(maintenance);
+
+        return Ok(maintenanceDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class MaintenanceController : ControllerBase
     {
         var maintenances = await _dataService.GetEntities();
 
-        return Ok(maintenances);
+        var maintenancesDtos = _mapper.Map<IEnumerable<MaintenanceDto>>(maintenances);
+
+        return Ok(maintenancesDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class MaintenanceController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateMaintenance(Maintenance maintenance)
+    public async Task<IActionResult> UpdateMaintenance(MaintenanceDto maintenanceDto)
     {
+        var maintenance = _mapper.Map<Maintenance>(maintenanceDto);
+
         await _dataService.UpdateEntity(maintenance);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class MaintenanceController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostMaintenance(Maintenance maintenance)
+    public async Task<IActionResult> PostMaintenance(MaintenanceDto maintenanceDto)
     {
+        var maintenance = _mapper.Map<Maintenance>(maintenanceDto);
+
         var added = await _dataService.PostEntity(maintenance);
 
-        return CreatedAtAction(nameof(GetMaintenance), new { id = added.Id }, added);
+        var maintenanceResult = _mapper.Map<MaintenanceDto>(added);
+
+        return CreatedAtAction(nameof(GetMaintenance), new { id = maintenanceResult.Id }, maintenanceResult);
     }
 }

@@ -22,6 +22,7 @@ builder.Services.AddDbContext<Context>(options =>
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IDataServiceGeneric<>), typeof(DataServiceGeneric<>));
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

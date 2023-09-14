@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class RoomStatusController : ControllerBase
 {
     private readonly IDataServiceGeneric<RoomStatus> _dataService;
+    private readonly IMapper _mapper;
 
-    public RoomStatusController(IDataServiceGeneric<RoomStatus> dataService)
+    public RoomStatusController(IDataServiceGeneric<RoomStatus> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class RoomStatusController : ControllerBase
             return NotFound();
         }
 
-        return Ok(status);
+        var statusDto = _mapper.Map<RoomStatusDto>(status);
+
+        return Ok(statusDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class RoomStatusController : ControllerBase
     {
         var statuses = await _dataService.GetEntities();
 
-        return Ok(statuses);
+        var statusesDtos = _mapper.Map<IEnumerable<RoomStatusDto>>(statuses);
+
+        return Ok(statusesDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class RoomStatusController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateRoomStatus(RoomStatus status)
+    public async Task<IActionResult> UpdateRoomStatus(RoomStatusDto statusDto)
     {
+        var status = _mapper.Map<RoomStatus>(statusDto);
+
         await _dataService.UpdateEntity(status);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class RoomStatusController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostRoomStatus(RoomStatus status)
+    public async Task<IActionResult> PostRoomStatus(RoomStatusDto statusDto)
     {
+        var status = _mapper.Map<RoomStatus>(statusDto);
+
         var added = await _dataService.PostEntity(status);
 
-        return CreatedAtAction(nameof(GetRoomStatus), new { id = added.Id }, added);
+        var statusDtoResult = _mapper.Map<RoomStatusDto>(added);
+
+        return CreatedAtAction(nameof(GetRoomStatus), new { id = statusDtoResult.Id }, statusDtoResult);
     }
 }

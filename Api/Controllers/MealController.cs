@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class MealController : ControllerBase
 {
     private readonly IDataServiceGeneric<Meal> _dataService;
+    private readonly IMapper _mapper;
 
-    public MealController(IDataServiceGeneric<Meal> dataService)
+    public MealController(IDataServiceGeneric<Meal> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class MealController : ControllerBase
             return NotFound();
         }
 
-        return Ok(meal);
+        var mealDto = _mapper.Map<MealDto>(meal);
+
+        return Ok(mealDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class MealController : ControllerBase
     {
         var meals = await _dataService.GetEntities();
 
-        return Ok(meals);
+        var mealsDtos = _mapper.Map<IEnumerable<MealDto>>(meals);
+
+        return Ok(mealsDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class MealController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateMeal(Meal meal)
+    public async Task<IActionResult> UpdateMeal(MealDto mealDto)
     {
+        var meal = _mapper.Map<Meal>(mealDto);
+
         await _dataService.UpdateEntity(meal);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class MealController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostMeal(Meal meal)
+    public async Task<IActionResult> PostMeal(MealDto mealDto)
     {
+        var meal = _mapper.Map<Meal>(mealDto);
+
         var added = await _dataService.PostEntity(meal);
 
-        return CreatedAtAction(nameof(GetMeal), new { id = added.Id }, added);
+        var mealResult = _mapper.Map<MealDto>(added);
+
+        return CreatedAtAction(nameof(GetMeal), new { id = mealResult.Id }, mealResult);
     }
 }

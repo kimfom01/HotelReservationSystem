@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class ReservationRoomController : ControllerBase
 {
     private readonly IDataServiceGeneric<ReservationRoom> _dataService;
+    private readonly IMapper _mapper;
 
-    public ReservationRoomController(IDataServiceGeneric<ReservationRoom> dataService)
+    public ReservationRoomController(IDataServiceGeneric<ReservationRoom> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -20,14 +25,16 @@ public class ReservationRoomController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetReservationRoom(int id)
     {
-        var reserveRoom = await _dataService.GetEntity(id);
+        var reservationRoom = await _dataService.GetEntity(id);
 
-        if (reserveRoom is null)
+        if (reservationRoom is null)
         {
             return NotFound();
         }
 
-        return Ok(reserveRoom);
+        var reservationRoomDto = _mapper.Map<ReservationRoomDto>(reservationRoom);
+
+        return Ok(reservationRoomDto);
     }
 
     [HttpGet]
@@ -36,7 +43,9 @@ public class ReservationRoomController : ControllerBase
     {
         var reservationRooms = await _dataService.GetEntities();
 
-        return Ok(reservationRooms);
+        var reservationRoomsDtos = _mapper.Map<IEnumerable<ReservationRoomDto>>(reservationRooms);
+
+        return Ok(reservationRoomsDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -56,8 +65,10 @@ public class ReservationRoomController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateReservationRoom(ReservationRoom reservationRoom)
+    public async Task<IActionResult> UpdateReservationRoom(ReservationRoomDto reservationRoomDto)
     {
+        var reservationRoom = _mapper.Map<ReservationRoom>(reservationRoomDto);
+
         await _dataService.UpdateEntity(reservationRoom);
 
         return NoContent();
@@ -65,10 +76,14 @@ public class ReservationRoomController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostReservationRoom(ReservationRoom reservationRoom)
+    public async Task<IActionResult> PostReservationRoom(ReservationRoomDto reservationRoomDto)
     {
+        var reservationRoom = _mapper.Map<ReservationRoom>(reservationRoomDto);
+
         var added = await _dataService.PostEntity(reservationRoom);
 
-        return CreatedAtAction(nameof(GetReservationRoom), new { id = added.Id }, added);
+        var reservationRoomDtoResult = _mapper.Map<ReservationRoomDto>(added);
+
+        return CreatedAtAction(nameof(GetReservationRoom), new { id = reservationRoomDtoResult.Id }, reservationRoomDtoResult);
     }
 }

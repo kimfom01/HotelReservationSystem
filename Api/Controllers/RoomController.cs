@@ -1,4 +1,6 @@
-﻿using Api.Services;
+﻿using Api.Dtos;
+using Api.Services;
+using AutoMapper;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,13 @@ namespace Api.Controllers;
 public class RoomController : ControllerBase
 {
     private readonly IDataServiceGeneric<Room> _dataService;
+    private readonly IMapper _mapper;
 
-    public RoomController(IDataServiceGeneric<Room> dataService)
+    public RoomController(IDataServiceGeneric<Room> dataService,
+        IMapper mapper)
     {
         _dataService = dataService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,7 +32,9 @@ public class RoomController : ControllerBase
             return NotFound();
         }
 
-        return Ok(room);
+        var roomDto = _mapper.Map<RoomDto>(room);
+
+        return Ok(roomDto);
     }
 
     [HttpGet("hotel/{hotelId:int}/{capacity:int}")]
@@ -43,6 +50,8 @@ public class RoomController : ControllerBase
             return NotFound();
         }
 
+        var roomDto = _mapper.Map<RoomDto>(room);
+
         return Ok(room);
     }
 
@@ -52,7 +61,9 @@ public class RoomController : ControllerBase
     {
         var rooms = await _dataService.GetEntities();
 
-        return Ok(rooms);
+        var roomsDtos = _mapper.Map<IEnumerable<RoomDto>>(rooms);
+
+        return Ok(roomsDtos);
     }
 
     [HttpDelete("{id:int}")]
@@ -72,8 +83,10 @@ public class RoomController : ControllerBase
 
     [HttpPut]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateRoom(Room room)
+    public async Task<IActionResult> UpdateRoom(RoomDto roomDto)
     {
+        var room = _mapper.Map<Room>(roomDto);
+
         await _dataService.UpdateEntity(room);
 
         return NoContent();
@@ -81,10 +94,14 @@ public class RoomController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostRoom(Room room)
+    public async Task<IActionResult> PostRoom(RoomDto roomDto)
     {
+        var room = _mapper.Map<Room>(roomDto);
+
         var added = await _dataService.PostEntity(room);
 
-        return CreatedAtAction(nameof(GetRoom), new { id = added.Id }, added);
+        var roomResult = _mapper.Map<RoomDto>(added);
+
+        return CreatedAtAction(nameof(GetRoom), new { id = roomResult.Id }, roomResult);
     }
 }
