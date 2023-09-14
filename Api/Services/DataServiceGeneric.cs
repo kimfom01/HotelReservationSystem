@@ -27,6 +27,13 @@ public class DataServiceGeneric<TEntity> : IDataServiceGeneric<TEntity>
         return entities;
     }
 
+    public async Task<IEnumerable<TEntity>?> GetEntities(Expression<Func<TEntity, bool>> expression)
+    {
+        var entities = await _repository.GetEntities(expression);
+
+        return entities;
+    }
+
     public async Task<TEntity?> GetEntity(int id)
     {
         var entity = await _repository.GetEntity(id);
