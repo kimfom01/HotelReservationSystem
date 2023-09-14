@@ -26,5 +26,5 @@ public class Room
     public decimal RoomPrice { get; set; }
 
     [JsonPropertyName("availabilty")]
-    public bool Availabilty { get; set; }
+    public bool? Availabilty { get; set; } = true;
 }

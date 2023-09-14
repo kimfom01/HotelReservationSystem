@@ -66,8 +66,7 @@ public class RoomController : Controller
             RoomNumber = roomViewModel.RoomNumber,
             Capacity = roomViewModel.Capacity,
             RoomType = roomViewModel.RoomType,
-            RoomPrice = roomViewModel.RoomPrice,
-            Availabilty = roomViewModel.Availabilty
+            RoomPrice = roomViewModel.RoomPrice
         };
 
         var addedRoom = await _roomService.AddEntity(room);

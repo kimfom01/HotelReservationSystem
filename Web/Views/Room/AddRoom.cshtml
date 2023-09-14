@@ -24,13 +24,6 @@
                 <label asp-for="@Model.RoomPrice">Room Price</label>
                 <span asp-validation-for="@Model.RoomPrice" class="text-danger"></span>
             </div>
-            <div class="form-control mb-3">
-                <select asp-for="@Model.Availabilty" class="form-select" required>
-                    <option value="">-- Select Availabilty --</option>
-                    <option selected value="True">Available</option>
-                    <option value="False">Not Available</option>
-                </select>
-            </div>
             <div class="form-floating mb-3">
                 <input asp-for="@Model.Capacity" class="form-control" type="number"
                        aria-required="true" placeholder="Enter number of people..." />
