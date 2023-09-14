@@ -79,7 +79,7 @@ public class ReservationController : Controller
 
         if (reserved is null)
         {
-            return View();
+            return View("Error");
         }
 
         // set room status
