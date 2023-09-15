@@ -40,8 +40,6 @@ public static class ContextSeed
             DateOfBirth = DateTime.Now,
         };
 
-        await SaveUserAsGuest(superUser);
-
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
         if (userManager.Users.All(u => u.Id != superUser.Id))
@@ -54,13 +52,16 @@ public static class ContextSeed
                 await userManager.AddToRoleAsync(superUser, Roles.SystemAdmin.ToString());
                 await userManager.AddToRoleAsync(superUser, Roles.HotelAdmin.ToString());
                 await userManager.AddToRoleAsync(superUser, Roles.Guest.ToString());
+
+                var client = serviceProvider.GetRequiredService<HttpClient>();
+                await SaveUserAsGuest(superUser, client);
             }
         }
     }
 
-    private static async Task SaveUserAsGuest(ApplicationUser user)
+    private static async Task SaveUserAsGuest(ApplicationUser user, HttpClient client)
     {
-        IGenericApiService<Guest> apiService = new GenericApiService<Guest>();
+        IGenericApiService<Guest> apiService = new GenericApiService<Guest>(client);
 
         var guest = new Guest
         {
