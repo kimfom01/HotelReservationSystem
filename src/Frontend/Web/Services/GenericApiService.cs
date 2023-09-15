@@ -8,6 +8,11 @@ public class GenericApiService<TEntity> : IGenericApiService<TEntity>
 {
     private readonly HttpClient _client;
 
+    public GenericApiService()
+    {
+        
+    }
+
     public GenericApiService(HttpClient client)
     {
         _client = client;

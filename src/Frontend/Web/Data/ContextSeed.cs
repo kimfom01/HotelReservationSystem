@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Web.Models;
+using Web.Models.Dtos;
+using Web.Services;
 
 namespace Web.Data;
 
@@ -38,6 +40,8 @@ public static class ContextSeed
             DateOfBirth = DateTime.Now,
         };
 
+        await SaveUserAsGuest(superUser);
+
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
         if (userManager.Users.All(u => u.Id != superUser.Id))
@@ -52,5 +56,22 @@ public static class ContextSeed
                 await userManager.AddToRoleAsync(superUser, Roles.Guest.ToString());
             }
         }
+    }
+
+    private static async Task SaveUserAsGuest(ApplicationUser user)
+    {
+        IGenericApiService<Guest> apiService = new GenericApiService<Guest>();
+
+        var guest = new Guest
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            MiddleName = user.MiddleName,
+            Email = user.Email,
+            Phone = user.PhoneNumber,
+            DateOfBirth = user.DateOfBirth
+        };
+
+        await apiService.AddEntity(guest);
     }
 }
