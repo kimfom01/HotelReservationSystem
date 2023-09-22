@@ -2,6 +2,9 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Web.Areas.Identity.Pages.Account.LoginModel">
     <Position X="1.5" Y="3" Width="1.5" />
+    <Members>
+      <Method Name="LoginModel" Hidden="true" />
+    </Members>
     <Compartments>
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
@@ -17,8 +20,8 @@
       <FileName>Areas\Identity\Pages\Account\Login.cshtml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_logger" />
       <Field Name="_signInManager" />
+      <Field Name="_logger" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Microsoft.AspNetCore.Identity.SignInManager&lt;TUser&gt;" Collapsed="true">
@@ -27,6 +30,9 @@
   </Class>
   <Class Name="Web.Areas.Identity.Pages.Account.RegisterModel">
     <Position X="7.5" Y="0.75" Width="1.5" />
+    <Members>
+      <Method Name="RegisterModel" Hidden="true" />
+    </Members>
     <Compartments>
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
@@ -42,15 +48,15 @@
       <FileName>Areas\Identity\Pages\Account\Register.cshtml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_apiService" />
-      <Field Name="_emailSender" />
-      <Field Name="_emailStore" />
-      <Field Name="_logger" />
-      <Field Name="_mapper" />
-      <Field Name="_roleManager" />
       <Field Name="_signInManager" />
       <Field Name="_userManager" />
       <Field Name="_userStore" />
+      <Field Name="_emailStore" />
+      <Field Name="_logger" />
+      <Field Name="_emailSender" />
+      <Field Name="_roleManager" />
+      <Field Name="_mapper" />
+      <Field Name="_apiService" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Web.Mappings.ManualMapper" Collapsed="true">
@@ -64,8 +70,13 @@
     <Position X="10.5" Y="2.25" Width="1.75" />
     <TypeIdentifier />
   </Class>
-  <Class Name="Microsoft.AspNetCore.Identity.UserManager&lt;TUser&gt;" Collapsed="true">
+  <Class Name="Microsoft.AspNetCore.Identity.UserManager&lt;TUser&gt;">
     <Position X="10" Y="4.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier />
   </Class>
   <Class Name="Microsoft.AspNetCore.Mvc.RazorPages.PageModel" Collapsed="true">
