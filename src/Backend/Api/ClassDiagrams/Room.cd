@@ -2,6 +2,9 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Api.Controllers.RoomController">
     <Position X="1.75" Y="2.25" Width="1.75" />
+    <Members>
+      <Method Name="RoomController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>ABAAAAABAAAAAIAAAAKBAAAAAAAAAAAEAAAAAAAAAEA=</HashCode>
       <FileName>Controllers\RoomController.cs</FileName>
