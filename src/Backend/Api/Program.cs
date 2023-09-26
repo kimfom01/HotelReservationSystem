@@ -34,8 +34,8 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 using var scope = app.Services.CreateScope();
 var serviceProvider = scope.ServiceProvider;
 var context = serviceProvider.GetRequiredService<Context>();
+await context.Database.EnsureDeletedAsync();
 await context.Database.EnsureCreatedAsync();
-await context.Database.MigrateAsync();
 
 if (app.Environment.IsDevelopment())
 {
