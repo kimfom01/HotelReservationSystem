@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+    db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: P@ssword123
+        ports:
+            - 5432:5432
+    backend:
+        restart: always
+        build:
+            context: ./Backend/
+        ports:
+            - 5000:80
+        depends_on:
+            - db
+    frontend:
+        restart: always
+        build:
+            context: ./Frontend/
+        ports:
+            - 5001:80
+        depends_on:
+            - backend
