@@ -9,8 +9,8 @@ services:
         restart: always
         depends_on: 
           - frontend
-        # networks:
-        #   - nginx-network
+        networks:
+          - nginx-network
     db:
         image: postgres
         restart: always
@@ -18,8 +18,8 @@ services:
             POSTGRES_PASSWORD: P@ssword123
         ports:
             - 5432:5432
-        # networks:
-        #   - nginx-network
+        networks:
+          - nginx-network
     backend:
         restart: always
         build:
@@ -31,8 +31,8 @@ services:
           - 5001:5001
         depends_on:
             - db
-        # networks:
-        #   - nginx-network
+        networks:
+          - nginx-network
     frontend:
         restart: always
         build:
@@ -44,8 +44,8 @@ services:
           - 5000:5000
         depends_on:
             - backend
-        # networks:
-        #   - nginx-network
-# networks:
-#   nginx-network:
-#     driver: bridge
+        networks:
+          - nginx-network
+networks:
+  nginx-network:
+    driver: bridge
