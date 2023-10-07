@@ -1,51 +1,51 @@
 version: "3.8"
 services:
-    nginx:
-        image: nginx
-        volumes:
-          - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-        ports:
-          - 8080:80
-        restart: always
-        depends_on: 
-          - frontend
-        networks:
-          - nginx-network
-    db:
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_PASSWORD: P@ssword123
-        ports:
-            - 5432:5432
-        networks:
-          - nginx-network
-    backend:
-        restart: always
-        build:
-            context: ./Backend/
-            dockerfile: Dockerfile
-        expose:
-          - 5001
-        ports:
-          - 5001:5001
-        depends_on:
-            - db
-        networks:
-          - nginx-network
-    frontend:
-        restart: always
-        build:
-            context: ./Frontend/
-            dockerfile: Dockerfile
-        expose:
-          - 5000
-        ports:
-          - 5000:5000
-        depends_on:
-            - backend
-        networks:
-          - nginx-network
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    restart: always
+    depends_on:
+      - frontend
+    networks:
+      - nginx-network
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: P@ssword123
+    ports:
+      - 5432:5432
+    networks:
+      - nginx-network
+  backend:
+    restart: always
+    build:
+      context: ./Backend/
+      dockerfile: Dockerfile
+    expose:
+      - 5001
+    ports:
+      - 5001:5001
+    depends_on:
+      - db
+    networks:
+      - nginx-network
+  frontend:
+    restart: always
+    build:
+      context: ./Frontend/
+      dockerfile: Dockerfile
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+    depends_on:
+      - backend
+    networks:
+      - nginx-network
 networks:
   nginx-network:
     driver: bridge
