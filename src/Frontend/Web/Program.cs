@@ -41,7 +41,7 @@ using var scope = app.Services.CreateScope();
 var serviceProvider = scope.ServiceProvider;
 var context = serviceProvider.GetRequiredService<HotelManagementWebContext>();
 await context.Database.EnsureCreatedAsync();
-await context.Database.MigrateAsync();
+// await context.Database.MigrateAsync();
 await ContextSeed.SeedRolesAsync(serviceProvider);
 await ContextSeed.SeedSuperAdminAsync(serviceProvider);
 
