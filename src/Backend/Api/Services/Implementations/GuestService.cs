@@ -13,38 +13,42 @@ public class GuestService : IGuestService
         _unitOfWork = unitOfWork;
     }
 
-    public Task<int> DeleteGuest(int id)
+    public async Task<int> DeleteGuest(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Guests.Delete(id);
+        return await _unitOfWork.SaveChanges();
     }
 
-    public Task<Guest?> GetGuest(int id)
+    public async Task<Guest?> GetGuest(int id)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.Guests.GetEntity(id);
     }
 
-    public Task<Guest?> GetGuest(Expression<Func<Guest, bool>> expression)
+    public async Task<Guest?> GetGuest(Expression<Func<Guest, bool>> expression)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.Guests.GetEntity(expression);
     }
 
-    public Task<IEnumerable<Guest>?> GetGuests()
+    public async Task<IEnumerable<Guest>?> GetGuests()
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.Guests.GetEntities(guest => true);
     }
 
-    public Task<IEnumerable<Guest>?> GetGuests(Expression<Func<Guest, bool>> expression)
+    public async Task<IEnumerable<Guest>?> GetGuests(Expression<Func<Guest, bool>> expression)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.Guests.GetEntities(expression);
     }
 
-    public Task<Guest> PostGuest(Guest guest)
+    public async Task<Guest> PostGuest(Guest guest)
     {
-        throw new NotImplementedException();
+        var added = await _unitOfWork.Guests.Add(guest);
+        await _unitOfWork.SaveChanges();
+        return added;
     }
 
-    public Task UpdateGuest(Guest guest)
+    public async Task UpdateGuest(Guest guest)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Guests.Update(guest);
+        await _unitOfWork.SaveChanges();
     }
 }
