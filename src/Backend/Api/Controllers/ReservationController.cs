@@ -10,16 +10,13 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class ReservationController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Reservation> _dataService;
     private readonly IMapper _mapper;
     private readonly IReservationService _reservationService;
 
     public ReservationController(
-        IDataServiceGeneric<Reservation> dataService,
         IMapper mapper,
         IReservationService reservationService)
     {
-        _dataService = dataService;
         _mapper = mapper;
         _reservationService = reservationService;
     }
@@ -29,7 +26,7 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetReservation(int id)
     {
-        var reservation = await _dataService.GetEntity(id);
+        var reservation = await _reservationService.GetReservation(id);
 
         if (reservation is null)
         {
@@ -45,7 +42,7 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetReservations()
     {
-        var reservations = await _dataService.GetEntities();
+        var reservations = await _reservationService.GetReservations();
 
         var reservationsDtos = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
 
@@ -57,7 +54,7 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteReservation(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _reservationService.DeleteReservation(id);
 
         if (deletedCount <= 0)
         {
@@ -73,7 +70,7 @@ public class ReservationController : ControllerBase
     {
         var reservation = _mapper.Map<Reservation>(reservationDto);
 
-        await _dataService.UpdateEntity(reservation);
+        await _reservationService.UpdateReservation(reservation);
 
         return NoContent();
     }
