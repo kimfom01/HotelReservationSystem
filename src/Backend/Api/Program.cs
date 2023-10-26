@@ -1,6 +1,8 @@
 using Api.Services;
+using Api.Services.Implementations;
 using DataAccess.Data;
 using DataAccess.Repositories;
+using DataAccess.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 var corsPolicy = "any origin";
