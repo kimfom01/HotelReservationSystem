@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class EmployeeController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Employee> _dataService;
     private readonly IMapper _mapper;
+    private readonly IEmployeeService _employeeService;
 
-    public EmployeeController(IDataServiceGeneric<Employee> dataService,
+    public EmployeeController(
+        IEmployeeService employeeService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _employeeService = employeeService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetEmployee(int id)
     {
-        var employee = await _dataService.GetEntity(id);
+        var employee = await _employeeService.GetEmployee(id);
 
         if (employee is null)
         {
@@ -41,7 +42,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetEmployees()
     {
-        var employees = await _dataService.GetEntities();
+        var employees = await _employeeService.GetEmployees();
 
         var employeesDtos = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
 
@@ -53,7 +54,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteEmployee(int id)
     {
-        int deltedCount = await _dataService.DeleteEntity(id);
+        int deltedCount = await _employeeService.DeleteEmployee(id);
 
         if (deltedCount <= 0)
         {
@@ -69,7 +70,7 @@ public class EmployeeController : ControllerBase
     {
         var employee = _mapper.Map<Employee>(employeeDto);
 
-        await _dataService.UpdateEntity(employee);
+        await _employeeService.UpdateEmployee(employee);
 
         return NoContent();
     }
@@ -80,7 +81,7 @@ public class EmployeeController : ControllerBase
     {
         var employee = _mapper.Map<Employee>(employeeDto);
 
-        var added = await _dataService.PostEntity(employee);
+        var added = await _employeeService.PostEmployee(employee);
 
         var employeeDtoResult = _mapper.Map<EmployeeDto>(employee);
 

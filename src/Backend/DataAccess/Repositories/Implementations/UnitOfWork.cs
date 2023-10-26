@@ -11,11 +11,13 @@ public class UnitOfWork : IUnitOfWork
         Reservations = new ReservationRepository(_context);
         Rooms = new RoomRepository(_context);
         ReservationRooms = new ReservationRoomRepository(_context);
+        Employees = new EmployeeRepository(_context);
     }
 
     public IReservationRepository Reservations { get; }
     public IRoomRepository Rooms { get; }
     public IReservationRoomRepository ReservationRooms { get; }
+    public IEmployeeRepository Employees { get; }
 
     public void Dispose()
     {

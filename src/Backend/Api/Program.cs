@@ -22,8 +22,7 @@ builder.Services.AddDbContext<Context>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("BackendConnection"));
     //options.UseInMemoryDatabase("TemporaryDb"); // For testing purpose... will revert to postgres when needed
 });
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped(typeof(IDataServiceGeneric<>), typeof(DataServiceGeneric<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IReservationRoomService, ReservationRoomService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
