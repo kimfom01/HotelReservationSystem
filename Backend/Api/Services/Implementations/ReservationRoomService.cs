@@ -20,33 +20,35 @@ public class ReservationRoomService : IReservationRoomService
         return added;
     }
 
-    public Task<int> DeleteReservationRoom(int id)
+    public async Task<int> DeleteReservationRoom(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.ReservationRooms.Delete(id);
+        return await _unitOfWork.SaveChanges();
     }
 
-    public Task<ReservationRoom?> GetReservationRoom(int id)
+    public async Task<ReservationRoom?> GetReservationRoom(int id)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.ReservationRooms.GetEntity(id);
     }
 
-    public Task<ReservationRoom?> GetReservationRoom(Expression<Func<ReservationRoom, bool>> expression)
+    public async Task<ReservationRoom?> GetReservationRoom(Expression<Func<ReservationRoom, bool>> expression)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.ReservationRooms.GetEntity(expression);
     }
 
-    public Task<IEnumerable<ReservationRoom>?> GetReservationRooms()
+    public async Task<IEnumerable<ReservationRoom>?> GetReservationRooms()
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.ReservationRooms.GetEntities(resroom => true);
     }
 
-    public Task<IEnumerable<ReservationRoom>?> GetReservationRooms(Expression<Func<ReservationRoom, bool>> expression)
+    public async Task<IEnumerable<ReservationRoom>?> GetReservationRooms(Expression<Func<ReservationRoom, bool>> expression)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.ReservationRooms.GetEntities(expression);
     }
 
-    public Task UpdateReservationRoom(ReservationRoom reservationRoom)
+    public async Task UpdateReservationRoom(ReservationRoom reservationRoom)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.ReservationRooms.Update(reservationRoom);
+        await _unitOfWork.SaveChanges();
     }
 }
