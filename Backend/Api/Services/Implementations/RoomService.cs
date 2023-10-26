@@ -55,5 +55,6 @@ public class RoomService : IRoomService
     public async Task UpdateRoom(Room room)
     {
         await _unitOfWork.Rooms.Update(room);
+        await _unitOfWork.SaveChanges();
     }
 }

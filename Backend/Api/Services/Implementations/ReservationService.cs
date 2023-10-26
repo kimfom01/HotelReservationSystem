@@ -65,5 +65,6 @@ public class ReservationService : IReservationService
     public async Task UpdateReservation(Reservation reservation)
     {
         await _unitOfWork.Reservations.Update(reservation);
+        await _unitOfWork.SaveChanges();
     }
 }
