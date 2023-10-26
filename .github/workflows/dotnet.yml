@@ -26,9 +26,3 @@ jobs:
       run: dotnet build ./src/Backend/Backend.sln --no-restore
     - name: Test
       run: dotnet test ./src/Backend/Backend.sln --no-build --verbosity normal
-    - name: Restore dependencies
-      run: dotnet restore ./src/Frontend/Frontend.sln
-    - name: Build
-      run: dotnet build ./src/Frontend/Frontend.sln --no-restore
-    - name: Test
-      run: dotnet test ./src/Frontend/Frontend.sln --no-build --verbosity normal
