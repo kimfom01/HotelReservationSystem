@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
-      run: dotnet restore ./src/Backend/Backend.sln
+      run: dotnet restore ./Backend/Backend.sln
     - name: Build
-      run: dotnet build ./src/Backend/Backend.sln --no-restore
+      run: dotnet build ./Backend/Backend.sln --no-restore
     - name: Test
-      run: dotnet test ./src/Backend/Backend.sln --no-build --verbosity normal
+      run: dotnet test ./Backend/Backend.sln --no-build --verbosity normal
