@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class HotelController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Hotel> _dataService;
+    private readonly IHotelService _hotelService;
     private readonly IMapper _mapper;
 
-    public HotelController(IDataServiceGeneric<Hotel> dataService,
+    public HotelController(
+        IHotelService hotelService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _hotelService = hotelService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class HotelController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetHotel(int id)
     {
-        var hotel = await _dataService.GetEntity(id);
+        var hotel = await _hotelService.GetHotel(id);
 
         if (hotel is null)
         {
@@ -41,7 +42,7 @@ public class HotelController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetHotels()
     {
-        var hotels = await _dataService.GetEntities();
+        var hotels = await _hotelService.GetHotels();
 
         var hotelsDtos = _mapper.Map<IEnumerable<HotelDto>>(hotels);
 
@@ -53,7 +54,7 @@ public class HotelController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteHotel(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _hotelService.DeleteHotel(id);
 
         if (deletedCount <= 0)
         {
@@ -69,7 +70,7 @@ public class HotelController : ControllerBase
     {
         var hotel = _mapper.Map<Hotel>(hotelDto);
 
-        await _dataService.UpdateEntity(hotel);
+        await _hotelService.UpdateHotel(hotel);
 
         return NoContent();
     }
@@ -80,7 +81,7 @@ public class HotelController : ControllerBase
     {
         var hotel = _mapper.Map<Hotel>(hotelDto);
 
-        var added = await _dataService.PostEntity(hotel);
+        var added = await _hotelService.PostHotel(hotel);
 
         var hotelResult = _mapper.Map<HotelDto>(added);
 
