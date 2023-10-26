@@ -5,6 +5,7 @@ namespace DataAccess.Repositories.Implementations;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly Context _context;
+
     public UnitOfWork(Context context)
     {
         _context = context;
@@ -12,12 +13,14 @@ public class UnitOfWork : IUnitOfWork
         Rooms = new RoomRepository(_context);
         ReservationRooms = new ReservationRoomRepository(_context);
         Employees = new EmployeeRepository(_context);
+        Guests = new GuestRepository(_context);
     }
 
     public IReservationRepository Reservations { get; }
     public IRoomRepository Rooms { get; }
     public IReservationRoomRepository ReservationRooms { get; }
     public IEmployeeRepository Employees { get; }
+    public IGuestRepository Guests { get; }
 
     public void Dispose()
     {

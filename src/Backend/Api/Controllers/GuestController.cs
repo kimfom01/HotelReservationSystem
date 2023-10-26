@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class GuestController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Guest> _dataService;
+    private readonly IGuestService _guestService;
     private readonly IMapper _mapper;
 
-    public GuestController(IDataServiceGeneric<Guest> dataService,
+    public GuestController(
+        IGuestService guestService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _guestService = guestService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetGuest(int id)
     {
-        var guest = await _dataService.GetEntity(id);
+        var guest = await _guestService.GetGuest(id);
 
         if (guest is null)
         {
@@ -42,7 +43,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetGuests()
     {
-        var guests = await _dataService.GetEntities();
+        var guests = await _guestService.GetGuests();
 
         if (guests is null)
         {
@@ -59,7 +60,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetGuestByEmailAddress(string emailAddress)
     {
-        var guest = await _dataService.GetEntity(guest => guest.Email == emailAddress);
+        var guest = await _guestService.GetGuests(guest => guest.Email == emailAddress);
 
         if (guest is null)
         {
@@ -76,7 +77,7 @@ public class GuestController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteGuest(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _guestService.DeleteGuest(id);
 
         if (deletedCount <= 0)
         {
@@ -92,7 +93,7 @@ public class GuestController : ControllerBase
     {
         var guest = _mapper.Map<Guest>(guestDto);
 
-        await _dataService.UpdateEntity(guest);
+        await _guestService.UpdateGuest(guest);
 
         return NoContent();
     }
@@ -103,7 +104,7 @@ public class GuestController : ControllerBase
     {
         var guest = _mapper.Map<Guest>(guestDto);
 
-        var added = await _dataService.PostEntity(guest);
+        var added = await _guestService.PostGuest(guest);
 
         var guestDtoResult = _mapper.Map<GuestDto>(added);
 
