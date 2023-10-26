@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class RoomController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Room> _dataService;
+    private readonly IRoomService _roomService;
     private readonly IMapper _mapper;
 
-    public RoomController(IDataServiceGeneric<Room> dataService,
+    public RoomController(
+        IRoomService roomService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _roomService = roomService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetRoom(int id)
     {
-        var room = await _dataService.GetEntity(id);
+        var room = await _roomService.GetRoom(id);
 
         if (room is null)
         {
@@ -42,7 +43,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetRoomByHotelId(int hotelId, int capacity)
     {
-        var room = await _dataService.GetEntity(room => room.HotelId == hotelId
+        var room = await _roomService.GetRoom(room => room.HotelId == hotelId
                                                 && room.Capacity == capacity);
 
         if (room is null)
@@ -59,7 +60,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetRooms()
     {
-        var rooms = await _dataService.GetEntities();
+        var rooms = await _roomService.GetRooms();
 
         var roomsDtos = _mapper.Map<IEnumerable<RoomDto>>(rooms);
 
@@ -71,7 +72,7 @@ public class RoomController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteRoom(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _roomService.DeleteRoom(id);
 
         if (deletedCount <= 0)
         {
@@ -87,7 +88,7 @@ public class RoomController : ControllerBase
     {
         var room = _mapper.Map<Room>(roomDto);
 
-        await _dataService.UpdateEntity(room);
+        await _roomService.UpdateRoom(room);
 
         return NoContent();
     }
@@ -98,7 +99,7 @@ public class RoomController : ControllerBase
     {
         var room = _mapper.Map<Room>(roomDto);
 
-        var added = await _dataService.PostEntity(room);
+        var added = await _roomService.PostRoom(room);
 
         var roomResult = _mapper.Map<RoomDto>(added);
 

@@ -10,7 +10,6 @@ public interface IRoomService
     Task<Room?> GetRoom(int id);
     Task<Room?> GetRoom(Expression<Func<Room, bool>> expression);
     Task<IEnumerable<Room>?> GetRooms();
-    Task<IEnumerable<Room>?> GetRooms(Expression<Func<Room, bool>> expression);
     Task<int> DeleteRoom(int id);
     Task<Room> PostRoom(Room room);
 }

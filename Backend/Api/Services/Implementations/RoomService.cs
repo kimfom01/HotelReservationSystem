@@ -6,18 +6,17 @@ namespace Api.Services.Implementations;
 
 public class RoomService : IRoomService
 {
-    private readonly IDataServiceGeneric<Room> _dataService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public RoomService(IDataServiceGeneric<Room> dataService, IUnitOfWork unitOfWork)
+    public RoomService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _dataService = dataService;
     }
 
-    public Task<int> DeleteRoom(int id)
+    public async Task<int> DeleteRoom(int id)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.Rooms.Delete(id);
+        return await _unitOfWork.SaveChanges();
     }
 
     public async Task<IEnumerable<Room>?> GetAvailableRoomsPerRoomCapacity(int hotelId, int capacity)
@@ -29,29 +28,28 @@ public class RoomService : IRoomService
         return rooms;
     }
 
-    public Task<Room?> GetRoom(int id)
+    public async Task<Room?> GetRoom(int id)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.Rooms.GetEntity(id);
     }
 
-    public Task<Room?> GetRoom(Expression<Func<Room, bool>> expression)
+    public async Task<Room?> GetRoom(Expression<Func<Room, bool>> expression)
     {
-        throw new NotImplementedException();
+
+        return await _unitOfWork.Rooms.GetEntity(expression);
     }
 
-    public Task<IEnumerable<Room>?> GetRooms()
+    public async Task<IEnumerable<Room>?> GetRooms()
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.Rooms.GetEntities(ro => true);
     }
 
-    public Task<IEnumerable<Room>?> GetRooms(Expression<Func<Room, bool>> expression)
+    public async Task<Room> PostRoom(Room room)
     {
-        throw new NotImplementedException();
-    }
+        var added = await _unitOfWork.Rooms.Add(room);
+        await _unitOfWork.SaveChanges();
 
-    public Task<Room> PostRoom(Room room)
-    {
-        throw new NotImplementedException();
+        return added;
     }
 
     public async Task UpdateRoom(Room room)
