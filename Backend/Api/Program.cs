@@ -27,6 +27,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IReservationRoomService, ReservationRoomService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 var app = builder.Build();
 
