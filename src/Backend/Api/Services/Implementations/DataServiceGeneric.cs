@@ -1,7 +1,7 @@
 ﻿using DataAccess.Repositories;
 using System.Linq.Expressions;
 
-namespace Api.Services;
+namespace Api.Services.Implementations;
 
 public class DataServiceGeneric<TEntity> : IDataServiceGeneric<TEntity>
 {
