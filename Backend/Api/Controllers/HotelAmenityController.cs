@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class HotelAmenityController : ControllerBase
 {
-    private readonly IDataServiceGeneric<HotelAmenity> _dataService;
+    private readonly IHotelAmenityService _hotelAmenityService;
     private readonly IMapper _mapper;
 
-    public HotelAmenityController(IDataServiceGeneric<HotelAmenity> dataService,
+    public HotelAmenityController(
+        IHotelAmenityService hotelAmenityService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _hotelAmenityService = hotelAmenityService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetAmenity(int id)
     {
-        var amenity = await _dataService.GetEntity(id);
+        var amenity = await _hotelAmenityService.GetHotelAmenity(id);
 
         if (amenity is null)
         {
@@ -41,7 +42,7 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetAmenities()
     {
-        var amenities = await _dataService.GetEntities();
+        var amenities = await _hotelAmenityService.GetHotelAmenities();
 
         var amenitiesDtos = _mapper.Map<IEnumerable<HotelAmenityDto>>(amenities);
 
@@ -53,7 +54,7 @@ public class HotelAmenityController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteAmenity(int id)
     {
-        var deletedCount = await _dataService.DeleteEntity(id);
+        var deletedCount = await _hotelAmenityService.DeleteHotelAmenity(id);
 
         if (deletedCount <= 0)
         {
@@ -69,7 +70,7 @@ public class HotelAmenityController : ControllerBase
     {
         var amenity = _mapper.Map<HotelAmenity>(hotelAmenityDto);
 
-        await _dataService.UpdateEntity(amenity);
+        await _hotelAmenityService.UpdateHotelAmenity(amenity);
 
         return NoContent();
     }
@@ -80,7 +81,7 @@ public class HotelAmenityController : ControllerBase
     {
         var amenity = _mapper.Map<HotelAmenity>(hotelAmenityDto);
 
-        var added = await _dataService.PostEntity(amenity);
+        var added = await _hotelAmenityService.PostHotelAmenity(amenity);
 
         var amenityResult = _mapper.Map<HotelAmenityDto>(added);
 

@@ -14,6 +14,7 @@ public class UnitOfWork : IUnitOfWork
         ReservationRooms = new ReservationRoomRepository(_context);
         Employees = new EmployeeRepository(_context);
         Guests = new GuestRepository(_context);
+        HotelAmenities = new HotelAmenityRepository(_context);
     }
 
     public IReservationRepository Reservations { get; }
@@ -21,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
     public IReservationRoomRepository ReservationRooms { get; }
     public IEmployeeRepository Employees { get; }
     public IGuestRepository Guests { get; }
+    public IHotelAmenityRepository HotelAmenities { get; }
 
     public void Dispose()
     {

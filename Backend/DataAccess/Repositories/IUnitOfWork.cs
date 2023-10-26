@@ -7,6 +7,7 @@ public interface IUnitOfWork : IDisposable
     public IReservationRoomRepository ReservationRooms { get; }
     public IEmployeeRepository Employees { get; }
     public IGuestRepository Guests { get; }
+    public IHotelAmenityRepository HotelAmenities { get; }
 
     public Task<int> SaveChanges();
 }
