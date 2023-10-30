@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class MaintenanceController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Maintenance> _dataService;
+    private readonly IMaintenanceService _maintenanceService;
     private readonly IMapper _mapper;
 
-    public MaintenanceController(IDataServiceGeneric<Maintenance> dataService,
+    public MaintenanceController(
+        IMaintenanceService maintenanceService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _maintenanceService = maintenanceService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class MaintenanceController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetMaintenance(int id)
     {
-        var maintenance = await _dataService.GetEntity(id);
+        var maintenance = await _maintenanceService.GetMaintenance(id);
 
         if (maintenance is null)
         {
@@ -41,7 +42,7 @@ public class MaintenanceController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetMaintenances()
     {
-        var maintenances = await _dataService.GetEntities();
+        var maintenances = await _maintenanceService.GetMaintenances();
 
         var maintenancesDtos = _mapper.Map<IEnumerable<MaintenanceDto>>(maintenances);
 
@@ -53,7 +54,7 @@ public class MaintenanceController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteMaintenance(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _maintenanceService.DeleteMaintenance(id);
 
         if (deletedCount <= 0)
         {
@@ -69,7 +70,7 @@ public class MaintenanceController : ControllerBase
     {
         var maintenance = _mapper.Map<Maintenance>(maintenanceDto);
 
-        await _dataService.UpdateEntity(maintenance);
+        await _maintenanceService.UpdateMaintenance(maintenance);
 
         return NoContent();
     }
@@ -80,7 +81,7 @@ public class MaintenanceController : ControllerBase
     {
         var maintenance = _mapper.Map<Maintenance>(maintenanceDto);
 
-        var added = await _dataService.PostEntity(maintenance);
+        var added = await _maintenanceService.PostMaintenance(maintenance);
 
         var maintenanceResult = _mapper.Map<MaintenanceDto>(added);
 
