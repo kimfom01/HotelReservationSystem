@@ -18,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
         Hotels = new HotelRepository(_context);
         Maintenances = new MaintenanceRepository(_context);
         Meals = new MealRepository(_context);
+        Pricings = new PricingRepository(_context);
     }
 
     public IReservationRepository Reservations { get; }
@@ -29,6 +30,7 @@ public class UnitOfWork : IUnitOfWork
     public IHotelRepository Hotels { get; }
     public IMaintenanceRepository Maintenances { get; }
     public IMealRepository Meals { get; }
+    public IPricingRepository Pricings { get; }
 
     public void Dispose()
     {
