@@ -5,7 +5,7 @@ using DataAccess.Repositories;
 using DataAccess.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
-var corsPolicy = "any origin";
+const string corsPolicy = "any origin";
 
 var builder = WebApplication.CreateBuilder(args);
 
