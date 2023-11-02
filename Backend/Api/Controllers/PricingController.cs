@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class PricingController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Pricing> _dataService;
+    private readonly IPricingService _pricingService;
     private readonly IMapper _mapper;
 
-    public PricingController(IDataServiceGeneric<Pricing> dataService,
+    public PricingController(
+        IPricingService pricingService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _pricingService = pricingService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class PricingController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetPricing(int id)
     {
-        var pricing = await _dataService.GetEntity(id);
+        var pricing = await _pricingService.GetPricing(id);
 
         if (pricing is null)
         {
@@ -41,7 +42,7 @@ public class PricingController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetPricings()
     {
-        var pricings = await _dataService.GetEntities();
+        var pricings = await _pricingService.GetPricings();
 
         var pricingsDtos = _mapper.Map<IEnumerable<PricingDto>>(pricings);
 
@@ -53,7 +54,7 @@ public class PricingController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeletePricing(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _pricingService.DeletePricing(id);
 
         if (deletedCount <= 0)
         {
@@ -69,7 +70,7 @@ public class PricingController : ControllerBase
     {
         var pricing = _mapper.Map<Pricing>(pricingDto);
 
-        await _dataService.UpdateEntity(pricing);
+        await _pricingService.UpdatePricing(pricing);
 
         return NoContent();
     }
@@ -80,7 +81,7 @@ public class PricingController : ControllerBase
     {
         var pricing = _mapper.Map<Pricing>(pricingDto);
 
-        var added = await _dataService.PostEntity(pricing);
+        var added = await _pricingService.PostPricing(pricing);
 
         var pricingResult = _mapper.Map<PricingDto>(added);
 

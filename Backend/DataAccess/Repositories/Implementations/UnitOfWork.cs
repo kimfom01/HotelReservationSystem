@@ -16,6 +16,12 @@ public class UnitOfWork : IUnitOfWork
         Guests = new GuestRepository(_context);
         HotelAmenities = new HotelAmenityRepository(_context);
         Hotels = new HotelRepository(_context);
+        Maintenances = new MaintenanceRepository(_context);
+        Meals = new MealRepository(_context);
+        Pricings = new PricingRepository(_context);
+        RoomAmenities = new RoomAmenityRepository(_context);
+        RoomStatuses = new RoomStatusRepository(_context);
+        Services = new ServiceRepository(_context);
     }
 
     public IReservationRepository Reservations { get; }
@@ -25,6 +31,12 @@ public class UnitOfWork : IUnitOfWork
     public IGuestRepository Guests { get; }
     public IHotelAmenityRepository HotelAmenities { get; }
     public IHotelRepository Hotels { get; }
+    public IMaintenanceRepository Maintenances { get; }
+    public IMealRepository Meals { get; }
+    public IPricingRepository Pricings { get; }
+    public IRoomAmenityRepository RoomAmenities { get; }
+    public IRoomStatusRepository RoomStatuses { get; }
+    public IServiceRepository Services { get; }
 
     public void Dispose()
     {

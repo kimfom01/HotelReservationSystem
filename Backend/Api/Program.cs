@@ -5,7 +5,7 @@ using DataAccess.Repositories;
 using DataAccess.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
-var corsPolicy = "any origin";
+const string corsPolicy = "any origin";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +28,8 @@ builder.Services.AddScoped<IReservationRoomService, ReservationRoomService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
+builder.Services.AddScoped<IMealService, MealService>();
 
 var app = builder.Build();
 

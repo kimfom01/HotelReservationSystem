@@ -10,14 +10,16 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class ServiceController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Service> _dataService;
+    private readonly IServiceService _serviceService;
     private readonly IMapper _mapper;
 
-    public ServiceController(IDataServiceGeneric<Service> dataService,
-        IMapper mapper)
+    public ServiceController(
+        IMapper mapper, 
+        IServiceService serviceService
+        )
     {
-        _dataService = dataService;
         _mapper = mapper;
+        _serviceService = serviceService;
     }
 
     [HttpGet("{id:int}")]
@@ -25,7 +27,7 @@ public class ServiceController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetService(int id)
     {
-        var service = await _dataService.GetEntity(service => service.Id == id);
+        var service = await _serviceService.GetService(id);
 
         if (service is null)
         {
@@ -41,7 +43,7 @@ public class ServiceController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetServices()
     {
-        var services = await _dataService.GetEntities();
+        var services = await _serviceService.GetServices();
 
         var servicesDtos = _mapper.Map<IEnumerable<ServiceDto>>(services);
 
@@ -53,7 +55,7 @@ public class ServiceController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteService(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _serviceService.DeleteService(id);
 
         if (deletedCount <= 0)
         {
@@ -69,7 +71,7 @@ public class ServiceController : ControllerBase
     {
         var service = _mapper.Map<Service>(serviceDto);
 
-        await _dataService.UpdateEntity(service);
+        await _serviceService.UpdateService(service);
 
         return NoContent();
     }
@@ -80,7 +82,7 @@ public class ServiceController : ControllerBase
     {
         var service = _mapper.Map<Service>(serviceDto);
 
-        var added = await _dataService.PostEntity(service);
+        var added = await _serviceService.PostService(service);
 
         var serviceDtoResult = _mapper.Map<ServiceDto>(added);
 

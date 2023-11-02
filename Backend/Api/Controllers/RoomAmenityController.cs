@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class RoomAmenityController : ControllerBase
 {
-    private readonly IDataServiceGeneric<RoomAmenity> _dataService;
+    private readonly IRoomAmenityService _roomAmenityService;
     private readonly IMapper _mapper;
 
-    public RoomAmenityController(IDataServiceGeneric<RoomAmenity> dataService,
+    public RoomAmenityController(
+        IRoomAmenityService roomAmenityService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _roomAmenityService = roomAmenityService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class RoomAmenityController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetAmenity(int id)
     {
-        var amenity = await _dataService.GetEntity(id);
+        var amenity = await _roomAmenityService.GetRoomAmenity(id);
 
         if (amenity is null)
         {
@@ -41,7 +42,7 @@ public class RoomAmenityController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetAmenities()
     {
-        var amenities = await _dataService.GetEntities();
+        var amenities = await _roomAmenityService.GetRoomAmenities();
 
         var amenitiesDtos = _mapper.Map<IEnumerable<RoomAmenityDto>>(amenities);
 
@@ -53,7 +54,7 @@ public class RoomAmenityController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteAmenity(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _roomAmenityService.DeleteRoomAmenity(id);
 
         if (deletedCount <= 0)
         {
@@ -69,7 +70,7 @@ public class RoomAmenityController : ControllerBase
     {
         var amenity = _mapper.Map<RoomAmenity>(amenityDto);
 
-        await _dataService.UpdateEntity(amenity);
+        await _roomAmenityService.UpdateRoomAmenity(amenity);
 
         return NoContent();
     }
@@ -80,7 +81,7 @@ public class RoomAmenityController : ControllerBase
     {
         var amenity = _mapper.Map<RoomAmenity>(amenityDto);
 
-        var added = await _dataService.PostEntity(amenity);
+        var added = await _roomAmenityService.PostRoomAmenity(amenity);
 
         var amenityResult = _mapper.Map<RoomAmenityDto>(added);
 

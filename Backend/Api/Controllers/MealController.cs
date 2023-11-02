@@ -10,13 +10,14 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class MealController : ControllerBase
 {
-    private readonly IDataServiceGeneric<Meal> _dataService;
+    private readonly IMealService _mealService;
     private readonly IMapper _mapper;
 
-    public MealController(IDataServiceGeneric<Meal> dataService,
+    public MealController(
+        IMealService mealService,
         IMapper mapper)
     {
-        _dataService = dataService;
+        _mealService = mealService;
         _mapper = mapper;
     }
 
@@ -25,7 +26,7 @@ public class MealController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetMeal(int id)
     {
-        var meal = await _dataService.GetEntity(id);
+        var meal = await _mealService.GetMeal(id);
 
         if (meal is null)
         {
@@ -41,7 +42,7 @@ public class MealController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetMeals()
     {
-        var meals = await _dataService.GetEntities();
+        var meals = await _mealService.GetMeals();
 
         var mealsDtos = _mapper.Map<IEnumerable<MealDto>>(meals);
 
@@ -53,7 +54,7 @@ public class MealController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteMeal(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _mealService.DeleteMeal(id);
 
         if (deletedCount <= 0)
         {
@@ -69,7 +70,7 @@ public class MealController : ControllerBase
     {
         var meal = _mapper.Map<Meal>(mealDto);
 
-        await _dataService.UpdateEntity(meal);
+        await _mealService.UpdateMeal(meal);
 
         return NoContent();
     }
@@ -80,7 +81,7 @@ public class MealController : ControllerBase
     {
         var meal = _mapper.Map<Meal>(mealDto);
 
-        var added = await _dataService.PostEntity(meal);
+        var added = await _mealService.PostMeal(meal);
 
         var mealResult = _mapper.Map<MealDto>(added);
 
