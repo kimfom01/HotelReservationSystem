@@ -6,5 +6,5 @@ List of repositories, services and controllers to fix:
 - [x] Meal
 - [x] Pricing
 - [x] Room Amenity
-- [ ] Room Status
+- [x] Room Status
 - [ ] Service

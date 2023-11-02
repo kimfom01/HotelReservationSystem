@@ -10,14 +10,16 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class RoomStatusController : ControllerBase
 {
-    private readonly IDataServiceGeneric<RoomStatus> _dataService;
+    private readonly IRoomStatusService _roomStatusService;
     private readonly IMapper _mapper;
 
-    public RoomStatusController(IDataServiceGeneric<RoomStatus> dataService,
-        IMapper mapper)
+    public RoomStatusController(
+        IMapper mapper, 
+        IRoomStatusService roomStatusService
+        )
     {
-        _dataService = dataService;
         _mapper = mapper;
+        _roomStatusService = roomStatusService;
     }
 
     [HttpGet("{id:int}")]
@@ -25,7 +27,7 @@ public class RoomStatusController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetRoomStatus(int id)
     {
-        var status = await _dataService.GetEntity(status => status.Id == id);
+        var status = await _roomStatusService.GetRoomStatus(id);
 
         if (status is null)
         {
@@ -41,7 +43,7 @@ public class RoomStatusController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetRoomStatuses()
     {
-        var statuses = await _dataService.GetEntities();
+        var statuses = await _roomStatusService.GetRoomStatuses();
 
         var statusesDtos = _mapper.Map<IEnumerable<RoomStatusDto>>(statuses);
 
@@ -53,7 +55,7 @@ public class RoomStatusController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> DeleteRoomStatus(int id)
     {
-        int deletedCount = await _dataService.DeleteEntity(id);
+        int deletedCount = await _roomStatusService.DeleteRoomStatus(id);
 
         if (deletedCount <= 0)
         {
@@ -69,7 +71,7 @@ public class RoomStatusController : ControllerBase
     {
         var status = _mapper.Map<RoomStatus>(statusDto);
 
-        await _dataService.UpdateEntity(status);
+        await _roomStatusService.UpdateRoomStatus(status);
 
         return NoContent();
     }
@@ -80,7 +82,7 @@ public class RoomStatusController : ControllerBase
     {
         var status = _mapper.Map<RoomStatus>(statusDto);
 
-        var added = await _dataService.PostEntity(status);
+        var added = await _roomStatusService.PostRoomStatus(status);
 
         var statusDtoResult = _mapper.Map<RoomStatusDto>(added);
 
