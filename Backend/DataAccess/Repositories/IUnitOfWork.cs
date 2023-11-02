@@ -14,6 +14,7 @@ public interface IUnitOfWork : IDisposable
     public IPricingRepository Pricings { get; }
     public IRoomAmenityRepository RoomAmenities { get; }
     public IRoomStatusRepository RoomStatuses { get; }
+    public IServiceRepository Services { get; }
 
     public Task<int> SaveChanges();
 }

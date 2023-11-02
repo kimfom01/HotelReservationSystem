@@ -21,6 +21,7 @@ public class UnitOfWork : IUnitOfWork
         Pricings = new PricingRepository(_context);
         RoomAmenities = new RoomAmenityRepository(_context);
         RoomStatuses = new RoomStatusRepository(_context);
+        Services = new ServiceRepository(_context);
     }
 
     public IReservationRepository Reservations { get; }
@@ -35,6 +36,7 @@ public class UnitOfWork : IUnitOfWork
     public IPricingRepository Pricings { get; }
     public IRoomAmenityRepository RoomAmenities { get; }
     public IRoomStatusRepository RoomStatuses { get; }
+    public IServiceRepository Services { get; }
 
     public void Dispose()
     {
