@@ -12,6 +12,7 @@ public interface IUnitOfWork : IDisposable
     public IMaintenanceRepository Maintenances { get; }
     public IMealRepository Meals { get; }
     public IPricingRepository Pricings { get; }
+    public IRoomAmenityRepository RoomAmenities { get; }
 
     public Task<int> SaveChanges();
 }
