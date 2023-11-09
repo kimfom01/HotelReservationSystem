@@ -23,7 +23,7 @@ services:
   backend:
     restart: always
     build:
-      context: ./Backend/
+      context: ./HotelBackend/
       dockerfile: Dockerfile
     expose:
       - 5001
@@ -36,7 +36,7 @@ services:
   frontend:
     restart: always
     build:
-      context: ./Frontend/
+      context: ./HotelFrontend/
       dockerfile: Dockerfile
     expose:
       - 5000

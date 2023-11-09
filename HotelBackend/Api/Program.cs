@@ -30,6 +30,7 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
 builder.Services.AddScoped<IMealService, MealService>();
+builder.Services.AddScoped<IGuestService, GuestService>();
 
 var app = builder.Build();
 
