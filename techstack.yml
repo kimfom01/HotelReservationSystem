@@ -1,11 +1,11 @@
 repo_name: kimfom01/HotelBackend
-report_id: 3183fc762ff4a3cc83817994cb654759
+report_id: c3d22438c854ccea02a14fedff5332b2
 repo_type: Public
-timestamp: '2023-11-09T17:03:32+00:00'
+timestamp: '2023-12-14T09:50:40+00:00'
 requested_by: kimfom01
 provider: github
 branch: main
-detected_tools_count: 15
+detected_tools_count: 17
 tools:
 - name: C#
   description: Simple, general-purpose, object-oriented programming language for the
@@ -41,8 +41,8 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/6403/default_91fc1f0ee315262794273aa1387eaf8fed8436e6.png
-  detection_source_url: HotelBackend/Api/Api.csproj
-  detection_source: HotelBackend/DataAccess/DataAccess.csproj
+  detection_source_url: https://github.com/kimfom01/HotelBackend/blob/main/HotelBackend/Api/Api.csproj
+  detection_source: HotelBackend/Api/Api.csproj
   last_updated_by: Kim Fom
   last_updated_on: 2023-09-14 09:46:42.000000000 Z
 - name: ASP.NET Core
@@ -56,10 +56,22 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/11331/asp.net-core.png
-  detection_source_url: HotelBackend/Api/Api.csproj
-  detection_source: HotelBackend/DataAccess/DataAccess.csproj
+  detection_source_url: https://github.com/kimfom01/HotelBackend/blob/main/HotelBackend/Api/Api.csproj
+  detection_source: HotelBackend/Api/Api.csproj
   last_updated_by: Kim Fom
   last_updated_on: 2023-09-14 09:46:42.000000000 Z
+- name: Heroku Postgres
+  description: Heroku's Database-as-a-Service. Based on the most powerful open-source
+    database, PostgreSQL
+  website_url: https://www.heroku.com/postgres
+  open_source: false
+  hosted_saas: true
+  category: Data Stores
+  sub_category: PostgreSQL as a Service
+  image_url: https://img.stackshare.io/service/2516/original.png
+  detection_source: docker-compose.yml
+  last_updated_by: Kim Fom
+  last_updated_on: 2023-10-07 01:54:08.000000000 Z
 - name: PostgreSQL
   description: A powerful, open source object-relational database system
   website_url: http://www.postgresql.org/
@@ -110,9 +122,9 @@ tools:
   category: Application Hosting
   sub_category: Web Servers
   image_url: https://img.stackshare.io/service/1052/YMxUfyWf.png
-  detection_source: nginx/nginx.conf
+  detection_source: docker-compose.yml
   last_updated_by: Kim Fom
-  last_updated_on: 2023-09-26 20:23:35.000000000 Z
+  last_updated_on: 2023-09-26 13:20:50.000000000 Z
 - name: NuGet
   description: The package manager for .NET
   website_url: https://www.nuget.org/
@@ -136,6 +148,14 @@ tools:
   detection_source: HotelBackend/HotelBackend.sln
   last_updated_by: Kim Fom
   last_updated_on: 2023-07-19 17:01:11.000000000 Z
+- name: Cm_Cache_Backend_File
+  website_url: https://github.com/colinmollenhour/Cm_Cache_Backend_File
+  open_source: false
+  hosted_saas: false
+  image_url: https://img.stackshare.io/service/1866/38738.jpeg
+  detection_source: docker-compose.yml
+  last_updated_by: Kim Fom
+  last_updated_on: 2023-11-09 07:20:22.000000000 Z
 - name: AutoMapper.Extensions.Microsoft.DependencyInjection
   description: AutoMapper extensions for ASP.NET Core
   package_url: https://www.nuget.org/AutoMapper.Extensions.Microsoft.DependencyInjection
@@ -145,7 +165,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/13248/default_3b9faa77d26eef0a944d4dab8d562db23059cb72.png
-  detection_source_url: HotelBackend/Api/Api.csproj
+  detection_source_url: https://github.com/kimfom01/HotelBackend/blob/main/HotelBackend/Api/Api.csproj
   detection_source: HotelBackend/Api/Api.csproj
   last_updated_by: Kim Fom
   last_updated_on: 2023-09-14 09:46:42.000000000 Z
@@ -159,7 +179,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/13150/default_81ac985912284073db895b0d26abf3657532a164.png
-  detection_source_url: HotelBackend/DataAccess/DataAccess.csproj
+  detection_source_url: https://github.com/kimfom01/HotelBackend/blob/main/HotelBackend/DataAccess/DataAccess.csproj
   detection_source: HotelBackend/DataAccess/DataAccess.csproj
   last_updated_by: Kim Fom
   last_updated_on: 2023-09-05 09:27:29.000000000 Z
@@ -174,7 +194,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/13138/default_a057bdad489be3cb053d372a68695da4ac94962d.png
-  detection_source_url: HotelBackend/DataAccess/DataAccess.csproj
+  detection_source_url: https://github.com/kimfom01/HotelBackend/blob/main/HotelBackend/DataAccess/DataAccess.csproj
   detection_source: HotelBackend/DataAccess/DataAccess.csproj
   last_updated_by: Kim Fom
   last_updated_on: 2023-09-05 09:27:29.000000000 Z
@@ -188,7 +208,7 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/12981/default_aa8a6e377c22dbeff795489a5ab127b1d597b5ed.png
-  detection_source_url: HotelBackend/Api/Api.csproj
+  detection_source_url: https://github.com/kimfom01/HotelBackend/blob/main/HotelBackend/Api/Api.csproj
   detection_source: HotelBackend/Api/Api.csproj
   last_updated_by: Kim Fom
   last_updated_on: 2023-09-14 09:46:42.000000000 Z
