@@ -5,7 +5,6 @@ using HotelBackend.ReservationService.Repositories.Implementations;
 using HotelBackend.ReservationService.Services;
 using HotelBackend.ReservationService.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
-using Sqids;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,10 +29,6 @@ builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IPricingService, PricingService>();
-builder.Services.AddSingleton(new SqidsEncoder<int>(new()
-{
-    MinLength = 10,
-}));
 
 var app = builder.Build();
 
