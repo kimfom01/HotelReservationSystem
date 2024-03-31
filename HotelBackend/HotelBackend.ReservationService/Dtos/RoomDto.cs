@@ -2,12 +2,10 @@
 
 public class RoomDto
 {
-    public int Id { get; set; }
-    public int HotelId { get; set; }
+    public Guid Id { get; set; }
     public int RoomNumber { get; set; }
-    public int Capacity { get; set; }
-    public string RoomType { get; set; }
-    public decimal RoomPrice { get; set; }
-    public bool? Availabilty { get; set; } = true;
-    public bool? Payed { get; set; } = false;
+    public bool Availability { get; set; }
+    public Guid HotelId { get; set; }
+    public Guid RoomTypeId { get; set; }
+    public RoomTypeDto? RoomType { get; set; }
 }

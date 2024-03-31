@@ -2,17 +2,15 @@
 
 public class ReservationDto
 {
-    public int Id { get; set; }
-    public DateTime CreationDate { get; set; }
-    public string BookingId { get; set; }
+    public Guid Id { get; set; }
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
-    public decimal Price { get; set; }
-    public decimal Tax { get; set; }
-    public double Discount { get; set; }
-    public string GuestEmail { get; set; }
-    public string GuestName { get; set; }
-    public int HotelId { get; set; }
-    public Guid RoomId { get; set; }
+    public string SpecialRequests { get; set; }
+    public string RoomPreferences { get; set; }
     public int NumberOfGuests { get; set; }
+    public Guid GuestProfileId { get; set; }
+    public GuestProfileDto GuestProfile { get; set; }
+    public Guid HotelId { get; set; }
+    public Guid RoomId { get; set; }
+    public RoomDto? Room { get; set; }
 }
