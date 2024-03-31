@@ -3,7 +3,7 @@ using HotelBackend.ReservationService.Models;
 
 namespace HotelBackend.ReservationService.Repositories.Implementations;
 
-public class PricingRepository : Repository<Pricing>, IPricingRepository
+public class PricingRepository : Repository<Price>, IPricingRepository
 {
     public PricingRepository(DatabaseContext databaseContext) : base(databaseContext)
     {

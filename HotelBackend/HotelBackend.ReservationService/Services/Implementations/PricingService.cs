@@ -13,41 +13,41 @@ public class PricingService : IPricingService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Pricing?> GetPricing(int id)
+    public async Task<Price?> GetPricing(Guid id)
     {
-        return await _unitOfWork.Pricings.GetEntity(id);
+        return await _unitOfWork.Prices.GetEntity(id);
     }
 
-    public async Task<Pricing?> GetPricing(Expression<Func<Pricing, bool>> expression)
+    public async Task<Price?> GetPricing(Expression<Func<Price, bool>> expression)
     {
-        return await _unitOfWork.Pricings.GetEntity(expression);
+        return await _unitOfWork.Prices.GetEntity(expression);
     }
 
-    public async Task<IEnumerable<Pricing>?> GetPricings()
+    public async Task<IEnumerable<Price>?> GetPrices()
     {
-        return await _unitOfWork.Pricings.GetEntities(pri => true);
+        return await _unitOfWork.Prices.GetEntities(pri => true);
     }
 
-    public async Task<IEnumerable<Pricing>?> GetPricings(Expression<Func<Pricing, bool>> expression)
+    public async Task<IEnumerable<Price>?> GetPrices(Expression<Func<Price, bool>> expression)
     {
-        return await _unitOfWork.Pricings.GetEntities(expression);
+        return await _unitOfWork.Prices.GetEntities(expression);
     }
 
-    public async Task<int> DeletePricing(int id)
+    public async Task<int> DeletePricing(Guid id)
     {
-        await _unitOfWork.Pricings.Delete(id);
+        await _unitOfWork.Prices.Delete(id);
         return await _unitOfWork.SaveChanges();
     }
 
-    public async Task UpdatePricing(Pricing pricing)
+    public async Task UpdatePricing(Price price)
     {
-        await _unitOfWork.Pricings.Update(pricing);
+        await _unitOfWork.Prices.Update(price);
         await _unitOfWork.SaveChanges();
     }
 
-    public async Task<Pricing> PostPricing(Pricing pricing)
+    public async Task<Price?> PostPricing(Price price)
     {
-        var added = await _unitOfWork.Pricings.Add(pricing);
+        var added = await _unitOfWork.Prices.Add(price);
         await _unitOfWork.SaveChanges();
         return added;
     }

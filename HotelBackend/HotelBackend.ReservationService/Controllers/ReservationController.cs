@@ -21,10 +21,10 @@ public class ReservationController : ControllerBase
         _reservationService = reservationService;
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:Guid}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> GetReservation(int id)
+    public async Task<IActionResult> GetReservation(Guid id)
     {
         var reservation = await _reservationService.GetReservation(id);
 
@@ -49,10 +49,10 @@ public class ReservationController : ControllerBase
         return Ok(reservationsDtos);
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:Guid}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> DeleteReservation(int id)
+    public async Task<IActionResult> DeleteReservation(Guid id)
     {
         int deletedCount = await _reservationService.DeleteReservation(id);
 
@@ -79,17 +79,13 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostReservation(ReservationDto reservationDto)
     {
-        var reservation = _mapper.Map<Reservation>(reservationDto);
-
-        var added = await _reservationService.MakeReservation(reservation);
+        var added = await _reservationService.MakeReservation(reservationDto);
 
         if (added is null)
         {
             return Conflict("Unable to make reservation, no available rooms");
         }
 
-        var reservationResult = _mapper.Map<ReservationDto>(added);
-
-        return CreatedAtAction(nameof(GetReservation), new { id = reservationResult.Id }, reservationResult);
+        return CreatedAtAction(nameof(GetReservation), new { id = added.Id }, added);
     }
 }

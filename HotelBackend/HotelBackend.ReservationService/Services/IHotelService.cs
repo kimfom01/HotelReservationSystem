@@ -4,9 +4,9 @@ namespace HotelBackend.ReservationService.Services;
 
 public interface IHotelService
 {
-    Task<Hotel?> GetHotel(int id);
+    Task<Hotel?> GetHotel(Guid id);
     Task<IEnumerable<Hotel>?> GetHotels();
-    Task<int> DeleteHotel(int id);
-    Task UpdateHotel(Hotel hotel);
-    Task<Hotel> PostHotel(Hotel hotel);
+    Task<int> DeleteHotel(Guid id);
+    Task UpdateHotel(Hotel? hotel);
+    Task<Hotel?> PostHotel(Hotel? hotel);
 }

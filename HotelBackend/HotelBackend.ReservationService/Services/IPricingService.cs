@@ -5,11 +5,11 @@ namespace HotelBackend.ReservationService.Services;
 
 public interface IPricingService
 {
-    public Task<Pricing?> GetPricing(int id);
-    public Task<Pricing?> GetPricing(Expression<Func<Pricing, bool>> expression);
-    public Task<IEnumerable<Pricing>?> GetPricings();
-    public Task<IEnumerable<Pricing>?> GetPricings(Expression<Func<Pricing, bool>> expression);
-    public Task<int> DeletePricing(int id);
-    public Task UpdatePricing(Pricing pricing);
-    public Task<Pricing> PostPricing(Pricing pricing);
+    public Task<Price?> GetPricing(Guid id);
+    public Task<Price?> GetPricing(Expression<Func<Price, bool>> expression);
+    public Task<IEnumerable<Price>?> GetPrices();
+    public Task<IEnumerable<Price>?> GetPrices(Expression<Func<Price, bool>> expression);
+    public Task<int> DeletePricing(Guid id);
+    public Task UpdatePricing(Price price);
+    public Task<Price?> PostPricing(Price price);
 }
