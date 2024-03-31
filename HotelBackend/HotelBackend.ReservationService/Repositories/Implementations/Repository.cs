@@ -1,34 +1,37 @@
 ﻿using System.Linq.Expressions;
 using HotelBackend.ReservationService.Data;
+using HotelBackend.ReservationService.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.ReservationService.Repositories.Implementations;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    private readonly DatabaseContext _databaseContext;
     protected readonly DbSet<TEntity> DbSet;
 
-    public Repository(DatabaseContext databaseContext)
+    protected Repository(DatabaseContext databaseContext)
     {
-        _databaseContext = databaseContext;
-        DbSet = _databaseContext.Set<TEntity>();
+        DbSet = databaseContext.Set<TEntity>();
     }
 
-    public async Task<TEntity> Add(TEntity entity)
+    public async Task<TEntity?> Add(TEntity entity)
     {
         var added = await DbSet.AddAsync(entity);
 
         return added.Entity;
     }
 
-    public async Task Delete(int id)
+    public async Task Delete(Guid id)
     {
         var entity = await DbSet.FindAsync(id);
 
         if (entity is not null)
         {
             DbSet.Remove(entity);
+        }
+        else
+        {
+            throw new NotFoundException($"Item with Id: {id} does not exist");
         }
     }
 
@@ -46,19 +49,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         return entity;
     }
 
-    public virtual Task<IQueryable<TEntity>> GetEntities(Expression<Func<TEntity, bool>> expression)
+    public virtual async Task<IEnumerable<TEntity>> GetEntities(Expression<Func<TEntity, bool>> expression)
     {
-        var entities = DbSet.Where(expression).AsNoTracking();
-
-        return Task.FromResult(entities);
+        return await Task.Run(() => DbSet.Where(expression).AsNoTracking());
     }
 
-    public async Task<int> SaveChanges()
-    {
-        return await _databaseContext.SaveChangesAsync();
-    }
-
-    public async Task<TEntity?> GetEntity(int id)
+    public virtual async Task<TEntity?> GetEntity(Guid id)
     {
         var entity = await DbSet.FindAsync(id);
 
