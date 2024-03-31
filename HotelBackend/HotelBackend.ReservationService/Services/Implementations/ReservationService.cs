@@ -1,4 +1,6 @@
-﻿using HotelBackend.ReservationService.Models;
+﻿using AutoMapper;
+using HotelBackend.ReservationService.Dtos;
+using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Repositories;
 
 namespace HotelBackend.ReservationService.Services.Implementations;
@@ -7,22 +9,25 @@ public class ReservationService : IReservationService
 {
     private readonly IRoomService _roomService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
     public ReservationService(
         IRoomService roomService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
         _roomService = roomService;
     }
 
-    public async Task<int> DeleteReservation(int id)
+    public async Task<int> DeleteReservation(Guid id)
     {
         await _unitOfWork.Reservations.Delete(id);
         return await _unitOfWork.SaveChanges();
     }
 
-    public Task<Reservation?> GetReservation(int id)
+    public Task<Reservation?> GetReservation(Guid id)
     {
         return _unitOfWork.Reservations.GetEntity(id);
     }
@@ -32,36 +37,26 @@ public class ReservationService : IReservationService
         return await _unitOfWork.Reservations.GetEntities(res => true);
     }
 
-    public async Task<Reservation?> MakeReservation(Reservation reservation)
+    public async Task<ReservationDto?> MakeReservation(ReservationDto reservationDto)
     {
-        // var availableRooms = await _roomService
-        //     .GetAvailableRoomsPerRoomCapacity(reservation.HotelId, reservation.NumberOfGuests);
-        //
-        // if (availableRooms is null || !availableRooms.Any())
-        // {
-        //     return null;
-        // }
-        //
-        // var result = await _unitOfWork.Reservations.Add(reservation);
-        //
-        //
-        // var room = availableRooms.First();
-        // room.Availabilty = false;
-        // await _unitOfWork.Rooms.Update(room);
-        //
-        // var reservationRoom = new ReservationRoom
-        // {
-        //     ReservationId = reservation.Id,
-        //     RoomId = room.Id
-        // };
-        //
-        // await _unitOfWork.ReservationRooms.Add(reservationRoom);
-        //
-        // await _unitOfWork.SaveChanges();
-        //
-        // return result;
+        var reservation = _mapper.Map<Reservation>(reservationDto);
+        var room = await _roomService.GetRoom(reservation.RoomId);
 
-        throw new NotImplementedException();
+        if (room is not null && room.Availability == true)
+        {
+            room.Availability = false;
+        }
+
+        var currentGuestProfile = await _unitOfWork.GuestProfiles.GetByEmail(reservation.GuestProfile.ContactEmail);
+
+        if (currentGuestProfile is null)
+        {
+            await _unitOfWork.GuestProfiles.Add(reservation.GuestProfile);
+        }
+        
+        var added = await _unitOfWork.Reservations.Add(reservation);
+
+        return _mapper.Map<ReservationDto>(added);
     }
 
     public async Task UpdateReservation(Reservation reservation)
