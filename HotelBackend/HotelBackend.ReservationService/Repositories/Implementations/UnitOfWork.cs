@@ -12,13 +12,15 @@ public class UnitOfWork : IUnitOfWork
         Reservations = new ReservationRepository(_databaseContext);
         Rooms = new RoomRepository(_databaseContext);
         Hotels = new HotelRepository(_databaseContext);
-        Pricings = new PricingRepository(_databaseContext);
+        Prices = new PricingRepository(_databaseContext);
+        GuestProfiles = new GuestProfileRepository(_databaseContext);
     }
 
     public IReservationRepository Reservations { get; }
     public IRoomRepository Rooms { get; }
     public IHotelRepository Hotels { get; }
-    public IPricingRepository Pricings { get; }
+    public IPricingRepository Prices { get; }
+    public IGuestProfileRepository GuestProfiles { get; }
 
     public async Task<int> SaveChanges()
     {
