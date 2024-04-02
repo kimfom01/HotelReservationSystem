@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using HotelBackend.ReservationService.Data;
-using HotelBackend.ReservationService.Dtos;
-using HotelBackend.ReservationService.Models;
 
-namespace HotelBackend.ReservationService.Services.Implementations;
+namespace HotelBackend.ReservationService.Room;
 
 public class RoomService : IRoomService
 {
@@ -23,7 +21,7 @@ public class RoomService : IRoomService
         return _mapper.Map<IEnumerable<RoomDto>>(rooms) ?? [];
     }
 
-    public async Task<Room?> GetRoom(Guid id)
+    public async Task<RoomModel?> GetRoom(Guid id)
     {
         return await _unitOfWork.Rooms.GetEntity(id);
     }

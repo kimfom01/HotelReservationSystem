@@ -1,8 +1,6 @@
-using HotelBackend.ReservationService.Dtos;
-using HotelBackend.ReservationService.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HotelBackend.ReservationService.Controllers;
+namespace HotelBackend.ReservationService.Room;
 
 [ApiController]
 [Route("/api/[controller]")]

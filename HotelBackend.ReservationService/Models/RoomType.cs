@@ -1,3 +1,5 @@
+using HotelBackend.ReservationService.Room;
+
 namespace HotelBackend.ReservationService.Models;
 
 public class RoomType
@@ -8,5 +10,5 @@ public class RoomType
     public string Description { get; set; }
     public Price? Price { get; set; }
 
-    public IEnumerable<Room>? Rooms { get; set; } // ????????????
+    public IEnumerable<RoomModel>? Rooms { get; set; } // ????????????
 }

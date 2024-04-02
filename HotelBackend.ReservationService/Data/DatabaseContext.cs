@@ -2,6 +2,7 @@
 using HotelBackend.ReservationService.Hotel;
 using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Reservation;
+using HotelBackend.ReservationService.Room;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.ReservationService.Data;
@@ -11,7 +12,7 @@ public class DatabaseContext : DbContext
     public DbSet<HotelModel> Hotels { get; set; }
     public DbSet<Price> Prices { get; set; }
     public DbSet<ReservationModel> Reservations { get; set; }
-    public DbSet<Room> Rooms { get; set; }
+    public DbSet<RoomModel> Rooms { get; set; }
     public DbSet<GuestProfile> GuestProfiles { get; set; }
 
     public DatabaseContext(
@@ -35,8 +36,8 @@ public class DatabaseContext : DbContext
                     Location = "Moscow, Russia"
                 });
 
-        modelBuilder.Entity<Room>()
-            .HasData(new Room
+        modelBuilder.Entity<RoomModel>()
+            .HasData(new RoomModel
                 {
                     Id = new Guid("6d2ee634-519f-48df-b701-b789aa5599a0"),
                     RoomNumber = "1S",
@@ -44,7 +45,7 @@ public class DatabaseContext : DbContext
                     HotelId = new Guid("772e0735-5e83-4894-aa59-d5dc56105404"),
                     RoomTypeId = new Guid("d9c54399-f818-4e06-8983-fd997d95346c")
                 },
-                new Room
+                new RoomModel
                 {
                     Id = new Guid("b0b061d8-6c60-4079-963b-1e13b7d4ed35"),
                     RoomNumber = "2D",
@@ -52,7 +53,7 @@ public class DatabaseContext : DbContext
                     HotelId = new Guid("772e0735-5e83-4894-aa59-d5dc56105404"),
                     RoomTypeId = new Guid("2cf8abf4-a9df-48b6-b261-132b3de15cd9")
                 },
-                new Room
+                new RoomModel
                 {
                     Id = new Guid("10dfd202-183e-4f50-9903-2777ce05fbb9"),
                     RoomNumber = "3E",
@@ -60,7 +61,7 @@ public class DatabaseContext : DbContext
                     HotelId = new Guid("772e0735-5e83-4894-aa59-d5dc56105404"),
                     RoomTypeId = new Guid("95afd44e-3478-4d98-855b-5b541dc00005")
                 },
-                new Room
+                new RoomModel
                 {
                     Id = new Guid("b2c3c1e7-de5e-43cf-865f-b40ab6554d66"),
                     RoomNumber = "1Q",
@@ -68,7 +69,7 @@ public class DatabaseContext : DbContext
                     HotelId = new Guid("2efb57c9-cecd-45b9-997c-4dda8400f460"),
                     RoomTypeId = new Guid("59acf344-ff6b-4f8a-8bcd-80131d6a8e57")
                 },
-                new Room
+                new RoomModel
                 {
                     Id = new Guid("21cdd2ec-164d-416a-a9fe-51d4444d13d1"),
                     RoomNumber = "2B",

@@ -2,7 +2,7 @@
 using HotelBackend.ReservationService.Data;
 using HotelBackend.ReservationService.Exceptions;
 using HotelBackend.ReservationService.Infrastructure;
-using HotelBackend.ReservationService.Services;
+using HotelBackend.ReservationService.Room;
 
 namespace HotelBackend.ReservationService.Reservation;
 

@@ -1,16 +1,16 @@
 using HotelBackend.ReservationService.Data;
-using HotelBackend.ReservationService.Models;
+using HotelBackend.ReservationService.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBackend.ReservationService.Repositories.Implementations;
+namespace HotelBackend.ReservationService.Room;
 
-public class RoomRepository : Repository<Room>, IRoomRepository
+public class RoomRepository : Repository<RoomModel>, IRoomRepository
 {
     public RoomRepository(DatabaseContext databaseContext) : base(databaseContext)
     {
     }
 
-    public async Task<List<Room>> GetAllAvailableRooms(Guid hotelId)
+    public async Task<List<RoomModel>> GetAllAvailableRooms(Guid hotelId)
     {
         return await DbSet
             .Where(room => room.HotelId == hotelId

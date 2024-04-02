@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using HotelBackend.ReservationService.Guest;
 using HotelBackend.ReservationService.Hotel;
-using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Models.enums;
+using HotelBackend.ReservationService.Room;
 
 namespace HotelBackend.ReservationService.Reservation;
 
@@ -24,7 +24,7 @@ public class ReservationModel
     public HotelModel? Hotel { get; set; }
     public Guid RoomId { get; set; }
 
-    public Room? Room { get; set; }
+    public RoomModel? Room { get; set; }
     // public decimal Tax { get; set; }
     // public double Discount { get; set; }
 }

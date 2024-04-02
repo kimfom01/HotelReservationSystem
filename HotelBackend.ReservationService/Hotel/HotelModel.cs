@@ -1,5 +1,5 @@
-﻿using HotelBackend.ReservationService.Models;
-using HotelBackend.ReservationService.Reservation;
+﻿using HotelBackend.ReservationService.Reservation;
+using HotelBackend.ReservationService.Room;
 
 namespace HotelBackend.ReservationService.Hotel;
 
@@ -10,6 +10,6 @@ public class HotelModel
     public string Location { get; set; }
 
     public IEnumerable<ReservationModel>? Reservations { get; set; }
-    public IEnumerable<Room> Rooms { get; set; }
+    public IEnumerable<RoomModel> Rooms { get; set; }
     
 }

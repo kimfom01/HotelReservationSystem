@@ -1,6 +1,5 @@
 using AutoMapper;
 using HotelBackend.ReservationService.Data;
-using HotelBackend.ReservationService.Repositories;
 
 namespace HotelBackend.ReservationService.Hotel;
 

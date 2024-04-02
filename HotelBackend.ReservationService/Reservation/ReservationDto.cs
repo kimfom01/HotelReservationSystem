@@ -1,5 +1,5 @@
-﻿using HotelBackend.ReservationService.Dtos;
-using HotelBackend.ReservationService.Guest;
+﻿using HotelBackend.ReservationService.Guest;
+using HotelBackend.ReservationService.Room;
 
 namespace HotelBackend.ReservationService.Reservation;
 

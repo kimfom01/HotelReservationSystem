@@ -1,9 +1,10 @@
 ﻿using HotelBackend.ReservationService.Hotel;
+using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Reservation;
 
-namespace HotelBackend.ReservationService.Models;
+namespace HotelBackend.ReservationService.Room;
 
-public class Room
+public class RoomModel
 {
     public Guid Id { get; set; }
     public string RoomNumber { get; set; }
