@@ -1,15 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using HotelBackend.ReservationService.Dtos;
 using HotelBackend.ReservationService.Models;
 
 namespace HotelBackend.ReservationService.Services;
 
 public interface IRoomService
 {
-    Task<IEnumerable<Room>> GetAvailableRoomsPerRoomCapacity(Guid hotelId, int capacity);
-    Task UpdateRoom(Room room);
+    Task<IEnumerable<RoomDto>> GetAvailableRoomsPerRoomCapacity(Guid hotelId);
     Task<Room?> GetRoom(Guid id);
-    Task<Room?> GetRoom(Expression<Func<Room, bool>> expression);
-    Task<IEnumerable<Room>?> GetRooms();
-    Task<int> DeleteRoom(Guid id);
-    Task<Room?> PostRoom(Room room);
 }
