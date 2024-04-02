@@ -1,6 +1,5 @@
 using AutoMapper;
 using HotelBackend.ReservationService.Dtos;
-using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,13 +11,15 @@ public class ReservationController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IReservationService _reservationService;
+    private readonly ILogger<ReservationController> _logger;
 
     public ReservationController(
         IMapper mapper,
-        IReservationService reservationService)
+        IReservationService reservationService, ILogger<ReservationController> logger)
     {
         _mapper = mapper;
         _reservationService = reservationService;
+        _logger = logger;
     }
 
     [HttpGet("{id:Guid}")]
@@ -43,49 +44,27 @@ public class ReservationController : ControllerBase
     public async Task<IActionResult> GetReservations()
     {
         var reservations = await _reservationService.GetReservations();
-
+    
         var reservationsDtos = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
-
+    
         return Ok(reservationsDtos);
-    }
-
-    [HttpDelete("{id:Guid}")]
-    [ProducesResponseType(204)]
-    [ProducesResponseType(404)]
-    public async Task<IActionResult> DeleteReservation(Guid id)
-    {
-        int deletedCount = await _reservationService.DeleteReservation(id);
-
-        if (deletedCount <= 0)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
-    }
-
-    [HttpPut]
-    [ProducesResponseType(204)]
-    public async Task<IActionResult> UpdateReservation(ReservationDto reservationDto)
-    {
-        var reservation = _mapper.Map<Reservation>(reservationDto);
-
-        await _reservationService.UpdateReservation(reservation);
-
-        return NoContent();
     }
 
     [HttpPost]
     [ProducesResponseType(201)]
     public async Task<IActionResult> PostReservation(ReservationDto reservationDto)
     {
-        var added = await _reservationService.MakeReservation(reservationDto);
-
-        if (added is null)
+        try
         {
-            return Conflict("Unable to make reservation, no available rooms");
-        }
+            var added = await _reservationService.MakeReservation(reservationDto);
 
-        return CreatedAtAction(nameof(GetReservation), new { id = added.Id }, added);
+            _logger.LogInformation("Successfully made reservation with id={reservationId}", added.Id);
+            return CreatedAtAction(nameof(GetReservation), new { id = added.Id }, added);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError("Unable to make reservation: {exceptionMessage}", exception.Message);
+            return Conflict($"Unable to make reservation: {exception.Message}");
+        }
     }
 }
