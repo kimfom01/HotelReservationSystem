@@ -4,6 +4,7 @@ using HotelBackend.ReservationService.Repositories;
 using HotelBackend.ReservationService.Repositories.Implementations;
 using HotelBackend.ReservationService.Services;
 using HotelBackend.ReservationService.Services.Implementations;
+using HotelBackend.ReservationService.Utils;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,13 +16,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: corsPolicy,
-        policy => policy.WithOrigins().AllowAnyOrigin());
+    options.AddPolicy(name: corsPolicy, policy => policy.WithOrigins().AllowAnyOrigin());
 });
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-    //options.UseInMemoryDatabase("DefaultConnection"); // For testing purpose... will revert to postgres when needed
+    if (builder.Environment.IsDevelopment())
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    }
+    else
+    {
+        options.UseNpgsql(builder.Configuration["DEFAULT_CONNECTION"]);
+    }
+
+    // options.UseInMemoryDatabase("DefaultConnection"); // For testing purpose... will revert to postgres when needed
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -35,10 +43,7 @@ var app = builder.Build();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 using var scope = app.Services.CreateScope();
-var serviceProvider = scope.ServiceProvider;
-var context = serviceProvider.GetRequiredService<DatabaseContext>();
-await context.Database.EnsureDeletedAsync();
-await context.Database.EnsureCreatedAsync();
+await DatabaseReset.SetupDatabase(scope, builder.Environment);
 
 app.UseSwagger();
 app.UseSwaggerUI();
