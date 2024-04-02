@@ -3,6 +3,7 @@ using HotelBackend.ReservationService.Hotel;
 using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Reservation;
 using HotelBackend.ReservationService.Room;
+using HotelBackend.ReservationService.Room.Price;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.ReservationService.Data;
@@ -10,7 +11,7 @@ namespace HotelBackend.ReservationService.Data;
 public class DatabaseContext : DbContext
 {
     public DbSet<HotelModel> Hotels { get; set; }
-    public DbSet<Price> Prices { get; set; }
+    public DbSet<PriceModel> Prices { get; set; }
     public DbSet<ReservationModel> Reservations { get; set; }
     public DbSet<RoomModel> Rooms { get; set; }
     public DbSet<GuestProfile> GuestProfiles { get; set; }
@@ -127,38 +128,38 @@ public class DatabaseContext : DbContext
                     Capacity = 5,
                 });
 
-        modelBuilder.Entity<Price>()
-            .HasData(new Price
+        modelBuilder.Entity<PriceModel>()
+            .HasData(new PriceModel
                 {
                     Id = new Guid("ec9783a1-96b0-4734-99ac-38639dda1c35"),
                     RoomTypeId = new Guid("d9c54399-f818-4e06-8983-fd997d95346c"),
                     Value = 100M
                 },
-                new Price
+                new PriceModel
                 {
                     Id = new Guid("7c8d7dc1-2b29-446f-9575-a108129528b8"),
                     RoomTypeId = new Guid("2cf8abf4-a9df-48b6-b261-132b3de15cd9"),
                     Value = 150M
                 },
-                new Price
+                new PriceModel
                 {
                     Id = new Guid("5d6611bb-24db-4d73-b2bc-13b515fb49df"),
                     RoomTypeId = new Guid("95afd44e-3478-4d98-855b-5b541dc00005"),
                     Value = 200M
                 },
-                new Price
+                new PriceModel
                 {
                     Id = new Guid("d11b6257-1cb0-44ab-95d7-d4e46def9c15"),
                     RoomTypeId = new Guid("5e569fcc-2ef2-42c6-bc5f-fc534afc7616"),
                     Value = 300M
                 },
-                new Price
+                new PriceModel
                 {
                     Id = new Guid("57f6c20f-25e4-4bc4-bbfe-55f310081878"),
                     RoomTypeId = new Guid("59acf344-ff6b-4f8a-8bcd-80131d6a8e57"),
                     Value = 350M
                 },
-                new Price
+                new PriceModel
                 {
                     Id = new Guid("41eb8604-8018-4689-a1e1-c9c0ceb45cb0"),
                     RoomTypeId = new Guid("8454a407-1140-47f6-89d8-de6b9e9ad4cf"),

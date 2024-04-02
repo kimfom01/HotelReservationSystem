@@ -1,6 +1,8 @@
-﻿namespace HotelBackend.ReservationService.Models;
+﻿using HotelBackend.ReservationService.Models;
 
-public class Price
+namespace HotelBackend.ReservationService.Room.Price;
+
+public class PriceModel
 {
     public Guid Id { get; set; }
     public decimal Value { get; set; }
