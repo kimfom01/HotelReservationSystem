@@ -1,4 +1,6 @@
-namespace HotelBackend.ReservationService.Dtos;
+using HotelBackend.ReservationService.Room.Price;
+
+namespace HotelBackend.ReservationService.Room.RoomType;
 
 public class RoomTypeDto
 {

@@ -1,9 +1,9 @@
 ﻿using HotelBackend.ReservationService.Guest;
 using HotelBackend.ReservationService.Hotel;
-using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Reservation;
 using HotelBackend.ReservationService.Room;
 using HotelBackend.ReservationService.Room.Price;
+using HotelBackend.ReservationService.Room.RoomType;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.ReservationService.Data;
@@ -14,6 +14,7 @@ public class DatabaseContext : DbContext
     public DbSet<PriceModel> Prices { get; set; }
     public DbSet<ReservationModel> Reservations { get; set; }
     public DbSet<RoomModel> Rooms { get; set; }
+    public DbSet<RoomTypeModel> RoomTypes { get; set; }
     public DbSet<GuestProfile> GuestProfiles { get; set; }
 
     public DatabaseContext(
@@ -79,15 +80,15 @@ public class DatabaseContext : DbContext
                     RoomTypeId = new Guid("8454a407-1140-47f6-89d8-de6b9e9ad4cf")
                 });
 
-        modelBuilder.Entity<RoomType>()
-            .HasData(new RoomType
+        modelBuilder.Entity<RoomTypeModel>()
+            .HasData(new RoomTypeModel
                 {
                     Id = new Guid("d9c54399-f818-4e06-8983-fd997d95346c"),
                     Type = "Standard",
                     Description = "Basic room with essential amenities, ideal for budget travelers.",
                     Capacity = 1
                 },
-                new RoomType
+                new RoomTypeModel
                 {
                     Id = new Guid("2cf8abf4-a9df-48b6-b261-132b3de15cd9"),
                     Type = "Deluxe",
@@ -95,7 +96,7 @@ public class DatabaseContext : DbContext
                         "Larger than a standard room with additional seating area and possibly a better view.",
                     Capacity = 1
                 },
-                new RoomType
+                new RoomTypeModel
                 {
                     Id = new Guid("95afd44e-3478-4d98-855b-5b541dc00005"),
                     Type = "Executive",
@@ -103,7 +104,7 @@ public class DatabaseContext : DbContext
                         "Designed for business travelers, often including a work desk, high-speed internet, and access to an executive lounge.",
                     Capacity = 2
                 }
-                , new RoomType
+                , new RoomTypeModel
                 {
                     Id = new Guid("5e569fcc-2ef2-42c6-bc5f-fc534afc7616"),
                     Type = "Suite",
@@ -111,7 +112,7 @@ public class DatabaseContext : DbContext
                         "A luxurious, spacious room with separate living and sleeping areas, often featuring upscale amenities.",
                     Capacity = 3
                 },
-                new RoomType
+                new RoomTypeModel
                 {
                     Id = new Guid("59acf344-ff6b-4f8a-8bcd-80131d6a8e57"),
                     Type = "Family",
@@ -119,7 +120,7 @@ public class DatabaseContext : DbContext
                         "Tailored for families, these suites offer multiple bedrooms or a larger space with sofa beds and sometimes kitchenettes.",
                     Capacity = 4
                 },
-                new RoomType
+                new RoomTypeModel
                 {
                     Id = new Guid("8454a407-1140-47f6-89d8-de6b9e9ad4cf"),
                     Type = "Penthouse",

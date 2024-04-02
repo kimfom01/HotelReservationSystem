@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using HotelBackend.ReservationService.Guest;
 using HotelBackend.ReservationService.Hotel;
-using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Reservation;
 using HotelBackend.ReservationService.Room;
 using HotelBackend.ReservationService.Room.Price;
+using HotelBackend.ReservationService.Room.RoomType;
 
 namespace HotelBackend.ReservationService.Mapping;
 
@@ -17,6 +17,6 @@ public class AutoMapping : Profile
         CreateMap<ReservationModel, ReservationDto>().ReverseMap();
         CreateMap<RoomModel, RoomDto>().ReverseMap();
         CreateMap<GuestProfile, GuestProfileDto>().ReverseMap();
-        CreateMap<RoomType, RoomTypeDto>().ReverseMap();
+        CreateMap<RoomTypeModel, RoomTypeDto>().ReverseMap();
     }
 }
