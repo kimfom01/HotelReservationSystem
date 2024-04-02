@@ -5,9 +5,7 @@ namespace HotelBackend.ReservationService.Services;
 
 public interface IReservationService
 {
-    Task<ReservationDto?> MakeReservation(ReservationDto reservationDto);
+    Task<ReservationDto> MakeReservation(ReservationDto reservationDto);
     Task<Reservation?> GetReservation(Guid id);
     Task<IEnumerable<Reservation>?> GetReservations();
-    Task<int> DeleteReservation(Guid id);
-    Task UpdateReservation(Reservation? reservation);
 }
