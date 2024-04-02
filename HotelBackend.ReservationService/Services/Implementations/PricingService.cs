@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
+using HotelBackend.ReservationService.Data;
 using HotelBackend.ReservationService.Models;
-using HotelBackend.ReservationService.Repositories;
 
 namespace HotelBackend.ReservationService.Services.Implementations;
 

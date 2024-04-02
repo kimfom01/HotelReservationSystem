@@ -1,8 +1,10 @@
-using HotelBackend.ReservationService.Data;
 using HotelBackend.ReservationService.Guest;
+using HotelBackend.ReservationService.Hotel;
+using HotelBackend.ReservationService.Repositories;
+using HotelBackend.ReservationService.Repositories.Implementations;
 using HotelBackend.ReservationService.Reservation;
 
-namespace HotelBackend.ReservationService.Repositories.Implementations;
+namespace HotelBackend.ReservationService.Data;
 
 public class UnitOfWork : IUnitOfWork
 {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using HotelBackend.ReservationService.Data;
 using HotelBackend.ReservationService.Dtos;
 using HotelBackend.ReservationService.Models;
-using HotelBackend.ReservationService.Repositories;
 
 namespace HotelBackend.ReservationService.Services.Implementations;
 
