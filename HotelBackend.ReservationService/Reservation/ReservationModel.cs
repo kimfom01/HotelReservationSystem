@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using HotelBackend.ReservationService.Guest;
+using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Models.enums;
 
-namespace HotelBackend.ReservationService.Models;
+namespace HotelBackend.ReservationService.Reservation;
 
-public class Reservation
+public class ReservationModel
 {
     public Guid Id { get; set; }
     public DateTime CreationDate { get; private set; } = DateTime.Now;

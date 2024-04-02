@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using HotelBackend.ReservationService.Dtos;
+using HotelBackend.ReservationService.Reservation;
 using HotelBackend.ReservationService.Utils;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;

@@ -1,4 +1,6 @@
-﻿using HotelBackend.ReservationService.Models;
+﻿using HotelBackend.ReservationService.Guest;
+using HotelBackend.ReservationService.Models;
+using HotelBackend.ReservationService.Reservation;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.ReservationService.Data;
@@ -7,7 +9,7 @@ public class DatabaseContext : DbContext
 {
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<Price> Prices { get; set; }
-    public DbSet<Reservation> Reservations { get; set; }
+    public DbSet<ReservationModel> Reservations { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<GuestProfile> GuestProfiles { get; set; }
 
@@ -171,8 +173,8 @@ public class DatabaseContext : DbContext
                 ContactEmail = "guestprofile@mail.com"
             });
 
-        modelBuilder.Entity<Reservation>()
-            .HasData(new Reservation
+        modelBuilder.Entity<ReservationModel>()
+            .HasData(new ReservationModel
             {
                 Id = new Guid("37dfb45a-77e8-4aa0-9c96-50209a772c90"),
                 HotelId = new Guid("772e0735-5e83-4894-aa59-d5dc56105404"),

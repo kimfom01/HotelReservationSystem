@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using HotelBackend.ReservationService.Dtos;
 using HotelBackend.ReservationService.Exceptions;
 using HotelBackend.ReservationService.Infrastructure;
-using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Repositories;
+using HotelBackend.ReservationService.Services;
 
-namespace HotelBackend.ReservationService.Services.Implementations;
+namespace HotelBackend.ReservationService.Reservation;
 
 public class ReservationService : IReservationService
 {
@@ -26,19 +25,19 @@ public class ReservationService : IReservationService
         _roomService = roomService;
     }
 
-    public Task<Reservation?> GetReservation(Guid id)
+    public Task<ReservationModel?> GetReservation(Guid id)
     {
         return _unitOfWork.Reservations.GetEntity(id);
     }
 
-    public async Task<IEnumerable<Reservation>?> GetReservations()
+    public async Task<IEnumerable<ReservationModel>?> GetReservations()
     {
         return await _unitOfWork.Reservations.GetEntities(res => true);
     }
 
     public async Task<ReservationDto> MakeReservation(ReservationDto reservationDto)
     {
-        var reservation = _mapper.Map<Reservation>(reservationDto);
+        var reservation = _mapper.Map<ReservationModel>(reservationDto);
         var room = await _roomService.GetRoom(reservation.RoomId);
 
         if (room is null)

@@ -1,5 +1,5 @@
 using HotelBackend.ReservationService.Data;
-using HotelBackend.ReservationService.Models;
+using HotelBackend.ReservationService.Guest;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.ReservationService.Repositories.Implementations;

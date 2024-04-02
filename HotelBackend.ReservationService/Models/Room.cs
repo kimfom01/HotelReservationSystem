@@ -1,4 +1,6 @@
-﻿namespace HotelBackend.ReservationService.Models;
+﻿using HotelBackend.ReservationService.Reservation;
+
+namespace HotelBackend.ReservationService.Models;
 
 public class Room
 {
@@ -10,5 +12,5 @@ public class Room
     public Guid RoomTypeId { get; set; }
     public RoomType? RoomType { get; set; }
 
-    public IEnumerable<Reservation>? Reservations { get; set; }
+    public IEnumerable<ReservationModel>? Reservations { get; set; }
 }

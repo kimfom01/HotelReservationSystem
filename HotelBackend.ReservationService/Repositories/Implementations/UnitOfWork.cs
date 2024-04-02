@@ -1,4 +1,5 @@
 using HotelBackend.ReservationService.Data;
+using HotelBackend.ReservationService.Reservation;
 
 namespace HotelBackend.ReservationService.Repositories.Implementations;
 

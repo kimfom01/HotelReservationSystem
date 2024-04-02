@@ -1,3 +1,5 @@
+using HotelBackend.ReservationService.Reservation;
+
 namespace HotelBackend.ReservationService.Repositories;
 
 public interface IUnitOfWork : IDisposable
