@@ -13,9 +13,8 @@ public class RoomRepository : Repository<Room>, IRoomRepository
     public async Task<List<Room>> GetAllAvailableRooms(Guid hotelId)
     {
         return await DbSet
-            .Where(hot => hot.Id == hotelId
-                          && hot.Availability == true)
-            .AsNoTracking()
-            .ToListAsync();
+            .Where(room => room.HotelId == hotelId
+                          && room.Availability == true)
+            .AsNoTracking().ToListAsync();
     }
 }
