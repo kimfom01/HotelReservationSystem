@@ -1,4 +1,4 @@
-namespace HotelBackend.ReservationService.Models.enums;
+namespace HotelBackend.ReservationService.Enums;
 
 public enum PaymentStatus
 {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using HotelBackend.ReservationService.Enums;
 using HotelBackend.ReservationService.Guest;
 using HotelBackend.ReservationService.Hotel;
-using HotelBackend.ReservationService.Models.enums;
 using HotelBackend.ReservationService.Room;
 
 namespace HotelBackend.ReservationService.Reservation;
