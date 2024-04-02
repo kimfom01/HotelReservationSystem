@@ -1,4 +1,6 @@
-namespace HotelBackend.ReservationService.Models;
+using HotelBackend.ReservationService.Reservation;
+
+namespace HotelBackend.ReservationService.Guest;
 
 public class GuestProfile
 {
@@ -6,7 +8,6 @@ public class GuestProfile
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string ContactEmail { get; set; }
-    // public string FullName => $"{FirstName} {LastName}"; move to dto
 
-    public IEnumerable<Reservation>? Reservations { get; set; }
+    public IEnumerable<ReservationModel>? Reservations { get; set; }
 }

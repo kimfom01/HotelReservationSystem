@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HotelBackend.ReservationService.Dtos;
+using HotelBackend.ReservationService.Guest;
 using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Reservation;
 

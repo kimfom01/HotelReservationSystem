@@ -1,4 +1,5 @@
 ﻿using HotelBackend.ReservationService.Dtos;
+using HotelBackend.ReservationService.Guest;
 
 namespace HotelBackend.ReservationService.Reservation;
 

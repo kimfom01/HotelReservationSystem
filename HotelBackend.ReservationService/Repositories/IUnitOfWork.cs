@@ -1,3 +1,4 @@
+using HotelBackend.ReservationService.Guest;
 using HotelBackend.ReservationService.Reservation;
 
 namespace HotelBackend.ReservationService.Repositories;

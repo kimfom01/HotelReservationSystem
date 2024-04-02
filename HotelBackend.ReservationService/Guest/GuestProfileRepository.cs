@@ -1,8 +1,8 @@
 using HotelBackend.ReservationService.Data;
-using HotelBackend.ReservationService.Guest;
+using HotelBackend.ReservationService.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBackend.ReservationService.Repositories.Implementations;
+namespace HotelBackend.ReservationService.Guest;
 
 public class GuestProfileRepository : Repository<GuestProfile>, IGuestProfileRepository
 {

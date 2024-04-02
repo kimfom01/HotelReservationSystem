@@ -1,6 +1,6 @@
-using HotelBackend.ReservationService.Guest;
+using HotelBackend.ReservationService.Repositories;
 
-namespace HotelBackend.ReservationService.Repositories;
+namespace HotelBackend.ReservationService.Guest;
 
 public interface IGuestProfileRepository : IRepository<GuestProfile>
 {

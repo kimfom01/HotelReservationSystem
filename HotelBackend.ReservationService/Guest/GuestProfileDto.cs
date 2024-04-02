@@ -1,4 +1,4 @@
-namespace HotelBackend.ReservationService.Dtos;
+namespace HotelBackend.ReservationService.Guest;
 
 public class GuestProfileDto
 {
