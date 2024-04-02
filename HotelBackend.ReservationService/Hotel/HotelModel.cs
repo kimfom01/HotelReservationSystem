@@ -1,8 +1,9 @@
-﻿using HotelBackend.ReservationService.Reservation;
+﻿using HotelBackend.ReservationService.Models;
+using HotelBackend.ReservationService.Reservation;
 
-namespace HotelBackend.ReservationService.Models;
+namespace HotelBackend.ReservationService.Hotel;
 
-public class Hotel
+public class HotelModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

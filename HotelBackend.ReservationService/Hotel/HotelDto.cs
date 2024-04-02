@@ -1,4 +1,4 @@
-﻿namespace HotelBackend.ReservationService.Dtos;
+﻿namespace HotelBackend.ReservationService.Hotel;
 
 public class HotelDto
 {

@@ -1,8 +1,8 @@
 using AutoMapper;
-using HotelBackend.ReservationService.Dtos;
+using HotelBackend.ReservationService.Data;
 using HotelBackend.ReservationService.Repositories;
 
-namespace HotelBackend.ReservationService.Services.Implementations;
+namespace HotelBackend.ReservationService.Hotel;
 
 public class HotelService : IHotelService
 {

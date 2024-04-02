@@ -1,4 +1,5 @@
 ﻿using HotelBackend.ReservationService.Guest;
+using HotelBackend.ReservationService.Hotel;
 using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Reservation;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ namespace HotelBackend.ReservationService.Data;
 
 public class DatabaseContext : DbContext
 {
-    public DbSet<Hotel> Hotels { get; set; }
+    public DbSet<HotelModel> Hotels { get; set; }
     public DbSet<Price> Prices { get; set; }
     public DbSet<ReservationModel> Reservations { get; set; }
     public DbSet<Room> Rooms { get; set; }
@@ -20,14 +21,14 @@ public class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Hotel>()
-            .HasData(new Hotel
+        modelBuilder.Entity<HotelModel>()
+            .HasData(new HotelModel
                 {
                     Id = new Guid("772e0735-5e83-4894-aa59-d5dc56105404"),
                     Name = "Voronezh Hotel",
                     Location = "Voronezh, Russia"
                 },
-                new Hotel
+                new HotelModel
                 {
                     Id = new Guid("2efb57c9-cecd-45b9-997c-4dda8400f460"),
                     Name = "Moscow Hotel",

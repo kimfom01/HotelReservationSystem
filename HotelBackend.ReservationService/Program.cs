@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using HotelBackend.ReservationService.Data;
+using HotelBackend.ReservationService.Hotel;
 using HotelBackend.ReservationService.Infrastructure;
 using HotelBackend.ReservationService.Repositories;
 using HotelBackend.ReservationService.Repositories.Implementations;
@@ -28,14 +29,9 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    if (builder.Environment.IsDevelopment())
-    {
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-    }
-    else
-    {
-        options.UseNpgsql(builder.Configuration["DEFAULT_CONNECTION"]);
-    }
+    options.UseNpgsql(builder.Environment.IsDevelopment()
+        ? builder.Configuration.GetConnectionString("DefaultConnection")
+        : builder.Configuration["DEFAULT_CONNECTION"]);
 
     // options.UseInMemoryDatabase("DefaultConnection"); // For testing purpose... will revert to postgres when needed
 });

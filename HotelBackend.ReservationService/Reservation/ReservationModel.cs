@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using HotelBackend.ReservationService.Guest;
+using HotelBackend.ReservationService.Hotel;
 using HotelBackend.ReservationService.Models;
 using HotelBackend.ReservationService.Models.enums;
 
@@ -20,7 +21,7 @@ public class ReservationModel
     public Guid GuestProfileId { get; set; }
     public GuestProfile GuestProfile { get; set; }
     public Guid HotelId { get; set; }
-    public Hotel? Hotel { get; set; }
+    public HotelModel? Hotel { get; set; }
     public Guid RoomId { get; set; }
 
     public Room? Room { get; set; }
