@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace HotelBackend.PaymentInitiator.Controllers;
+namespace HotelBackend.PaymentInitiatorService.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
