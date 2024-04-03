@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBackend.General.Api", "HotelBackend.General.Api\HotelBackend.General.Api.csproj", "{F32E5667-729A-4E35-8880-4A0E48393CBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBackend.Old.Remove.Api", "HotelBackend.Old.Remove.Api\HotelBackend.Old.Remove.Api.csproj", "{F32E5667-729A-4E35-8880-4A0E48393CBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{1822B676-AFCE-4350-8A6C-F7F63583D1CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBackend.Old.Remove.DataAccess", "HotelBackend.Old.Remove.DataAccess\HotelBackend.Old.Remove.DataAccess.csproj", "{1822B676-AFCE-4350-8A6C-F7F63583D1CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.ReservationService", "HotelBackend.ReservationService\HotelBackend.ReservationService.csproj", "{67B1BE67-6D77-4B19-9935-7CEE9D7E1A9D}"
 EndProject
