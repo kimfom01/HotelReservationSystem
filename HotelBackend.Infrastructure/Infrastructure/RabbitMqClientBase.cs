@@ -1,10 +1,10 @@
-using HotelBackend.ReservationService.Utils;
+using HotelBackend.Infrastructure.Models;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
-namespace HotelBackend.ReservationService.Infrastructure;
+namespace HotelBackend.Infrastructure.Infrastructure;
 
-public class RabbitMqClientBase : IDisposable
+public abstract class RabbitMqClientBase : IDisposable
 {
     private readonly RabbitMqOption _rabbitMqOptions;
     private readonly IConnection _connection;
@@ -40,6 +40,18 @@ public class RabbitMqClientBase : IDisposable
 
     public void Dispose()
     {
+        Dispose(true);
+
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool isDisposing)
+    {
+        if (!isDisposing)
+        {
+            return;
+        }
+
         _connection.Dispose();
         Channel.Dispose();
     }

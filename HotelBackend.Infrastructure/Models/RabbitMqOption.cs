@@ -1,4 +1,4 @@
-namespace HotelBackend.ReservationService.Utils;
+namespace HotelBackend.Infrastructure.Models;
 
 public class RabbitMqOption
 {

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using HotelBackend.Infrastructure.Infrastructure;
+using HotelBackend.Infrastructure.Models;
 using HotelBackend.ReservationService.Data;
 using HotelBackend.ReservationService.Exceptions;
-using HotelBackend.ReservationService.Infrastructure;
 using HotelBackend.ReservationService.Room;
 
 namespace HotelBackend.ReservationService.Reservation;
@@ -11,13 +12,13 @@ public class ReservationService : IReservationService
     private readonly IRoomService _roomService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly QueueService _queueService;
+    private readonly QueueService<ReservationMessage> _queueService;
 
     public ReservationService(
         IRoomService roomService,
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        QueueService queueService)
+        QueueService<ReservationMessage> queueService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -47,7 +48,7 @@ public class ReservationService : IReservationService
 
         if (room.Availability != true)
         {
-            throw new Exception($"Room with id={reservation.RoomId} already taken");
+            throw new NotAvailableException($"Room with id={reservation.RoomId} already taken");
         }
 
         room.Availability = false;
@@ -67,7 +68,7 @@ public class ReservationService : IReservationService
 
         if (currentGuestProfile is null)
         {
-            throw new Exception("An error occured while making reservation");
+            throw new ReservationException("An error occured while making reservation");
         }
 
         reservation.GuestProfileId = currentGuestProfile.Id;
@@ -77,12 +78,14 @@ public class ReservationService : IReservationService
 
         if (added is null)
         {
-            throw new Exception("An error occured while making reservation");
+            throw new ReservationException("An error occured while making reservation");
         }
+
+        var message = _mapper.Map<ReservationMessage>(added);
 
         reservationDto = _mapper.Map<ReservationDto>(added);
 
-        await _queueService.PublishCreateMessage(reservationDto);
+        await _queueService.PublishMessage(message);
 
         return reservationDto;
     }

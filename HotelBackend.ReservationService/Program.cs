@@ -1,8 +1,9 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using HotelBackend.Infrastructure.Infrastructure;
+using HotelBackend.Infrastructure.Models;
 using HotelBackend.ReservationService.Data;
 using HotelBackend.ReservationService.Hotel;
-using HotelBackend.ReservationService.Infrastructure;
 using HotelBackend.ReservationService.Reservation;
 using HotelBackend.ReservationService.Room;
 using HotelBackend.ReservationService.Room.Price;
@@ -40,7 +41,7 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IPricingService, PricingService>();
 builder.Services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-builder.Services.AddScoped<QueueService>();
+builder.Services.AddScoped(typeof(QueueService<>));
 
 var app = builder.Build();
 
