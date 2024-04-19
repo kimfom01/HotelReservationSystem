@@ -1,5 +1,5 @@
 using HotelBackend.Application.Contracts.Infrastructure;
-using HotelBackend.Application.Models;
+using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,9 +25,9 @@ public class PaymentController : ControllerBase
     [HttpPost("pay/{reservationId:Guid}")]
     public async Task<IActionResult> PayForReservation(Guid reservationId)
     {
-        await _queueService.PublishMessage(new PaymentStatus
+        await _queueService.PublishMessage(new UpdateReservationPaymentStatusDto
         {
-            Status = PaymentStatusEnum.PAID,
+            Status = PaymentStatus.PAID,
             ReservationId = reservationId
         });
         

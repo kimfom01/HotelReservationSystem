@@ -1,4 +1,5 @@
 ﻿using HotelBackend.Domain.Entities;
+using HotelBackend.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.Persistence.Data;
@@ -181,7 +182,9 @@ public class DatabaseContext : DbContext
                 CheckOut = DateTime.Now.AddDays(5),
                 NumberOfGuests = 5,
                 RoomId = new Guid("6d2ee634-519f-48df-b701-b789aa5599a0"),
-                GuestProfileId = new Guid("91555d72-5259-433c-a597-23eeab1da9e3")
+                GuestProfileId = new Guid("91555d72-5259-433c-a597-23eeab1da9e3"),
+                PaymentStatus = PaymentStatus.PENDING,
+                ReservationStatus = ReservationStatus.PENDING
             });
     }
 }

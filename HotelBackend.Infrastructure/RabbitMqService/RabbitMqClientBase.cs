@@ -36,7 +36,6 @@ public abstract class RabbitMqClientBase : IDisposable
         Channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct);
         Channel.QueueDeclare(QueueName, false, false, false, null);
         Channel.QueueBind(QueueName, ExchangeName, RoutingKey, null);
-        Channel.BasicQos(0, 1, false);
     }
 
     public void Dispose()

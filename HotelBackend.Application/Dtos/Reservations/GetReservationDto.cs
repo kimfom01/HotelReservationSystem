@@ -10,7 +10,7 @@ public class GetReservationDto : BaseDto
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public ReservationStatus ReservationStatus { get; set; }
-    public PaymentStatusEnum PaymentStatusEnum { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
     public string? PaymentId { get; set; }
     public string? SpecialRequests { get; set; }
     public string? RoomPreferences { get; set; }

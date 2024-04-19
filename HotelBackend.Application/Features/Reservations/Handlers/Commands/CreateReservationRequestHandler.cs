@@ -67,16 +67,17 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
 
         var added = await _unitOfWork.Reservations.Add(reservation, cancellationToken);
         await _unitOfWork.SaveChanges(cancellationToken);
+        _logger.LogInformation("Successfully created a reservation");
 
         if (added is null)
         {
-            _logger.LogError("An error occured: unable to save reservation");
             throw new ReservationException("An error occured: unable to save reservation");
         }
 
         var message = _mapper.Map<ReservationMessage>(added);
 
         await _queueService.PublishMessage(message);
+        _logger.LogInformation("Successfully pushed message");
 
         return _mapper.Map<GetReservationDto>(reservation);
     }

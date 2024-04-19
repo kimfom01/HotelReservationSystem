@@ -1,14 +1,22 @@
 using System.Text;
+using System.Text.Json;
+using HotelBackend.Application.Dtos.Reservations;
+using HotelBackend.Application.Features.Reservations.Requests.Commands;
 using HotelBackend.Application.Models;
-using Microsoft.Extensions.Hosting;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace HotelBackend.BackgroundConsumer.Consumer;
 
-public sealed class RabbitMqConsumer : BackgroundService
+public class RabbitMqConsumer : IDisposable
 {
+    // private readonly IServiceProvider _serviceProvider;
+    private readonly IMediator _mediator;
+    private readonly ILogger<RabbitMqConsumer> _logger;
     private readonly IConnection _connection;
     private readonly RabbitMqOption _rabbitMqOption;
     private readonly IModel _channel;
@@ -16,8 +24,14 @@ public sealed class RabbitMqConsumer : BackgroundService
 
     public RabbitMqConsumer(
         IOptions<RabbitMqOption> options,
-        IConnectionFactory factory)
+        IConnectionFactory factory,
+        // IServiceProvider serviceProvider, 
+        IMediator mediator,
+        ILogger<RabbitMqConsumer> logger)
     {
+        // _serviceProvider = serviceProvider;
+        _mediator = mediator;
+        _logger = logger;
         _rabbitMqOption = options.Value;
         factory.Uri =
             new Uri(
@@ -30,7 +44,7 @@ public sealed class RabbitMqConsumer : BackgroundService
         _channel = _connection.CreateModel();
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    public Task ExecuteAsync(CancellationToken stoppingToken = default)
     {
         var exchangeName = _rabbitMqOption.Exchange;
         var routingKey = _rabbitMqOption.RoutingKey;
@@ -41,27 +55,47 @@ public sealed class RabbitMqConsumer : BackgroundService
         _channel.QueueBind(queueName, exchangeName, routingKey, null);
         _channel.BasicQos(0, 1, false);
 
-        var consumer = new EventingBasicConsumer(_channel);
-
-        consumer.Received += (sender, args) =>
+        try
         {
-            var body = args.Body.ToArray();
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                // var scope = _serviceProvider.CreateScope();
+                // var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-            var json = Encoding.UTF8.GetString(body);
-            
-            Console.WriteLine(json);
+                var consumer = new EventingBasicConsumer(_channel);
 
-            // var paymentStatus = JsonSerializer.Deserialize<PaymentStatus>(json);
+                consumer.Received += async (_, args) =>
+                {
+                    var body = args.Body.ToArray();
 
-            _channel.BasicAck(args.DeliveryTag, false);
-        };
+                    var json = Encoding.UTF8.GetString(body);
 
-        _consumerTag = _channel.BasicConsume(queueName, false, consumer);
+                    Console.WriteLine(json);
+
+                    var updateReservationPaymentStatusDto =
+                        JsonSerializer.Deserialize<UpdateReservationPaymentStatusDto>(json);
+
+                    await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
+                    await _mediator.Send(new UpdateReservationStatusRequest
+                    {
+                        UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto
+                    }, stoppingToken);
+
+                    _channel.BasicAck(args.DeliveryTag, false);
+                };
+
+                _consumerTag = _channel.BasicConsume(queueName, false, consumer);
+            }
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError("Exception: {exception}", exception.Message);
+        }
 
         return Task.CompletedTask;
     }
 
-    private void Cleanup(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
         if (disposing)
         {
@@ -72,9 +106,9 @@ public sealed class RabbitMqConsumer : BackgroundService
         }
     }
 
-    public override void Dispose()
+    public void Dispose()
     {
-        Cleanup(true);
-        base.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }

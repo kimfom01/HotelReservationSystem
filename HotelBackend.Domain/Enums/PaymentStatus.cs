@@ -1,9 +1,9 @@
 namespace HotelBackend.Domain.Enums;
 
-public enum PaymentStatusEnum
+public enum PaymentStatus
 {
-    PAID,
     PENDING,
+    PAID,
     REFUNDED,
     CANCELED
 }
