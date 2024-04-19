@@ -37,9 +37,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         return Task.CompletedTask;
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetEntities(Expression<Func<TEntity, bool>> expression)
+    public virtual async Task<List<TEntity>> GetEntities(Expression<Func<TEntity, bool>> expression)
     {
-        return await Task.Run(() => DbSet.Where(expression).AsNoTracking());
+        return await DbSet.Where(expression).AsNoTracking().ToListAsync();
     }
 
     public virtual async Task<TEntity?> GetEntity(Guid id)

@@ -13,9 +13,9 @@ public static class ApplicationServicesRegistration
         this IServiceCollection services, IConfiguration config)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMediatR(conf => conf.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IRoomService, RoomService>();
-        services.AddScoped<IHotelService, HotelService>();
         services.AddScoped<IPricingService, PricingService>();
         services.Configure<RabbitMqOption>(config.GetSection(nameof(RabbitMqOption)));
 

@@ -1,34 +1,26 @@
-using HotelBackend.Application.Contracts.Features;
 using HotelBackend.Application.Dtos;
+using HotelBackend.Application.Features.Hotels.Requests.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HotelBackend.ReservationService.Hotel;
+namespace HotelBackend.ReservationService.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
 public class HotelController : ControllerBase
 {
-    private readonly IHotelService _hotelService;
-    private readonly ILogger<HotelController> _logger;
+    private readonly IMediator _mediator;
 
-    public HotelController(IHotelService hotelService, ILogger<HotelController> logger)
+    public HotelController(IMediator mediator)
     {
-        _hotelService = hotelService;
-        _logger = logger;
+        _mediator = mediator;
     }
 
     [HttpGet]
     public async Task<ActionResult<HotelDto>> GetHotels()
     {
-        var hotelsDto = await _hotelService.GetHotels();
-
-        if (hotelsDto is null)
-        {
-            _logger.LogError("There are no hotels found or registered!");
-            return NotFound("There are no hotels found or registered!");
-        }
-
-        _logger.LogInformation("Getting list of hotels");
+        var hotelsDto = await _mediator.Send(new GetHotelListRequest());
+        
         return Ok(hotelsDto);
     }
 }
