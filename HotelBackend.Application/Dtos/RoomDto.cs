@@ -1,8 +1,9 @@
-﻿namespace HotelBackend.Application.Dtos;
+﻿using HotelBackend.Application.Dtos.Common;
 
-public class RoomDto
+namespace HotelBackend.Application.Dtos;
+
+public class RoomDto : BaseDto
 {
-    public Guid Id { get; set; }
     public string RoomNumber { get; set; } = string.Empty;
     public bool Availability { get; set; }
     public Guid HotelId { get; set; }

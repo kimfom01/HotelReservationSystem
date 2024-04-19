@@ -1,8 +1,9 @@
-﻿namespace HotelBackend.Application.Dtos;
+﻿using HotelBackend.Application.Dtos.Common;
 
-public class PriceDto
+namespace HotelBackend.Application.Dtos;
+
+public class PriceDto : BaseDto
 {
-    public Guid Id { get; set; }
     public decimal Value { get; set; }
     public Guid RoomTypeId { get; set; }
 }

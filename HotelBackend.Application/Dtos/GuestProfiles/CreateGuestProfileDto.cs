@@ -1,8 +1,7 @@
-namespace HotelBackend.Application.Dtos;
+namespace HotelBackend.Application.Dtos.GuestProfiles;
 
-public class GuestProfileDto
+public class CreateGuestProfileDto
 {
-    public Guid Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string ContactEmail { get; set; } = string.Empty;

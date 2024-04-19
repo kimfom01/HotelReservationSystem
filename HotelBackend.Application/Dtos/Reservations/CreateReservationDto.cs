@@ -1,16 +1,15 @@
-﻿namespace HotelBackend.Application.Dtos;
+﻿using HotelBackend.Application.Dtos.GuestProfiles;
 
-public class ReservationDto
+namespace HotelBackend.Application.Dtos.Reservations;
+
+public class CreateReservationDto
 {
-    public Guid Id { get; set; }
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public string SpecialRequests { get; set; } = string.Empty;
     public string RoomPreferences { get; set; } = string.Empty;
     public int NumberOfGuests { get; set; }
-    public Guid GuestProfileId { get; set; }
-    public GuestProfileDto? GuestProfile { get; set; }
+    public CreateGuestProfileDto? GuestProfile { get; set; }
     public Guid HotelId { get; set; }
     public Guid RoomId { get; set; }
-    public RoomDto? Room { get; set; }
 }
