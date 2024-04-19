@@ -7,5 +7,5 @@ public interface IUnitOfWork : IDisposable
     public IHotelRepository Hotels { get; }
     public IPriceRepository Prices { get; }
     public IGuestProfileRepository GuestProfiles { get; }
-    public Task<int> SaveChanges();
+    public Task<int> SaveChanges(CancellationToken cancellationToken);
 }

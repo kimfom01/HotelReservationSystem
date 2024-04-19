@@ -10,9 +10,9 @@ public abstract class RabbitMqClientBase : IDisposable
     private readonly IConnection _connection;
     protected readonly IModel Channel;
 
-    protected string ExchangeName { get; private set; }
-    protected string RoutingKey { get; private set; }
-    public string QueueName { get; private set; }
+    protected string ExchangeName { get; private set; } = string.Empty;
+    protected string RoutingKey { get; private set; } = string.Empty;
+    public string QueueName { get; private set; } = string.Empty;
 
     protected RabbitMqClientBase(
         IOptions<RabbitMqOption> rabbitMqOptions,

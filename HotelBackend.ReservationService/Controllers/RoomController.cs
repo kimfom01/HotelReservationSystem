@@ -1,34 +1,28 @@
-using HotelBackend.Application.Contracts.Features;
+using System.Net;
 using HotelBackend.Application.Dtos;
+using HotelBackend.Application.Features.Rooms.Requests.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HotelBackend.ReservationService.Room;
+namespace HotelBackend.ReservationService.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
 public class RoomController : ControllerBase
 {
-    private readonly IRoomService _roomService;
-    private readonly ILogger<RoomController> _logger;
+    private readonly IMediator _mediator;
 
-    public RoomController(IRoomService roomService, ILogger<RoomController> logger)
+    public RoomController(IMediator mediator)
     {
-        _roomService = roomService;
-        _logger = logger;
+        _mediator = mediator;
     }
 
     [HttpGet("available/{hotelId:Guid}")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<RoomDto>> GetAvailableRooms(Guid hotelId)
     {
-        var rooms = await _roomService.GetAvailableRoomsPerRoomCapacity(hotelId);
-
-        if (!rooms.Any())
-        {
-            _logger.LogError("There are no rooms found or registered in Hotel={hotelId}", hotelId);
-            return NotFound($"There are no rooms found or registered in Hotel={hotelId}");
-        }
-
-        _logger.LogInformation("Getting available rooms from Hotel={hotelId}", hotelId);
+        var rooms = await _mediator.Send(new GetAvailableRoomsInHotelRequest { HotelId = hotelId });
+        
         return Ok(rooms);
     }
 }

@@ -3,7 +3,7 @@ using HotelBackend.Application.Contracts.Features;
 using HotelBackend.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HotelBackend.ReservationService.Reservation;
+namespace HotelBackend.ReservationService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -25,9 +25,9 @@ public class ReservationController : ControllerBase
     [HttpGet("{id:Guid}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> GetReservation(Guid id)
+    public async Task<IActionResult> GetReservation(Guid id, CancellationToken cancellationToken)
     {
-        var reservation = await _reservationService.GetReservation(id);
+        var reservation = await _reservationService.GetReservation(id, cancellationToken);
 
         if (reservation is null)
         {
@@ -41,9 +41,9 @@ public class ReservationController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(200)]
-    public async Task<IActionResult> GetReservations()
+    public async Task<IActionResult> GetReservations(CancellationToken cancellationToken)
     {
-        var reservations = await _reservationService.GetReservations();
+        var reservations = await _reservationService.GetReservations(cancellationToken);
 
         var reservationsDtos = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
 
@@ -52,13 +52,13 @@ public class ReservationController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> PostReservation(ReservationDto reservationDto)
+    public async Task<IActionResult> PostReservation(ReservationDto reservationDto, CancellationToken cancellationToken)
     {
         try
         {
             var reservation = _mapper.Map<Domain.Entities.Reservation>(reservationDto);
 
-            var added = await _reservationService.MakeReservation(reservation);
+            var added = await _reservationService.MakeReservation(reservation, cancellationToken);
 
             _logger.LogInformation("Successfully made reservation with id={reservationId}", added.Id);
             return CreatedAtAction(nameof(GetReservation), new { id = added.Id }, added);

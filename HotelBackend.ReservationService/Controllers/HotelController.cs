@@ -1,3 +1,4 @@
+using System.Net;
 using HotelBackend.Application.Dtos;
 using HotelBackend.Application.Features.Hotels.Requests.Queries;
 using MediatR;
@@ -17,6 +18,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<HotelDto>> GetHotels()
     {
         var hotelsDto = await _mediator.Send(new GetHotelListRequest());

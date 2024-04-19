@@ -10,11 +10,11 @@ public class RoomRepository : Repository<Room>, IRoomRepository
     {
     }
 
-    public async Task<List<Room>> GetAllAvailableRooms(Guid hotelId)
+    public async Task<List<Room>> GetAllAvailableRooms(Guid hotelId, CancellationToken cancellationToken)
     {
         return await DbSet
             .Where(room => room.HotelId == hotelId
-                          && room.Availability == true)
-            .AsNoTracking().ToListAsync();
+                           && room.Availability)
+            .AsNoTracking().ToListAsync(cancellationToken);
     }
 }

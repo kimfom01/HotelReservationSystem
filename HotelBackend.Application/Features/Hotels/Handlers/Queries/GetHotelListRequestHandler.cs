@@ -5,7 +5,7 @@ using HotelBackend.Application.Features.Hotels.Requests.Queries;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace HotelBackend.Application.Features.Hotels.Handlers;
+namespace HotelBackend.Application.Features.Hotels.Handlers.Queries;
 
 public class GetHotelListRequestHandler : IRequestHandler<GetHotelListRequest, List<HotelDto>>
 {
@@ -26,7 +26,7 @@ public class GetHotelListRequestHandler : IRequestHandler<GetHotelListRequest, L
     public async Task<List<HotelDto>> Handle(GetHotelListRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting all hotels");
-        var hotels = await _unitOfWork.Hotels.GetEntities(hot => true);
+        var hotels = await _unitOfWork.Hotels.GetEntities(hot => true, cancellationToken);
 
         if (hotels.Count == 0)
         {

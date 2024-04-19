@@ -15,8 +15,6 @@ public static class ApplicationServicesRegistration
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatR(conf => conf.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddScoped<IReservationService, ReservationService>();
-        services.AddScoped<IRoomService, RoomService>();
-        services.AddScoped<IPricingService, PricingService>();
         services.Configure<RabbitMqOption>(config.GetSection(nameof(RabbitMqOption)));
 
         return services;

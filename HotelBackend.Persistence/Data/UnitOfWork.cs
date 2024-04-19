@@ -23,9 +23,9 @@ public class UnitOfWork : IUnitOfWork
     public IPriceRepository Prices { get; }
     public IGuestProfileRepository GuestProfiles { get; }
 
-    public async Task<int> SaveChanges()
+    public async Task<int> SaveChanges(CancellationToken cancellationToken)
     {
-        return await _databaseContext.SaveChangesAsync();
+        return await _databaseContext.SaveChangesAsync(cancellationToken);
     }
 
     public void Dispose()

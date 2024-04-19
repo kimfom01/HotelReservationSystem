@@ -3,8 +3,8 @@
 public class Room
 {
     public Guid Id { get; set; }
-    public string RoomNumber { get; set; }
-    public bool? Availability { get; set; } = true;
+    public string RoomNumber { get; set; } = string.Empty;
+    public bool Availability { get; set; } = true;
     public Guid HotelId { get; set; }
     public Hotel? Hotel { get; set; }
     public Guid RoomTypeId { get; set; }

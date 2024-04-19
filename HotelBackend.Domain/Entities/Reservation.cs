@@ -16,7 +16,7 @@ public class Reservation
     [MaxLength(500)] public string? RoomPreferences { get; set; }
     public int NumberOfGuests { get; set; }
     public Guid GuestProfileId { get; set; }
-    public GuestProfile GuestProfile { get; set; }
+    public GuestProfile? GuestProfile { get; set; }
     public Guid HotelId { get; set; }
     public Hotel? Hotel { get; set; }
     public Guid RoomId { get; set; }
