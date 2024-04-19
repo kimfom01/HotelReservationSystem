@@ -1,5 +1,6 @@
-using HotelBackend.Infrastructure.Infrastructure;
-using HotelBackend.Infrastructure.Statuses;
+using HotelBackend.Application.Contracts.Infrastructure;
+using HotelBackend.Application.Models;
+using HotelBackend.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBackend.PaymentInitiatorService.Controllers;
@@ -8,9 +9,9 @@ namespace HotelBackend.PaymentInitiatorService.Controllers;
 [Route("/api/[controller]")]
 public class PaymentController : ControllerBase
 {
-    private readonly QueueService<PaymentStatus> _queueService;
+    private readonly IQueueService _queueService;
 
-    public PaymentController(QueueService<PaymentStatus> queueService)
+    public PaymentController(IQueueService queueService)
     {
         _queueService = queueService;
     }
@@ -22,11 +23,12 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost("pay/{reservationId:Guid}")]
-    public async Task<IActionResult> PayForReservation()
+    public async Task<IActionResult> PayForReservation(Guid reservationId)
     {
         await _queueService.PublishMessage(new PaymentStatus
         {
-            Status = "Paid"
+            Status = PaymentStatusEnum.PAID,
+            ReservationId = reservationId
         });
         
         return Ok("Successfully paid");

@@ -10,6 +10,11 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
         <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
@@ -21,7 +26,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\HotelBackend.Application\HotelBackend.Application.csproj" />
       <ProjectReference Include="..\HotelBackend.Infrastructure\HotelBackend.Infrastructure.csproj" />
+      <ProjectReference Include="..\HotelBackend.Persistence\HotelBackend.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

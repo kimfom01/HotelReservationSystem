@@ -27,7 +27,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\HotelBackend.Application\HotelBackend.Application.csproj" />
+      <ProjectReference Include="..\HotelBackend.Domain\HotelBackend.Domain.csproj" />
       <ProjectReference Include="..\HotelBackend.Infrastructure\HotelBackend.Infrastructure.csproj" />
+      <ProjectReference Include="..\HotelBackend.Persistence\HotelBackend.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

@@ -33,6 +33,26 @@ services:
       - ./.env
     networks:
       - nginx-network
+  paymentinitiator:
+    restart: always
+    build:
+      context: ./HotelBackend.PaymentInitiatorService/
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+      - rabbitmq
+    env_file:
+      - ./.env
+    networks:
+      - nginx-network
+  backgroundconsumer:
+    build:
+      context: .
+      dockerfile: HotelBackend.BackgroundConsumer/
+    networks:
+      - nginx-network
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
