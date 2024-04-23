@@ -27,9 +27,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\HotelBackend.Application\HotelBackend.Application.csproj" />
-      <ProjectReference Include="..\HotelBackend.Infrastructure\HotelBackend.Infrastructure.csproj" />
-      <ProjectReference Include="..\HotelBackend.Persistence\HotelBackend.Persistence.csproj" />
+      <ProjectReference Include="..\..\Core\HotelBackend.Application\HotelBackend.Application.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\HotelBackend.Infrastructure\HotelBackend.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\HotelBackend.Persistence\HotelBackend.Persistence.csproj" />
     </ItemGroup>
 
 </Project>
