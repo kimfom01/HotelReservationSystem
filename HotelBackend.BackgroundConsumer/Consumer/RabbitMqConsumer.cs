@@ -1,10 +1,10 @@
 using System.Text;
 using System.Text.Json;
 using HotelBackend.Application.Dtos.Reservations;
+using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
 using HotelBackend.Application.Models;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
@@ -14,7 +14,6 @@ namespace HotelBackend.BackgroundConsumer.Consumer;
 
 public class RabbitMqConsumer : IDisposable
 {
-    // private readonly IServiceProvider _serviceProvider;
     private readonly IMediator _mediator;
     private readonly ILogger<RabbitMqConsumer> _logger;
     private readonly IConnection _connection;
@@ -25,11 +24,9 @@ public class RabbitMqConsumer : IDisposable
     public RabbitMqConsumer(
         IOptions<RabbitMqOption> options,
         IConnectionFactory factory,
-        // IServiceProvider serviceProvider, 
         IMediator mediator,
         ILogger<RabbitMqConsumer> logger)
     {
-        // _serviceProvider = serviceProvider;
         _mediator = mediator;
         _logger = logger;
         _rabbitMqOption = options.Value;
@@ -59,9 +56,6 @@ public class RabbitMqConsumer : IDisposable
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                // var scope = _serviceProvider.CreateScope();
-                // var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-
                 var consumer = new EventingBasicConsumer(_channel);
 
                 consumer.Received += async (_, args) =>
@@ -78,7 +72,9 @@ public class RabbitMqConsumer : IDisposable
                     await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
                     await _mediator.Send(new UpdateReservationStatusRequest
                     {
-                        UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto
+                        UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto ??
+                                                            throw new ReservationException(
+                                                                "Unable to deserialize the update event")
                     }, stoppingToken);
 
                     _channel.BasicAck(args.DeliveryTag, false);

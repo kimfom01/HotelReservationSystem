@@ -53,7 +53,7 @@ public class ReservationController : ControllerBase
     {
         var reservations = await _reservationService.GetReservations(cancellationToken);
 
-        var reservationsDtos = _mapper.Map<IEnumerable<CreateReservationDto>>(reservations);
+        var reservationsDtos = _mapper.Map<IEnumerable<GetReservationDto>>(reservations);
 
         return Ok(reservationsDtos);
     }
