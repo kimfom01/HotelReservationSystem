@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Application.Features.Reservations.Handlers.Queries;
 
-public class GetReservationByIdRequestHandler : IRequestHandler<GetReservationByIdRequest, GetReservationDto>
+public class GetReservationByIdRequestHandler : IRequestHandler<GetReservationByIdRequest, GetReservationDetailsDto>
 {
     private readonly ILogger<GetReservationByIdRequestHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
@@ -24,7 +24,7 @@ public class GetReservationByIdRequestHandler : IRequestHandler<GetReservationBy
         _mapper = mapper;
     }
 
-    public async Task<GetReservationDto> Handle(GetReservationByIdRequest request, CancellationToken cancellationToken)
+    public async Task<GetReservationDetailsDto> Handle(GetReservationByIdRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting reservation={reservationId}", request.ReservationId);
         var reservation =
@@ -36,6 +36,6 @@ public class GetReservationByIdRequestHandler : IRequestHandler<GetReservationBy
             throw new NotFoundException($"Reservation with id={request.ReservationId} does not exist");
         }
 
-        return _mapper.Map<GetReservationDto>(reservation);
+        return _mapper.Map<GetReservationDetailsDto>(reservation);
     }
 }

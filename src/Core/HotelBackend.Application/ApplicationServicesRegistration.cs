@@ -12,7 +12,7 @@ public static class ApplicationServicesRegistration
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatR(conf => conf.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        services.Configure<RabbitMqOption>(config.GetSection(nameof(RabbitMqOption)));
+        services.Configure<Config>(config.GetSection(nameof(Config)));
 
         return services;
     }

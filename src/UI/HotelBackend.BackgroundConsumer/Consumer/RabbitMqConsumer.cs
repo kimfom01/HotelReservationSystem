@@ -1,7 +1,7 @@
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using HotelBackend.Application.Dtos.Reservations;
-using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
 using HotelBackend.Application.Models;
 using MediatR;
@@ -22,14 +22,14 @@ public class RabbitMqConsumer : IDisposable
     private string _consumerTag = string.Empty;
 
     public RabbitMqConsumer(
-        IOptions<RabbitMqOption> options,
+        IOptions<Config> configOptions,
         IConnectionFactory factory,
         IMediator mediator,
         ILogger<RabbitMqConsumer> logger)
     {
         _mediator = mediator;
         _logger = logger;
-        _rabbitMqOption = options.Value;
+        _rabbitMqOption = configOptions.Value.RabbitMqOption;
         factory.Uri =
             new Uri(
                 $"amqp://{_rabbitMqOption.User}:{_rabbitMqOption.Password}@{_rabbitMqOption.Host}:{_rabbitMqOption.Port}");
@@ -69,12 +69,16 @@ public class RabbitMqConsumer : IDisposable
                     var updateReservationPaymentStatusDto =
                         JsonSerializer.Deserialize<UpdateReservationPaymentStatusDto>(json);
 
-                    await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
+                    if (updateReservationPaymentStatusDto is null)
+                    {
+                        _logger.LogError("Unable to deserialize the update event");
+                        throw new SerializationException(
+                            "Unable to deserialize the update event");
+                    }
+
                     await _mediator.Send(new UpdateReservationStatusRequest
                     {
-                        UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto ??
-                                                            throw new ReservationException(
-                                                                "Unable to deserialize the update event")
+                        UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto
                     }, stoppingToken);
 
                     _channel.BasicAck(args.DeliveryTag, false);

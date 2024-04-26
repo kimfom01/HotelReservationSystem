@@ -1,5 +1,6 @@
 using FluentValidation;
 using HotelBackend.Application.Contracts.Persistence;
+using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Application.Dtos.Reservations.Validators;
 using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
@@ -26,6 +27,12 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
     {
         _logger.LogInformation("Updating reservation status");
         var validator = new UpdateReservationPaymentStatusDtoValidator(_unitOfWork);
+
+        if (request.UpdateReservationPaymentStatusDto is null)
+        {
+            throw new ArgumentNullException(nameof(request), $"{nameof(UpdateReservationPaymentStatusDto)} is null");
+        }
+
         var validationResult =
             await validator.ValidateAsync(request.UpdateReservationPaymentStatusDto, cancellationToken);
 

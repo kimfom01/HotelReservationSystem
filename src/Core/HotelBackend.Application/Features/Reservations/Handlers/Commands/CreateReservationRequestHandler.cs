@@ -13,30 +13,35 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Application.Features.Reservations.Handlers.Commands;
 
-public class CreateReservationRequestHandler : IRequestHandler<CreateReservationRequest, GetReservationDto>
+public class CreateReservationRequestHandler : IRequestHandler<CreateReservationRequest, GetReservationDetailsDto>
 {
     private readonly ILogger<CreateReservationRequestHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IQueueService _queueService;
+    private readonly IReservationQueueService _reservationQueueService;
 
     public CreateReservationRequestHandler(
         ILogger<CreateReservationRequestHandler> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork,
-        IQueueService queueService)
+        IReservationQueueService reservationQueueService)
     {
         _logger = logger;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _queueService = queueService;
+        _reservationQueueService = reservationQueueService;
     }
 
-    public async Task<GetReservationDto> Handle(CreateReservationRequest request,
+    public async Task<GetReservationDetailsDto> Handle(CreateReservationRequest request,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Creating new reservation");
         var validator = new CreateReservationDtoValidator(_unitOfWork);
+
+        if (request.CreateReservationDto is null)
+        {
+            throw new ArgumentNullException(nameof(request), $"{nameof(CreateReservationDto)} is null");
+        }
 
         var validationResult = await validator.ValidateAsync(request.CreateReservationDto, cancellationToken);
 
@@ -76,9 +81,9 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
 
         var message = _mapper.Map<ReservationMessage>(added);
 
-        await _queueService.PublishMessage(message);
+        await _reservationQueueService.PublishMessage(message);
         _logger.LogInformation("Successfully pushed message");
 
-        return _mapper.Map<GetReservationDto>(reservation);
+        return _mapper.Map<GetReservationDetailsDto>(reservation);
     }
 }

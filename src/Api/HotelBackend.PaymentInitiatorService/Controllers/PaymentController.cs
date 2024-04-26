@@ -9,11 +9,11 @@ namespace HotelBackend.PaymentInitiatorService.Controllers;
 [Route("/api/[controller]")]
 public class PaymentController : ControllerBase
 {
-    private readonly IQueueService _queueService;
+    private readonly IReservationQueueService _reservationQueueService;
 
-    public PaymentController(IQueueService queueService)
+    public PaymentController(IReservationQueueService reservationQueueService)
     {
-        _queueService = queueService;
+        _reservationQueueService = reservationQueueService;
     }
     
     [HttpGet]
@@ -25,7 +25,7 @@ public class PaymentController : ControllerBase
     [HttpPost("pay/{reservationId:Guid}")]
     public async Task<IActionResult> PayForReservation(Guid reservationId)
     {
-        await _queueService.PublishMessage(new UpdateReservationPaymentStatusDto
+        await _reservationQueueService.PublishMessage(new UpdateReservationPaymentStatusDto
         {
             Status = PaymentStatus.PAID,
             ReservationId = reservationId

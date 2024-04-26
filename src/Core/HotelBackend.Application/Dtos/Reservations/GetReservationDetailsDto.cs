@@ -4,9 +4,9 @@ using HotelBackend.Domain.Enums;
 
 namespace HotelBackend.Application.Dtos.Reservations;
 
-public class GetReservationDto : BaseDto
+public class GetReservationDetailsDto : BaseDto
 {
-    public DateTime CreationDate { get; private set; }
+    public DateTime CreationDate { get; set; }
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public ReservationStatus ReservationStatus { get; set; }

@@ -9,7 +9,7 @@ public class ReservationMappings : Profile
 {
     public ReservationMappings()
     {
-        CreateMap<Reservation, GetReservationDto>()
+        CreateMap<Reservation, GetReservationDetailsDto>()
             .ReverseMap();
         CreateMap<Reservation, CreateReservationDto>()
             .ReverseMap();

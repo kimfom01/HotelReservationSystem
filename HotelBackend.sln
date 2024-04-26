@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{E003D02B-46F4-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.BackgroundConsumer", "src\UI\HotelBackend.BackgroundConsumer\HotelBackend.BackgroundConsumer.csproj", "{FAB84E0B-A5B5-4B2F-BFDA-5381024B97C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.EmailService", "src\UI\HotelBackend.EmailService\HotelBackend.EmailService.csproj", "{64128C8C-3941-4628-8E8B-A7CE5D7E2F47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{FAB84E0B-A5B5-4B2F-BFDA-5381024B97C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB84E0B-A5B5-4B2F-BFDA-5381024B97C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAB84E0B-A5B5-4B2F-BFDA-5381024B97C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64128C8C-3941-4628-8E8B-A7CE5D7E2F47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64128C8C-3941-4628-8E8B-A7CE5D7E2F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64128C8C-3941-4628-8E8B-A7CE5D7E2F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64128C8C-3941-4628-8E8B-A7CE5D7E2F47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +86,6 @@ Global
 		{90B7105C-FACF-4D52-9AF2-8F538B52ED17} = {34931C79-B087-49AF-A065-0D4A44A58864}
 		{E003D02B-46F4-4EEA-B7EC-354B9488D8DD} = {AC4A0547-4571-43B1-82A3-356FBF3DE142}
 		{FAB84E0B-A5B5-4B2F-BFDA-5381024B97C5} = {E003D02B-46F4-4EEA-B7EC-354B9488D8DD}
+		{64128C8C-3941-4628-8E8B-A7CE5D7E2F47} = {E003D02B-46F4-4EEA-B7EC-354B9488D8DD}
 	EndGlobalSection
 EndGlobal

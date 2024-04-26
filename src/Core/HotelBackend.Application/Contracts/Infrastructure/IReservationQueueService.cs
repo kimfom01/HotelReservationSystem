@@ -1,6 +1,6 @@
 namespace HotelBackend.Application.Contracts.Infrastructure;
 
-public interface IQueueService
+public interface IReservationQueueService : IDisposable
 {
     Task PublishMessage<T>(T message);
 }
