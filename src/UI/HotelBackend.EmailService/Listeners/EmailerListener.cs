@@ -69,7 +69,7 @@ public class EmailerListener : IDisposable
                     {
                         throw new SerializationException("Unable to deserialize the update event");
                     }
-
+                    
                     await _emailSender.SendEmailAsync(reservationDetailsEmail.ReceiverEmail,
                         reservationDetailsEmail.Subject,
                         reservationDetailsEmail.ReservationDetailsDto!);
