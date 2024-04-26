@@ -68,7 +68,8 @@ public class RabbitMqConsumer : IDisposable
 
                     var updateReservationPaymentStatusDto =
                         JsonSerializer.Deserialize<UpdateReservationPaymentStatusDto>(json);
-
+                    
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
                     if (updateReservationPaymentStatusDto is null)
                     {
                         _logger.LogError("Unable to deserialize the update event");

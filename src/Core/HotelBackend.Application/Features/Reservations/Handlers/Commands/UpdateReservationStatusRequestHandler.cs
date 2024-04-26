@@ -1,7 +1,6 @@
 using FluentValidation;
 using HotelBackend.Application.Contracts.Persistence;
 using HotelBackend.Application.Dtos.Reservations;
-using HotelBackend.Application.Dtos.Reservations.Validators;
 using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
 using HotelBackend.Domain.Enums;
@@ -14,19 +13,21 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
 {
     private readonly ILogger<UpdateReservationStatusRequestHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateReservationPaymentStatusDto> _validator;
 
     public UpdateReservationStatusRequestHandler(
         ILogger<UpdateReservationStatusRequestHandler> logger,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IValidator<UpdateReservationPaymentStatusDto> validator)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
     public async Task<Unit> Handle(UpdateReservationStatusRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Updating reservation status");
-        var validator = new UpdateReservationPaymentStatusDtoValidator(_unitOfWork);
 
         if (request.UpdateReservationPaymentStatusDto is null)
         {
@@ -34,7 +35,7 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
         }
 
         var validationResult =
-            await validator.ValidateAsync(request.UpdateReservationPaymentStatusDto, cancellationToken);
+            await _validator.ValidateAsync(request.UpdateReservationPaymentStatusDto, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -42,7 +43,8 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
         }
 
         var reservation =
-            await _unitOfWork.Reservations.GetEntity(request.UpdateReservationPaymentStatusDto.ReservationId,
+            await _unitOfWork.Reservations.GetEntity(
+                res => res.Id == request.UpdateReservationPaymentStatusDto.ReservationId,
                 cancellationToken);
 
         if (reservation is null)

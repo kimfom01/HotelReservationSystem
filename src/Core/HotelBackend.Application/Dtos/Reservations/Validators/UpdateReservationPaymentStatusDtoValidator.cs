@@ -14,7 +14,7 @@ public class UpdateReservationPaymentStatusDtoValidator : AbstractValidator<Upda
         RuleFor(dto => dto.ReservationId)
             .MustAsync(async (reservationId, token) =>
             {
-                var reservation = await unitOfWork.Reservations.GetEntity(reservationId, token);
+                var reservation = await unitOfWork.Reservations.GetEntity(res => res.Id == reservationId, token);
 
                 return reservation is not null;
             })
