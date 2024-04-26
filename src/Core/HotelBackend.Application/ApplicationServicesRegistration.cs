@@ -1,6 +1,4 @@
 using System.Reflection;
-using HotelBackend.Application.Contracts.Features;
-using HotelBackend.Application.Features;
 using HotelBackend.Application.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +12,6 @@ public static class ApplicationServicesRegistration
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatR(conf => conf.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        services.AddScoped<IReservationService, ReservationService>();
         services.Configure<RabbitMqOption>(config.GetSection(nameof(RabbitMqOption)));
 
         return services;

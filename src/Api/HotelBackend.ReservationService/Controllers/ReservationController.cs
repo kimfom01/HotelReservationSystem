@@ -1,10 +1,10 @@
 using System.Net;
 using AutoMapper;
 using FluentValidation;
-using HotelBackend.Application.Contracts.Features;
 using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
+using HotelBackend.Application.Features.Reservations.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,18 +15,14 @@ namespace HotelBackend.ReservationService.Controllers;
 public class ReservationController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
-    private readonly IReservationService _reservationService;
     private readonly ILogger<ReservationController> _logger;
 
     public ReservationController(
         IMediator mediator,
         IMapper mapper,
-        IReservationService reservationService, ILogger<ReservationController> logger)
+        ILogger<ReservationController> logger)
     {
         _mediator = mediator;
-        _mapper = mapper;
-        _reservationService = reservationService;
         _logger = logger;
     }
 
@@ -35,27 +31,28 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetReservation(Guid id, CancellationToken cancellationToken)
     {
-        var reservation = await _reservationService.GetReservation(id, cancellationToken);
-
-        if (reservation is null)
+        try
         {
-            return NotFound();
+            var reservation = await _mediator.Send(new GetReservationByIdRequest
+            {
+                ReservationId = id
+            }, cancellationToken);
+
+            return Ok(reservation);
         }
-
-        var reservationDto = _mapper.Map<CreateReservationDto>(reservation);
-
-        return Ok(reservationDto);
+        catch (Exception exception)
+        {
+            return NotFound(exception.Message);
+        }
     }
 
     [HttpGet]
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetReservations(CancellationToken cancellationToken)
     {
-        var reservations = await _reservationService.GetReservations(cancellationToken);
+        var reservations = await _mediator.Send(new GetAllReservationsRequest(), cancellationToken);
 
-        var reservationsDtos = _mapper.Map<IEnumerable<GetReservationDto>>(reservations);
-
-        return Ok(reservationsDtos);
+        return Ok(reservations);
     }
 
     [HttpPost]
