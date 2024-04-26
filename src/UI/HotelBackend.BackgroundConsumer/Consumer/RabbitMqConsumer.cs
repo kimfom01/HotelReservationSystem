@@ -29,7 +29,7 @@ public class RabbitMqConsumer : IDisposable
     {
         _mediator = mediator;
         _logger = logger;
-        _rabbitMqOption = configOptions.Value.RabbitMqOption;
+        _rabbitMqOption = configOptions.Value.RabbitMqOption!;
         factory.Uri =
             new Uri(
                 $"amqp://{_rabbitMqOption.User}:{_rabbitMqOption.Password}@{_rabbitMqOption.Host}:{_rabbitMqOption.Port}");

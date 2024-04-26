@@ -16,7 +16,7 @@ builder.ConfigureServices((builderContext, services) =>
         .Build();
 
     services.ConfigureApplicationServices(consoleConfig);
-    services.ConfigureInfrastructureServices(consoleConfig);
+    services.ConfigureInfrastructureServices(consoleConfig, builderContext.HostingEnvironment);
     services.AddScoped<EmailerListener>();
     services.AddTransient<IConnectionFactory, ConnectionFactory>();
 });

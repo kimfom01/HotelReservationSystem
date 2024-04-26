@@ -6,11 +6,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
-namespace HotelBackend.Infrastructure.RabbitMqService;
+namespace HotelBackend.Infrastructure.MessageBroker;
 
-public class EmailQueueService : IEmailQueueService
+public class ReservationQueueService : IReservationQueueService
 {
-    private readonly ILogger<EmailQueueService> _logger;
+    private readonly ILogger<ReservationQueueService> _logger;
     private readonly IConnection _connection;
     private readonly IModel _channel;
 
@@ -18,23 +18,23 @@ public class EmailQueueService : IEmailQueueService
     private readonly string _routingKey;
     private readonly string _queueName;
 
-    public EmailQueueService(
-        ILogger<EmailQueueService> logger,
+    public ReservationQueueService(
         IOptions<Config> configOptions,
-        IConnectionFactory factory)
+        IConnectionFactory factory, 
+        ILogger<ReservationQueueService> logger)
     {
         _logger = logger;
-        var emailQueueOptions = configOptions.Value.EmailQueueOption;
+        var rabbitMqOptions = configOptions.Value.RabbitMqOption;
         factory.Uri =
             new Uri(
-                $"amqp://{emailQueueOptions.User}:{emailQueueOptions.Password}@{emailQueueOptions.Host}:{emailQueueOptions.Port}");
-        factory.ClientProvidedName = emailQueueOptions.ClientName;
+                $"amqp://{rabbitMqOptions!.User}:{rabbitMqOptions.Password}@{rabbitMqOptions.Host}:{rabbitMqOptions.Port}");
+        factory.ClientProvidedName = rabbitMqOptions.ClientName;
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
 
-        _exchangeName = emailQueueOptions.Exchange;
-        _routingKey = emailQueueOptions.RoutingKey;
-        _queueName = emailQueueOptions.QueueName;
+        _exchangeName = rabbitMqOptions.Exchange;
+        _routingKey = rabbitMqOptions.RoutingKey;
+        _queueName = rabbitMqOptions.QueueName;
 
         _channel.ExchangeDeclare(_exchangeName, ExchangeType.Direct);
         _channel.QueueDeclare(_queueName, false, false, false, null);

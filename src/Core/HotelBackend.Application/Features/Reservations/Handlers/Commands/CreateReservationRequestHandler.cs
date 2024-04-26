@@ -3,7 +3,6 @@ using FluentValidation;
 using HotelBackend.Application.Contracts.Infrastructure;
 using HotelBackend.Application.Contracts.Persistence;
 using HotelBackend.Application.Dtos.Reservations;
-using HotelBackend.Application.Dtos.Reservations.Validators;
 using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
 using HotelBackend.Application.Models;

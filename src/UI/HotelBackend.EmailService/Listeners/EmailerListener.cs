@@ -30,7 +30,7 @@ public class EmailerListener : IDisposable
         var emailQueueOption = configOptions.Value.EmailQueueOption;
         factory.Uri =
             new Uri(
-                $"amqp://{emailQueueOption.User}:{emailQueueOption.Password}@{emailQueueOption.Host}:{emailQueueOption.Port}");
+                $"amqp://{emailQueueOption!.User}:{emailQueueOption.Password}@{emailQueueOption.Host}:{emailQueueOption.Port}");
 
         factory.ClientProvidedName = emailQueueOption.ClientName;
 
@@ -69,7 +69,7 @@ public class EmailerListener : IDisposable
                     {
                         throw new SerializationException("Unable to deserialize the update event");
                     }
-                    
+
                     await _emailSender.SendEmailAsync(reservationDetailsEmail.ReceiverEmail,
                         reservationDetailsEmail.Subject,
                         reservationDetailsEmail.ReservationDetailsDto!);
