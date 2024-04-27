@@ -127,8 +127,9 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/) -->
 
-## :v: Credits
+<!-- ## :v: Credits
 
 This project was done by:
 
 [Kim Fom](https://github.com/kimfom01)
+-->
