@@ -1,0 +1,19 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+
+WORKDIR /src
+
+COPY ./Core/ ./Core/
+COPY ./Infrastructure/ ./Infrastructure/
+
+COPY ./Api/HotelBackend.ReservationService/ ./Api/HotelBackend.ReservationService/
+RUN dotnet restore ./Api/HotelBackend.ReservationService/HotelBackend.ReservationService.csproj
+
+
+COPY ./Api/HotelBackend.ReservationService/ ./Api/HotelBackend.ReservationService/
+RUN dotnet publish ./Api/HotelBackend.ReservationService/HotelBackend.ReservationService.csproj -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=base /app/publish .
+
+ENTRYPOINT ["dotnet", "HotelBackend.ReservationService.dll"]

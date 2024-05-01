@@ -4,17 +4,17 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - 80:80
+      - 8080:8080
     restart: always
-    depends_on:
-      - reservation
     networks:
       - nginx-network
   postgres:
     image: postgres:alpine3.19
     restart: always
     environment:
-      POSTGRES_PASSWORD: Pa$$w0rd123
+      POSTGRES_PASSWORD: password
+    depends_on:
+      - nginx
     ports:
       - 5432:5432
     networks:
@@ -22,13 +22,14 @@ services:
   reservation:
     restart: always
     build:
-      context: ./HotelBackend.ReservationService/
-      dockerfile: Dockerfile
+      context: ./src
+      dockerfile: Dockerfile.reservation
     ports:
-      - 8080:8080
+      - 8081:8080
     depends_on:
       - postgres
       - rabbitmq
+      - nginx
     env_file:
       - ./.env
     networks:
@@ -36,21 +37,16 @@ services:
   paymentinitiator:
     restart: always
     build:
-      context: ./HotelBackend.PaymentInitiatorService/
-      dockerfile: Dockerfile
+      context: ./src
+      dockerfile: Dockerfile.payment
     ports:
-      - 8080:8080
+      - 8082:8080
     depends_on:
       - postgres
       - rabbitmq
+      - nginx
     env_file:
       - ./.env
-    networks:
-      - nginx-network
-  backgroundconsumer:
-    build:
-      context: .
-      dockerfile: HotelBackend.BackgroundConsumer/
     networks:
       - nginx-network
   rabbitmq:
@@ -61,9 +57,11 @@ services:
     networks:
       - nginx-network
     restart: always
+    depends_on:
+      - nginx
     environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
 networks:
   nginx-network:
     driver: bridge

@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+
+WORKDIR /src
+
+COPY ./Core/ ./Core/
+COPY ./Infrastructure/ ./Infrastructure/
+
+COPY ./Api/HotelBackend.PaymentInitiatorService/ ./Api/HotelBackend.PaymentInitiatorService/
+RUN dotnet restore ./Api/HotelBackend.PaymentInitiatorService/HotelBackend.PaymentInitiatorService.csproj
+
+
+COPY ./Api/HotelBackend.PaymentInitiatorService/ ./Api/HotelBackend.PaymentInitiatorService/
+RUN dotnet publish ./Api/HotelBackend.PaymentInitiatorService/HotelBackend.PaymentInitiatorService.csproj -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=base /app/publish .
+
+ENTRYPOINT ["dotnet", "HotelBackend.PaymentInitiatorService.dll"]

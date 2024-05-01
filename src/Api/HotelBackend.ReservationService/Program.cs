@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
-builder.Services.ConfigureInfrastructureServices(builder.Configuration, builder.Environment);
+builder.Services.ConfigureInfrastructureServices(builder.Configuration, builder.Environment.IsDevelopment());
 builder.Services.ConfigureApplicationServices(builder.Configuration);
 
 var app = builder.Build();

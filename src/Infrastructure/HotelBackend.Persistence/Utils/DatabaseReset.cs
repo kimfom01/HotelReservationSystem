@@ -1,5 +1,4 @@
 using HotelBackend.Persistence.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HotelBackend.Persistence.Utils;
@@ -10,14 +9,14 @@ public static class DatabaseReset
     {
         var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-        if (environmentIsDevelopment)
+        // if (environmentIsDevelopment)
         {
             await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
         }
-        else
-        {
-            await context.Database.MigrateAsync();
-        }
+        // else
+        // {
+        //     await context.Database.MigrateAsync();
+        // }
     }
 }

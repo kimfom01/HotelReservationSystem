@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.ConfigureInfrastructureServices(builder.Configuration, builder.Environment);
+builder.Services.ConfigureInfrastructureServices(builder.Configuration, builder.Environment.IsDevelopment());
 builder.Services.ConfigureApplicationServices(builder.Configuration);
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 

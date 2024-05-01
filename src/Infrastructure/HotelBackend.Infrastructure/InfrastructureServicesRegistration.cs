@@ -3,11 +3,11 @@ using System.Net.Mail;
 using System.Security;
 using HotelBackend.Application.Contracts.Infrastructure;
 using HotelBackend.Application.Models;
+using HotelBackend.Infrastructure.BackgroundServices;
 using HotelBackend.Infrastructure.EmailProvider;
 using HotelBackend.Infrastructure.MessageBroker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 
 namespace HotelBackend.Infrastructure;
@@ -15,19 +15,20 @@ namespace HotelBackend.Infrastructure;
 public static class InfrastructureServicesRegistration
 {
     public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services,
-        IConfiguration configuration, IHostEnvironment environment)
+        IConfiguration configuration, bool isDevelopment)
     {
         services.AddScoped<IReservationQueueService, ReservationQueueService>();
         services.AddScoped<IEmailQueueService, EmailQueueService>();
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
         services.AddScoped<IEmailSender, EmailSender>();
+        services.AddHostedService<PaymentStatusEventHandler>();
 
 
         var emailOption = new EmailOption();
 
         configuration.GetSection(nameof(emailOption)).Bind(emailOption);
 
-        if (environment.IsDevelopment())
+        if (isDevelopment)
         {
             services
                 .AddFluentEmail(emailOption.SenderEmail)

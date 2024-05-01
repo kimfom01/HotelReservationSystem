@@ -22,12 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Core\HotelBackend.Application\HotelBackend.Application.csproj" />
       <ProjectReference Include="..\..\Infrastructure\HotelBackend.Infrastructure\HotelBackend.Infrastructure.csproj" />
       <ProjectReference Include="..\..\Infrastructure\HotelBackend.Persistence\HotelBackend.Persistence.csproj" />
