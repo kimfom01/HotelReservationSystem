@@ -16,7 +16,7 @@ public class GetReservationDetailsDto : BaseDto
     public string? RoomPreferences { get; set; }
     public int NumberOfGuests { get; set; }
     public Guid GuestProfileId { get; set; }
-    public CreateGuestProfileDto? GuestProfile { get; set; } = new();
+    public GetGuestProfileDto? GuestProfile { get; set; } = new();
     public Guid HotelId { get; set; }
     public HotelDto? Hotel { get; set; } = new();
     public Guid RoomId { get; set; }

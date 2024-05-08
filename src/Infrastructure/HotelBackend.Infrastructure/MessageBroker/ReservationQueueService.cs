@@ -20,7 +20,7 @@ public class ReservationQueueService : IReservationQueueService
 
     public ReservationQueueService(
         IOptions<Config> configOptions,
-        IConnectionFactory factory, 
+        IConnectionFactory factory,
         ILogger<ReservationQueueService> logger)
     {
         _logger = logger;
@@ -47,7 +47,9 @@ public class ReservationQueueService : IReservationQueueService
         var messageBodyBytes = Encoding.UTF8.GetBytes(serializedMessage);
 
         _logger.LogInformation("Publishing message to {queueName}", _queueName);
-        return Task.Run(() => _channel.BasicPublish(_exchangeName, _routingKey, null, messageBodyBytes));
+        _channel.BasicPublish(_exchangeName, _routingKey, null, messageBodyBytes);
+        _logger.LogInformation("Published message to {queueName}", _queueName);
+        return Task.CompletedTask;
     }
 
     public void Dispose()

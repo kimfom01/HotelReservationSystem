@@ -1,5 +1,6 @@
 using HotelBackend.Application.Contracts.Persistence;
 using HotelBackend.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.Persistence.Data.Repositories.Implementations;
 
@@ -7,5 +8,17 @@ public class ReservationRepository : Repository<Reservation>, IReservationReposi
 {
     public ReservationRepository(DatabaseContext databaseContext) : base(databaseContext)
     {
+    }
+
+    public async Task<Reservation?> GetReservationDetails(Guid reservationId,
+        CancellationToken cancellationToken)
+    {
+        var reservation = await DbSet.Where(res => res.Id == reservationId)
+            .Include(res => res.GuestProfile)
+            .Include(res => res.Hotel)
+            .Include(res => res.Room)
+            .FirstOrDefaultAsync(res => res.Id == reservationId, cancellationToken);
+
+        return reservation;
     }
 }

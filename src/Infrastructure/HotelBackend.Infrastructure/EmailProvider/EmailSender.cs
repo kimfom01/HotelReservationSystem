@@ -3,7 +3,9 @@ using FluentEmail.Core;
 using HotelBackend.Application.Contracts.Infrastructure;
 using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Application.Exceptions;
+using HotelBackend.Domain.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 
 namespace HotelBackend.Infrastructure.EmailProvider;
 
@@ -21,13 +23,44 @@ public class EmailSender : IEmailSender
 
     public async Task SendEmailAsync(string email, string? subject, GetReservationDetailsDto reservationDetails)
     {
-        var htmlMessage = new StringBuilder()
-            .Append("<h3>Hello, @Model.GuestProfile.FirstName</h3>")
-            .Append("<div>Your reservation on @Model.Hotel.Name, @Model.Hotel.Location was successful</div>")
+        var htmlMessageStringbuilder = new StringBuilder()
+            .Append("<h3>Hello, @Model.GuestProfile.FirstName</h3>");
+
+        switch (reservationDetails.PaymentStatus)
+        {
+            case PaymentStatus.PAID:
+                htmlMessageStringbuilder
+                    .Append(
+                        "<div>Your reservation on @Model.Hotel.Name, @Model.Hotel.Location was successfully paid</div>");
+                break;
+            case PaymentStatus.CANCELED:
+                htmlMessageStringbuilder
+                    .Append(
+                        "<div>Your reservation on @Model.Hotel.Name, @Model.Hotel.Location was cancelled</div>");
+                break;
+        }
+
+        htmlMessageStringbuilder
             .Append("<div>Details:</div>")
             .Append("<div>Check In: @Model.CheckIn.ToString(\"dd MMM HH:mm\")</div>")
             .Append("<div>Check Out: @Model.CheckOut.ToString(\"dd MMM HH:mm\")</div>")
-            .Append("<div>Status: @if(Model.ReservationStatus == 0) { <span>PENDING</span> } else if(Model.ReservationStatus == 1 ){ <span>CONFIRMED</span> } else {<span>CANCELLED</span>}</div>")
+            .Append(
+                "<div>Status: ");
+
+        switch (reservationDetails.ReservationStatus)
+        {
+            case ReservationStatus.PENDING:
+                htmlMessageStringbuilder.Append("<span>PENDING</span>");
+                break;
+            case ReservationStatus.CONFIRMED:
+                htmlMessageStringbuilder.Append("<span>CONFIRMED</span>:");
+                break;
+            case ReservationStatus.CANCELLED:
+                htmlMessageStringbuilder.Append("<span>CANCELLED</span>");
+                break;
+        }
+
+        var htmlMessage = htmlMessageStringbuilder.Append("</div>")
             .ToString();
 
         _logger.LogInformation("Sending email");

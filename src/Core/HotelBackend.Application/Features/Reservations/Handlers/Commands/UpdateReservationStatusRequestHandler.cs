@@ -1,8 +1,11 @@
+using AutoMapper;
 using FluentValidation;
+using HotelBackend.Application.Contracts.Infrastructure;
 using HotelBackend.Application.Contracts.Persistence;
 using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
+using HotelBackend.Application.Models;
 using HotelBackend.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -14,15 +17,21 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
     private readonly ILogger<UpdateReservationStatusRequestHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UpdateReservationPaymentStatusDto> _validator;
+    private readonly IEmailQueueService _queueService;
+    private readonly IMapper _mapper;
 
     public UpdateReservationStatusRequestHandler(
         ILogger<UpdateReservationStatusRequestHandler> logger,
         IUnitOfWork unitOfWork,
-        IValidator<UpdateReservationPaymentStatusDto> validator)
+        IValidator<UpdateReservationPaymentStatusDto> validator,
+        IEmailQueueService queueService,
+        IMapper mapper)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
         _validator = validator;
+        _queueService = queueService;
+        _mapper = mapper;
     }
 
     public async Task<Unit> Handle(UpdateReservationStatusRequest request, CancellationToken cancellationToken)
@@ -43,8 +52,8 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
         }
 
         var reservation =
-            await _unitOfWork.Reservations.GetEntity(
-                res => res.Id == request.UpdateReservationPaymentStatusDto.ReservationId,
+            await _unitOfWork.Reservations.GetReservationDetails(
+                request.UpdateReservationPaymentStatusDto.ReservationId,
                 cancellationToken);
 
         if (reservation is null)
@@ -68,6 +77,16 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
 
         await _unitOfWork.SaveChanges(cancellationToken);
         _logger.LogInformation("Successfully updated reservation");
+
+        var reservationDetailsDto = _mapper.Map<GetReservationDetailsDto>(reservation);
+
+        await _queueService.PublishMessage(new ReservationDetailsEmail
+        {
+            ReservationDetailsDto = reservationDetailsDto,
+            ReceiverEmail = reservationDetailsDto.GuestProfile!.ContactEmail,
+            Subject = "Payment for reservation"
+        });
+        _logger.LogInformation("Successfully pushed message to email queue");
 
         return Unit.Value;
     }

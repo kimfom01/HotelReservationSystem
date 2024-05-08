@@ -15,7 +15,7 @@ public class PaymentController : ControllerBase
     {
         _reservationQueueService = reservationQueueService;
     }
-    
+
     [HttpGet]
     public IActionResult HelloPayment()
     {
@@ -25,12 +25,18 @@ public class PaymentController : ControllerBase
     [HttpPost("pay/{reservationId:Guid}")]
     public async Task<IActionResult> PayForReservation(Guid reservationId)
     {
+        var statuses = Enum.GetValues(typeof(PaymentStatus));
+
+        var rand = new Random();
+
+        var status = (PaymentStatus)(statuses.GetValue(rand.Next(statuses.Length)) ?? PaymentStatus.PENDING);
+
         await _reservationQueueService.PublishMessage(new UpdateReservationPaymentStatusDto
         {
-            Status = PaymentStatus.PAID,
+            Status = status,
             ReservationId = reservationId
         });
-        
-        return Ok("Successfully paid");
+
+        return Ok("Payment initiated");
     }
 }
