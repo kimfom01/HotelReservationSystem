@@ -2,15 +2,13 @@
 
 WORKDIR /src
 
-COPY ./Core/ ./Core/
-COPY ./Infrastructure/ ./Infrastructure/
+COPY ./Common/ ./Common/
 
-COPY ./Api/HotelBackend.ReservationService/ ./Api/HotelBackend.ReservationService/
-RUN dotnet restore ./Api/HotelBackend.ReservationService/HotelBackend.ReservationService.csproj
+COPY ./Reservations/ ./Reservations/
 
+RUN dotnet restore ./Reservations/Presentation/HotelBackend.ReservationService/HotelBackend.ReservationService.csproj
 
-COPY ./Api/HotelBackend.ReservationService/ ./Api/HotelBackend.ReservationService/
-RUN dotnet publish ./Api/HotelBackend.ReservationService/HotelBackend.ReservationService.csproj -c Release -o /app/publish
+RUN dotnet publish ./Reservations/Presentation/HotelBackend.ReservationService/HotelBackend.ReservationService.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app

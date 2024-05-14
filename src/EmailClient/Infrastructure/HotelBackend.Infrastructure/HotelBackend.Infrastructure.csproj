@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
+      <PackageReference Include="FluentEmail.Smtp" Version="3.0.2" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+      <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\HotelBackend.Common\HotelBackend.Common.csproj" />
+      <ProjectReference Include="..\..\Core\HotelBackend.Application\HotelBackend.Application.csproj" />
+    </ItemGroup>
+
+</Project>

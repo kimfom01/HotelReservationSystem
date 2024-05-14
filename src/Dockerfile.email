@@ -1,13 +1,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 
 WORKDIR /src
-COPY HotelBackend.ReservationService.csproj .
-RUN dotnet restore HotelBackend.ReservationService.csproj
-COPY . .
-RUN dotnet publish HotelBackend.ReservationService.csproj -c Release -o /app/publish
+
+COPY ./Common/ ./Common/
+
+COPY ./EmailClient/ ./EmailClient/
+
+RUN dotnet restore ./EmailClient/Presentation/HotelBackend.EmailService/HotelBackend.EmailService.csproj
+
+RUN dotnet publish ./EmailClient/Presentation/HotelBackend.EmailService/HotelBackend.EmailService.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=base /app/publish .
 
-ENTRYPOINT ["dotnet", "HotelBackend.ReservationService.dll"]
+ENTRYPOINT ["dotnet", "HotelBackend.EmailService.dll"]
