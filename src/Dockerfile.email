@@ -6,12 +6,12 @@ COPY ./Common/ ./Common/
 
 COPY ./EmailClient/ ./EmailClient/
 
-RUN dotnet restore ./EmailClient/Presentation/HotelBackend.EmailService/HotelBackend.EmailService.csproj
+RUN dotnet restore ./EmailClient/Presentation/HotelBackend.EmailClient.EmailService/HotelBackend.EmailClient.EmailService.csproj
 
-RUN dotnet publish ./EmailClient/Presentation/HotelBackend.EmailService/HotelBackend.EmailService.csproj -c Release -o /app/publish
+RUN dotnet publish ./EmailClient/Presentation/HotelBackend.EmailClient.EmailService/HotelBackend.EmailClient.EmailService.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=base /app/publish .
 
-ENTRYPOINT ["dotnet", "HotelBackend.EmailService.dll"]
+ENTRYPOINT ["dotnet", "HotelBackend.EmailClient.EmailService.dll"]

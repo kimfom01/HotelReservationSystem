@@ -6,12 +6,12 @@ COPY ./Common/ ./Common/
 
 COPY ./Payments/ ./Payments/
 
-RUN dotnet restore ./Payments/Presentation/HotelBackend.PaymentInitiatorService/HotelBackend.PaymentInitiatorService.csproj
+RUN dotnet restore ./Payments/Presentation/HotelBackend.Payments.PaymentInitiatorService/HotelBackend.Payments.PaymentInitiatorService.csproj
 
-RUN dotnet publish ./Payments/Presentation/HotelBackend.PaymentInitiatorService/HotelBackend.PaymentInitiatorService.csproj -c Release -o /app/publish
+RUN dotnet publish ./Payments/Presentation/HotelBackend.Payments.PaymentInitiatorService/HotelBackend.Payments.PaymentInitiatorService.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=base /app/publish .
 
-ENTRYPOINT ["dotnet", "HotelBackend.PaymentInitiatorService.dll"]
+ENTRYPOINT ["dotnet", "HotelBackend.Payments.PaymentInitiatorService.dll"]
