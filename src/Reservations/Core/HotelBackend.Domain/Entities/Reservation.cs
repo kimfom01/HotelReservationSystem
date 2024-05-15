@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using HotelBackend.Common.Enums;
-using HotelBackend.Domain.Enums;
 
 namespace HotelBackend.Domain.Entities;
 

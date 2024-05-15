@@ -1,10 +1,9 @@
 using System.Text;
 using FluentEmail.Core;
 using HotelBackend.Application.Contracts.Infrastructure;
-using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Application.Exceptions;
 using HotelBackend.Common.Enums;
-using HotelBackend.Domain.Enums;
+using HotelBackend.Common.Models;
 using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Infrastructure.EmailProvider;
@@ -21,22 +20,22 @@ public class EmailSender : IEmailSender
         _fluentEmail = fluentEmail;
     }
 
-    public async Task SendEmailAsync(string email, string? subject, GetReservationDetailsDto reservationDetails)
+    public async Task SendEmailAsync(string email, string? subject, ReservationMessage reservationMessage)
     {
         var htmlMessageStringbuilder = new StringBuilder()
-            .Append("<h3>Hello, @Model.GuestProfile.FirstName</h3>");
+            .Append("<h3>Hello, @Model.GuestFirstName</h3>");
 
-        switch (reservationDetails.PaymentStatus)
+        switch (reservationMessage.PaymentStatus)
         {
             case PaymentStatus.PAID:
                 htmlMessageStringbuilder
                     .Append(
-                        "<div>Your reservation on @Model.Hotel.Name, @Model.Hotel.Location was successfully paid</div>");
+                        "<div>Your reservation on @Model.HotelName, @Model.HotelLocation was successfully paid</div>");
                 break;
             case PaymentStatus.CANCELED:
                 htmlMessageStringbuilder
                     .Append(
-                        "<div>Your reservation on @Model.Hotel.Name, @Model.Hotel.Location was cancelled</div>");
+                        "<div>Your reservation on @Model.HotelName, @Model.HotelLocation was cancelled</div>");
                 break;
         }
 
@@ -47,7 +46,7 @@ public class EmailSender : IEmailSender
             .Append(
                 "<div>Status: ");
 
-        switch (reservationDetails.ReservationStatus)
+        switch (reservationMessage.ReservationStatus)
         {
             case ReservationStatus.PENDING:
                 htmlMessageStringbuilder.Append("<span>PENDING</span>");
@@ -68,7 +67,7 @@ public class EmailSender : IEmailSender
         var sendResponse = await _fluentEmail
             .To(email)
             .Subject(subject)
-            .UsingTemplate(htmlMessage, reservationDetails)
+            .UsingTemplate(htmlMessage, reservationMessage)
             .SendAsync();
 
         if (!sendResponse.Successful)

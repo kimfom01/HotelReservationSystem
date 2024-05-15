@@ -1,8 +1,7 @@
-namespace HotelBackend.Application.Models;
+namespace HotelBackend.Common.Models;
 
 public class Config
 {
-    public EmailOption? EmailOption { get; set; }
     public EmailQueueOption? EmailQueueOption { get; set; }
     public PaymentQueueOption? PaymentQueueOption { get; set; }
 }

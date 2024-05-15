@@ -1,4 +1,4 @@
-namespace HotelBackend.Domain.Enums;
+namespace HotelBackend.Common.Enums;
 
 public enum ReservationStatus
 {

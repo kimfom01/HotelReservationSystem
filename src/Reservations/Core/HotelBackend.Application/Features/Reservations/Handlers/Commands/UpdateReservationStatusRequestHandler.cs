@@ -5,9 +5,8 @@ using HotelBackend.Application.Contracts.Persistence;
 using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
-using HotelBackend.Application.Models;
 using HotelBackend.Common.Enums;
-using HotelBackend.Domain.Enums;
+using HotelBackend.Common.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -79,12 +78,13 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
         await _unitOfWork.SaveChanges(cancellationToken);
         _logger.LogInformation("Successfully updated reservation");
 
-        var reservationDetailsDto = _mapper.Map<GetReservationDetailsDto>(reservation);
+        // TODO: mapping might not work either configure it properly or do manual mapping.
+        var reservationDetailsDto = _mapper.Map<ReservationMessage>(reservation);
 
         await _queuePublisher.PublishMessage(new ReservationDetailsEmail
         {
-            ReservationDetailsDto = reservationDetailsDto,
-            ReceiverEmail = reservationDetailsDto.GuestProfile!.ContactEmail,
+            ReservationMessage = reservationDetailsDto,
+            ReceiverEmail = reservationDetailsDto.GuestContactEmail,
             Subject = "Payment for reservation"
         });
         _logger.LogInformation("Successfully pushed message to email queue");

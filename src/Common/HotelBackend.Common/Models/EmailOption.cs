@@ -1,4 +1,4 @@
-namespace HotelBackend.Application.Models;
+namespace HotelBackend.Common.Models;
 
 public class EmailOption
 {

@@ -4,7 +4,7 @@ using System.Text.Json;
 using HotelBackend.Application.Contracts.Infrastructure;
 using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
-using HotelBackend.Application.Models;
+using HotelBackend.Common.Models;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

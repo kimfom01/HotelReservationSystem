@@ -1,7 +1,6 @@
 using HotelBackend.Application.Dtos.Common;
 using HotelBackend.Application.Dtos.GuestProfiles;
 using HotelBackend.Common.Enums;
-using HotelBackend.Domain.Enums;
 
 namespace HotelBackend.Application.Dtos.Reservations;
 

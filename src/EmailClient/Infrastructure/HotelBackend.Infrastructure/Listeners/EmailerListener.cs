@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using HotelBackend.Application.Contracts.Infrastructure;
-using HotelBackend.Application.Models;
+using HotelBackend.Common.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -70,14 +70,15 @@ public class EmailerListener : IDisposable
                     var reservationDetailsEmail =
                         JsonSerializer.Deserialize<ReservationDetailsEmail>(json);
 
-                    if (reservationDetailsEmail is null && reservationDetailsEmail!.ReservationDetailsDto is null)
+                    if (reservationDetailsEmail is null && reservationDetailsEmail!.ReservationMessage is null)
                     {
                         throw new SerializationException("Unable to deserialize the update event");
                     }
-
-                    await emailSender.SendEmailAsync(reservationDetailsEmail.ReceiverEmail,
+                    
+                    await emailSender.SendEmailAsync(
+                        reservationDetailsEmail.ReceiverEmail,
                         reservationDetailsEmail.Subject,
-                        reservationDetailsEmail.ReservationDetailsDto!);
+                        reservationDetailsEmail.ReservationMessage!);
 
                     _channel.BasicAck(args.DeliveryTag, false);
                 };

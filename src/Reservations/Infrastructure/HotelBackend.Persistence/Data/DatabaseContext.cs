@@ -1,6 +1,5 @@
 ﻿using HotelBackend.Common.Enums;
 using HotelBackend.Domain.Entities;
-using HotelBackend.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.Persistence.Data;

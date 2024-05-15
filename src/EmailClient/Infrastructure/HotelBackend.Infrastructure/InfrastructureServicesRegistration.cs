@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security;
 using HotelBackend.Application.Contracts.Infrastructure;
-using HotelBackend.Application.Models;
+using HotelBackend.Common.Models;
 using HotelBackend.Infrastructure.EmailProvider;
 using HotelBackend.Infrastructure.Listeners;
 using Microsoft.Extensions.Configuration;

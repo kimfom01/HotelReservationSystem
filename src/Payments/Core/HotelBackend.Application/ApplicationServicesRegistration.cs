@@ -1,6 +1,6 @@
 using System.Reflection;
 using FluentValidation;
-using HotelBackend.Application.Models;
+using HotelBackend.Common.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

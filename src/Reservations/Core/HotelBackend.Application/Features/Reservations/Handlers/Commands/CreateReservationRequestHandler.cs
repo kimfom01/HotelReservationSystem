@@ -5,7 +5,7 @@ using HotelBackend.Application.Contracts.Persistence;
 using HotelBackend.Application.Dtos.Reservations;
 using HotelBackend.Application.Exceptions;
 using HotelBackend.Application.Features.Reservations.Requests.Commands;
-using HotelBackend.Application.Models;
+using HotelBackend.Common.Models;
 using HotelBackend.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -80,12 +80,13 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
             throw new ReservationException("An error occured: unable to save reservation");
         }
 
-        var reservationDetailsDto = _mapper.Map<GetReservationDetailsDto>(reservation);
+        var reservationMessage = _mapper.Map<ReservationMessage>(added);
+        var reservationDetailsDto = _mapper.Map<GetReservationDetailsDto>(added);
 
         await _emailQueuePublisher.PublishMessage(new ReservationDetailsEmail
         {
-            ReservationDetailsDto = reservationDetailsDto,
-            ReceiverEmail = reservationDetailsDto.GuestProfile!.ContactEmail,
+            ReservationMessage = reservationMessage,
+            ReceiverEmail = reservationMessage.GuestContactEmail,
             Subject = "Reservation created successfully"
         });
         _logger.LogInformation("Successfully pushed message to email queue");
