@@ -30,7 +30,7 @@ var app = builder.Build();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 using var scope = app.Services.CreateScope();
-await DatabaseReset.SetupDatabase(scope, builder.Environment.IsDevelopment());
+await DatabaseReset.SetupDatabase(scope);
 
 app.UseSwagger();
 app.UseSwaggerUI();

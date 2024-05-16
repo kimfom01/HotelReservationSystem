@@ -1,22 +1,20 @@
 using HotelBackend.Reservations.Persistence.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HotelBackend.Reservations.Persistence.Utils;
 
 public static class DatabaseReset
 {
-    public static async Task SetupDatabase(IServiceScope scope, bool environmentIsDevelopment)
+    public static async Task SetupDatabase(IServiceScope scope)
     {
         var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-        // if (environmentIsDevelopment)
+        var migrations = await context.Database.GetPendingMigrationsAsync();
+
+        if (migrations.Any())
         {
-            await context.Database.EnsureDeletedAsync();
-            await context.Database.EnsureCreatedAsync();
+            await context.Database.MigrateAsync();
         }
-        // else
-        // {
-        //     await context.Database.MigrateAsync();
-        // }
     }
 }

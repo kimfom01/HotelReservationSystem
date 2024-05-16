@@ -63,6 +63,7 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
         }
 
         reservation.PaymentStatus = request.UpdateReservationPaymentStatusDto.Status;
+        reservation.PaymentId = request.UpdateReservationPaymentStatusDto.PaymentId;
 
         if (request.UpdateReservationPaymentStatusDto.Status == PaymentStatus.PAID)
         {

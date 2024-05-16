@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
-using HotelBackend.Payments.Application.Contracts.Infrastructure;
 using HotelBackend.Common.Models;
+using HotelBackend.Payments.Application.Contracts.Infrastructure.MessageBroker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;

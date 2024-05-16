@@ -177,7 +177,6 @@ public class DatabaseContext : DbContext
             .HasData(new Reservation
             {
                 Id = new Guid("37dfb45a-77e8-4aa0-9c96-50209a772c90"),
-                HotelId = new Guid("772e0735-5e83-4894-aa59-d5dc56105404"),
                 CheckIn = DateTime.Now,
                 CheckOut = DateTime.Now.AddDays(5),
                 NumberOfGuests = 5,

@@ -1,6 +1,6 @@
-using HotelBackend.Payments.Application.Contracts.Infrastructure;
-using HotelBackend.Payments.Application.Dtos.Reservations;
-using HotelBackend.Common.Enums;
+using HotelBackend.Payments.Application.Dtos.Payments;
+using HotelBackend.Payments.Application.Features.Payments.Requests.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBackend.Payments.PaymentInitiatorService.Controllers;
@@ -9,11 +9,11 @@ namespace HotelBackend.Payments.PaymentInitiatorService.Controllers;
 [Route("/api/[controller]")]
 public class PaymentController : ControllerBase
 {
-    private readonly IPaymentStatusPublisher _paymentStatusPublisher;
+    private readonly IMediator _mediator;
 
-    public PaymentController(IPaymentStatusPublisher paymentStatusPublisher)
+    public PaymentController(IMediator mediator)
     {
-        _paymentStatusPublisher = paymentStatusPublisher;
+        _mediator = mediator;
     }
 
     [HttpGet]
@@ -22,20 +22,13 @@ public class PaymentController : ControllerBase
         return Ok("Hello from payment controller");
     }
 
-    [HttpPost("pay/{reservationId:Guid}")]
-    public async Task<IActionResult> PayForReservation(Guid reservationId)
+    [HttpPost("pay")]
+    public async Task<IActionResult> PayForReservation(AddPaymentDto paymentDto, CancellationToken cancellationToken)
     {
-        var statuses = Enum.GetValues(typeof(PaymentStatus));
-
-        var rand = new Random();
-
-        var status = (PaymentStatus)(statuses.GetValue(rand.Next(statuses.Length)) ?? PaymentStatus.PENDING);
-
-        await _paymentStatusPublisher.PublishMessage(new UpdateReservationPaymentStatusDto
+        await _mediator.Send(new AddPaymentRequest
         {
-            Status = status,
-            ReservationId = reservationId
-        });
+            PaymentDto = paymentDto
+        }, cancellationToken);
 
         return Ok("Payment initiated");
     }

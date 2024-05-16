@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -54,6 +53,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{FAEF8AFF-74B0-4828-9C16-50A4527ABF42}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Reservations.ReservationService", "src\Reservations\Presentation\HotelBackend.Reservations.ReservationService\HotelBackend.Reservations.ReservationService.csproj", "{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Payments.Domain", "src\Payments\Core\HotelBackend.Payments.Domain\HotelBackend.Payments.Domain.csproj", "{6E13762D-9930-4129-A09C-1F0EE2066965}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +113,10 @@ Global
 		{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E13762D-9930-4129-A09C-1F0EE2066965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E13762D-9930-4129-A09C-1F0EE2066965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E13762D-9930-4129-A09C-1F0EE2066965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E13762D-9930-4129-A09C-1F0EE2066965}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{59E3260F-0A79-4A79-807A-BE453F4343BB} = {315E819C-0DF2-4F06-9B78-09177C601518}
@@ -139,5 +144,6 @@ Global
 		{845176B1-21F4-46A0-82AF-99A0C4D65FED} = {B93B14AE-9095-4F6A-95AD-790AC721E700}
 		{FAEF8AFF-74B0-4828-9C16-50A4527ABF42} = {3B8300BD-CB70-41E7-9B07-B0E057A92472}
 		{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2} = {FAEF8AFF-74B0-4828-9C16-50A4527ABF42}
+		{6E13762D-9930-4129-A09C-1F0EE2066965} = {5855B05C-D0F3-426D-86B2-B6B8704231A4}
 	EndGlobalSection
 EndGlobal

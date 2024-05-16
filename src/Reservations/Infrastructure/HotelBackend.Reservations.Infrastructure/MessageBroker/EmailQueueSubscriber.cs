@@ -1,6 +1,7 @@
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
+using AutoMapper;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
@@ -18,20 +19,23 @@ public class EmailQueueSubscriber : IEmailQueueSubscriber
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<EmailQueueSubscriber> _logger;
+    private readonly IMapper _mapper;
     private readonly PaymentQueueOption _paymentQueueOption;
 
     public EmailQueueSubscriber(
         IServiceProvider serviceProvider,
         ILogger<EmailQueueSubscriber> logger,
-        IOptions<Config> configOptions
+        IOptions<Config> configOptions,
+        IMapper mapper
     )
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
+        _mapper = mapper;
         _paymentQueueOption = configOptions.Value.PaymentQueueOption!;
     }
 
-    public Task SubcribeToQueue(CancellationToken stoppingToken)
+    public Task SubscribeToQueue(CancellationToken stoppingToken)
     {
         try
         {
@@ -71,15 +75,17 @@ public class EmailQueueSubscriber : IEmailQueueSubscriber
 
                 Console.WriteLine(json);
 
-                var updateReservationPaymentStatusDto =
-                    JsonSerializer.Deserialize<UpdateReservationPaymentStatusDto>(json);
+                var paymentStatusMessage = JsonSerializer.Deserialize<PaymentStatusMessage>(json);
 
-                if (updateReservationPaymentStatusDto is null)
+                if (paymentStatusMessage is null)
                 {
                     _logger.LogError("Unable to deserialize the update event");
                     throw new SerializationException(
                         "Unable to deserialize the update event");
                 }
+
+                var updateReservationPaymentStatusDto =
+                    _mapper.Map<UpdateReservationPaymentStatusDto>(paymentStatusMessage);
 
                 await mediator.Send(new UpdateReservationStatusRequest
                 {

@@ -1,4 +1,4 @@
-namespace HotelBackend.Payments.Application.Contracts.Infrastructure;
+namespace HotelBackend.Payments.Application.Contracts.Infrastructure.MessageBroker;
 
 public interface IPaymentStatusPublisher : IDisposable
 {

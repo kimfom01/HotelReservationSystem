@@ -19,5 +19,9 @@ public class UpdateReservationPaymentStatusDtoValidator : AbstractValidator<Upda
                 return reservation is not null;
             })
             .WithMessage("{PropertyName} does not exist");
+        
+        RuleFor(dto => dto.PaymentId)
+            .NotNull()
+            .WithMessage("{PropertyName} is required.");
     }
 }

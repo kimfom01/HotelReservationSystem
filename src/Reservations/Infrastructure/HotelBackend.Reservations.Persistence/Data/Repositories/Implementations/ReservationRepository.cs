@@ -15,8 +15,8 @@ public class ReservationRepository : Repository<Reservation>, IReservationReposi
     {
         var reservation = await DbSet.Where(res => res.Id == reservationId)
             .Include(res => res.GuestProfile)
-            .Include(res => res.Hotel)
             .Include(res => res.Room)
+            .ThenInclude(room => room!.Hotel)
             .FirstOrDefaultAsync(res => res.Id == reservationId, cancellationToken);
 
         return reservation;

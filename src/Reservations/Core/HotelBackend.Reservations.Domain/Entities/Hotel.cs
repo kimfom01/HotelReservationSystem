@@ -6,7 +6,5 @@ public class Hotel
     public string Name { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;
 
-    public IEnumerable<Reservation>? Reservations { get; set; }
     public IEnumerable<Room>? Rooms { get; set; }
-    
 }

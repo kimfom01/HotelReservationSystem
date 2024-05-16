@@ -13,60 +13,52 @@ public class ReservationMappings : Profile
             .ReverseMap();
         CreateMap<Reservation, CreateReservationDto>()
             .ReverseMap();
+        CreateMap<PaymentStatusMessage, UpdateReservationPaymentStatusDto>()
+            .ForMember(upd =>
+                upd.PaymentId, opt =>
+                opt.MapFrom(pay => pay.Id))
+            .ReverseMap();
         CreateMap<Reservation, ReservationMessage>()
             .ForMember(resMsg =>
                     resMsg.GuestContactEmail, opt =>
-                    opt.MapFrom(res =>
-                        res.GuestProfile!.ContactEmail)
+                    opt.MapFrom(res => res.GuestProfile!.ContactEmail)
             )
             .ForMember(resMsg =>
                 resMsg.GuestFirstName, opt =>
-                opt.MapFrom(res =>
-                    res.GuestProfile!.FirstName))
+                opt.MapFrom(res => res.GuestProfile!.FirstName))
             .ForMember(resMsg =>
                 resMsg.GuestLastName, opt =>
-                opt.MapFrom(res =>
-                    res.GuestProfile!.LastName))
+                opt.MapFrom(res => res.GuestProfile!.LastName))
             .ForMember(resMsg =>
                 resMsg.GuestFullName, opt =>
-                opt.MapFrom(res =>
-                    $"{res.GuestProfile!.FirstName} {res.GuestProfile!.LastName}"))
+                opt.MapFrom(res => $"{res.GuestProfile!.FirstName} {res.GuestProfile!.LastName}"))
             .ForMember(resMsg =>
                 resMsg.HotelName, opt =>
-                opt.MapFrom(res =>
-                    res.Hotel!.Name))
+                opt.MapFrom(res => res.Room!.Hotel!.Name))
             .ForMember(resMsg =>
                 resMsg.HotelLocation, opt =>
-                opt.MapFrom(res =>
-                    res.Hotel!.Location))
+                opt.MapFrom(res => res.Room!.Hotel!.Location))
             .ForMember(resMsg =>
                 resMsg.RoomNumber, opt =>
-                opt.MapFrom(res =>
-                    res.Room!.RoomNumber))
+                opt.MapFrom(res => res.Room!.RoomNumber))
             .ForMember(resMsg =>
                 resMsg.RoomAvailability, opt =>
-                opt.MapFrom(res =>
-                    res.Room!.Availability))
+                opt.MapFrom(res => res.Room!.Availability))
             .ForMember(resMsg =>
                 resMsg.RoomTypeId, opt =>
-                opt.MapFrom(res =>
-                    res.Room!.RoomTypeId))
+                opt.MapFrom(res => res.Room!.RoomTypeId))
             .ForMember(resMsg =>
                 resMsg.RoomType, opt =>
-                opt.MapFrom(res =>
-                    res.Room!.RoomType!.Type))
+                opt.MapFrom(res => res.Room!.RoomType!.Type))
             .ForMember(resMsg =>
                 resMsg.RoomCapacity, opt =>
-                opt.MapFrom(res =>
-                    res.Room!.RoomType!.Capacity))
+                opt.MapFrom(res => res.Room!.RoomType!.Capacity))
             .ForMember(resMsg =>
                 resMsg.RoomDescription, opt =>
-                opt.MapFrom(res =>
-                    res.Room!.RoomType!.Description))
+                opt.MapFrom(res => res.Room!.RoomType!.Description))
             .ForMember(resMsg =>
                 resMsg.RoomPriceValue, opt =>
-                opt.MapFrom(res =>
-                    res.Room!.RoomType!.Price!.Value))
+                opt.MapFrom(res => res.Room!.RoomType!.Price!.Value))
             .ReverseMap();
     }
 }

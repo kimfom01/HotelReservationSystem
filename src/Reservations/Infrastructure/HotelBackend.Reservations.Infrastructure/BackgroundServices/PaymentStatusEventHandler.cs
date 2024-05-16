@@ -6,7 +6,6 @@ namespace HotelBackend.Reservations.Infrastructure.BackgroundServices;
 
 public class PaymentStatusEventHandler : BackgroundService
 {
-    private readonly ILogger<PaymentStatusEventHandler> _logger;
     private readonly IEmailQueueSubscriber _queueSubscriber;
 
     public PaymentStatusEventHandler(
@@ -14,17 +13,14 @@ public class PaymentStatusEventHandler : BackgroundService
         IEmailQueueSubscriber queueSubscriber
     )
     {
-        _logger = logger;
         _queueSubscriber = queueSubscriber;
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         if (!stoppingToken.IsCancellationRequested)
         {
-            _queueSubscriber.SubcribeToQueue(stoppingToken);
+            await _queueSubscriber.SubscribeToQueue(stoppingToken);
         }
-
-        return Task.CompletedTask;
     }
 }
