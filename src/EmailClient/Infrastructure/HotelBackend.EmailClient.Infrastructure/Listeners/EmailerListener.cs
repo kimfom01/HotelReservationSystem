@@ -65,8 +65,6 @@ public class EmailerListener : IDisposable
 
                     var json = Encoding.UTF8.GetString(body);
 
-                    Console.WriteLine(json);
-
                     var reservationDetailsEmail =
                         JsonSerializer.Deserialize<ReservationDetailsEmail>(json);
 
@@ -88,7 +86,7 @@ public class EmailerListener : IDisposable
         }
         catch (Exception exception)
         {
-            _logger.LogError("Exception: {exception}", exception.Message);
+            _logger.LogError("Exception: {Exception}", exception.Message);
         }
 
         return Task.CompletedTask;

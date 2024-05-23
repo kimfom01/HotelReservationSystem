@@ -19,7 +19,7 @@ cd ./src/Reservations
 ### Run the following to generage reservations migration
 
 ```sh
-dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Reservations.Persistence/HotelBackend.Reservations.Persistence.csproj --context DatabaseContext --output-dir ./Migrations/
+dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Reservations.Infrastructure/HotelBackend.Reservations.Infrastructure.csproj --context ReservationDataContext --output-dir ./Migrations/
 ```
 
 ## To generate migrations for Payments
@@ -34,4 +34,20 @@ cd ./src/Payments
 
 ```sh
 dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Payments.Infrastructure/HotelBackend.Payments.Infrastructure.csproj --context PaymentDataContext --output-dir ./Migrations/
+```
+
+#### In a nutshell
+
+```sh
+cd ./src/Reservations
+
+dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Reservations.Infrastructure/HotelBackend.Reservations.Infrastructure.csproj --context ReservationDataContext --output-dir ./Migrations/
+
+cd ../../
+
+cd ./src/Payments
+
+dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Payments.Infrastructure/HotelBackend.Payments.Infrastructure.csproj --context PaymentDataContext --output-dir ./Migrations/
+
+cd ../../
 ```

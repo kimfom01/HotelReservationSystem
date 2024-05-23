@@ -1,5 +1,5 @@
 using AutoMapper;
-using HotelBackend.Reservations.Application.Contracts.Persistence;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Queries;
 using MediatR;

@@ -1,5 +1,5 @@
 using FluentValidation;
-using HotelBackend.Reservations.Application.Contracts.Persistence;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 
 namespace HotelBackend.Reservations.Application.Dtos.Reservations.Validators;
 

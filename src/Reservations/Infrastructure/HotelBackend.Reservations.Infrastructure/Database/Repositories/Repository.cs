@@ -1,16 +1,16 @@
 ﻿using System.Linq.Expressions;
-using HotelBackend.Reservations.Application.Contracts.Persistence;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBackend.Reservations.Persistence.Data.Repositories.Implementations;
+namespace HotelBackend.Reservations.Infrastructure.Database.Repositories;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     protected readonly DbSet<TEntity> DbSet;
 
-    protected Repository(DatabaseContext databaseContext)
+    protected Repository(ReservationDataContext reservationDataContext)
     {
-        DbSet = databaseContext.Set<TEntity>();
+        DbSet = reservationDataContext.Set<TEntity>();
     }
 
     public async Task<TEntity?> Add(TEntity entity, CancellationToken cancellationToken)

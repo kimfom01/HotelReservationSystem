@@ -2,9 +2,9 @@
 using HotelBackend.Reservations.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBackend.Reservations.Persistence.Data;
+namespace HotelBackend.Reservations.Infrastructure.Database;
 
-public class DatabaseContext : DbContext
+public class ReservationDataContext : DbContext
 {
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<PriceModel> Prices { get; set; }
@@ -13,13 +13,15 @@ public class DatabaseContext : DbContext
     public DbSet<RoomType> RoomTypes { get; set; }
     public DbSet<GuestProfile> GuestProfiles { get; set; }
 
-    public DatabaseContext(
-        DbContextOptions<DatabaseContext> options) : base(options)
+    public ReservationDataContext(
+        DbContextOptions<ReservationDataContext> options) : base(options)
     {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("reservations");
+        
         modelBuilder.Entity<Hotel>()
             .HasData(new Hotel
                 {

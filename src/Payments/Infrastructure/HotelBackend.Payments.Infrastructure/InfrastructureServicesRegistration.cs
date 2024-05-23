@@ -3,6 +3,7 @@ using HotelBackend.Payments.Application.Contracts.Infrastructure.MessageBroker;
 using HotelBackend.Payments.Infrastructure.Database;
 using HotelBackend.Payments.Infrastructure.MessageBroker;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -19,7 +20,8 @@ public static class InfrastructureServicesRegistration
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddDbContext<PaymentDataContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments")));
 
         return services;
     }

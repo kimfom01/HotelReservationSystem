@@ -1,12 +1,12 @@
-using HotelBackend.Reservations.Application.Contracts.Persistence;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Reservations.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBackend.Reservations.Persistence.Data.Repositories.Implementations;
+namespace HotelBackend.Reservations.Infrastructure.Database.Repositories;
 
 public class RoomRepository : Repository<Room>, IRoomRepository
 {
-    public RoomRepository(DatabaseContext databaseContext) : base(databaseContext)
+    public RoomRepository(ReservationDataContext reservationDataContext) : base(reservationDataContext)
     {
     }
 

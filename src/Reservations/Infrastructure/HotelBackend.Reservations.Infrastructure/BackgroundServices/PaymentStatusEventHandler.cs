@@ -1,4 +1,4 @@
-using HotelBackend.Reservations.Application.Contracts.Infrastructure;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -6,11 +6,11 @@ namespace HotelBackend.Reservations.Infrastructure.BackgroundServices;
 
 public class PaymentStatusEventHandler : BackgroundService
 {
-    private readonly IEmailQueueSubscriber _queueSubscriber;
+    private readonly IPaymentQueueSubscriber _queueSubscriber;
 
     public PaymentStatusEventHandler(
         ILogger<PaymentStatusEventHandler> logger,
-        IEmailQueueSubscriber queueSubscriber
+        IPaymentQueueSubscriber queueSubscriber
     )
     {
         _queueSubscriber = queueSubscriber;

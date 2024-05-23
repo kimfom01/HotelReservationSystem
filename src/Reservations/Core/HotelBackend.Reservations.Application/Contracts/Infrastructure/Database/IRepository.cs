@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace HotelBackend.Reservations.Application.Contracts.Persistence;
+namespace HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 
 public interface IRepository<TEntity>
 {

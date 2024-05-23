@@ -2,10 +2,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using AutoMapper;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
 using HotelBackend.Common.Models;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,16 +15,16 @@ using RabbitMQ.Client.Events;
 
 namespace HotelBackend.Reservations.Infrastructure.MessageBroker;
 
-public class EmailQueueSubscriber : IEmailQueueSubscriber
+public class PaymentQueueSubscriber : IPaymentQueueSubscriber
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<EmailQueueSubscriber> _logger;
+    private readonly ILogger<PaymentQueueSubscriber> _logger;
     private readonly IMapper _mapper;
     private readonly PaymentQueueOption _paymentQueueOption;
 
-    public EmailQueueSubscriber(
+    public PaymentQueueSubscriber(
         IServiceProvider serviceProvider,
-        ILogger<EmailQueueSubscriber> logger,
+        ILogger<PaymentQueueSubscriber> logger,
         IOptions<Config> configOptions,
         IMapper mapper
     )
@@ -37,31 +37,30 @@ public class EmailQueueSubscriber : IEmailQueueSubscriber
 
     public Task SubscribeToQueue(CancellationToken stoppingToken)
     {
+        var scope = _serviceProvider.CreateScope();
+        var factory = scope.ServiceProvider.GetRequiredService<IConnectionFactory>();
+
+        factory.Uri =
+            new Uri(
+                $"amqp://{_paymentQueueOption.User}:{_paymentQueueOption.Password}@{_paymentQueueOption.Host}:{_paymentQueueOption.Port}");
+
+        factory.ClientProvidedName = _paymentQueueOption.ClientName;
+
+        var connection = factory.CreateConnection();
+
+        var channel = connection.CreateModel();
+
+        var exchangeName = _paymentQueueOption.Exchange;
+        var routingKey = _paymentQueueOption.RoutingKey;
+        var queueName = _paymentQueueOption.QueueName;
+
+        channel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
+        channel.QueueDeclare(queueName, false, false, false, null);
+        channel.QueueBind(queueName, exchangeName, routingKey, null);
+        channel.BasicQos(0, 1, false);
+
         try
         {
-            var scope = _serviceProvider.CreateScope();
-            var factory = scope.ServiceProvider.GetRequiredService<IConnectionFactory>();
-
-            factory.Uri =
-                new Uri(
-                    $"amqp://{_paymentQueueOption.User}:{_paymentQueueOption.Password}@{_paymentQueueOption.Host}:{_paymentQueueOption.Port}");
-
-            factory.ClientProvidedName = _paymentQueueOption.ClientName;
-
-            var connection = factory.CreateConnection();
-
-            var channel = connection.CreateModel();
-
-            var exchangeName = _paymentQueueOption.Exchange;
-            var routingKey = _paymentQueueOption.RoutingKey;
-            var queueName = _paymentQueueOption.QueueName;
-
-            channel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
-            channel.QueueDeclare(queueName, false, false, false, null);
-            channel.QueueBind(queueName, exchangeName, routingKey, null);
-            channel.BasicQos(0, 1, false);
-
-
             scope = _serviceProvider.CreateScope();
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
@@ -72,8 +71,6 @@ public class EmailQueueSubscriber : IEmailQueueSubscriber
                 var body = args.Body.ToArray();
 
                 var json = Encoding.UTF8.GetString(body);
-
-                Console.WriteLine(json);
 
                 var paymentStatusMessage = JsonSerializer.Deserialize<PaymentStatusMessage>(json);
 
@@ -100,7 +97,7 @@ public class EmailQueueSubscriber : IEmailQueueSubscriber
         }
         catch (Exception exception)
         {
-            _logger.LogError("Exception: {exception}", exception.Message);
+            _logger.LogError("Exception: {Exception}", exception.Message);
         }
 
         return Task.CompletedTask;

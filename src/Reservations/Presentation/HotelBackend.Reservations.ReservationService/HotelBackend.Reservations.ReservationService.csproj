@@ -26,7 +26,6 @@
       <ProjectReference Include="..\..\Core\HotelBackend.Reservations.Application\HotelBackend.Reservations.Application.csproj" />
       <ProjectReference Include="..\..\Core\HotelBackend.Reservations.Domain\HotelBackend.Reservations.Domain.csproj" />
       <ProjectReference Include="..\..\Infrastructure\HotelBackend.Reservations.Infrastructure\HotelBackend.Reservations.Infrastructure.csproj" />
-      <ProjectReference Include="..\..\Infrastructure\HotelBackend.Reservations.Persistence\HotelBackend.Reservations.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

@@ -48,8 +48,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Reservations.Infrastructure", "src\Reservations\Infrastructure\HotelBackend.Reservations.Infrastructure\HotelBackend.Reservations.Infrastructure.csproj", "{1B040983-4061-4E3A-873A-0649718C5CB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Reservations.Persistence", "src\Reservations\Infrastructure\HotelBackend.Reservations.Persistence\HotelBackend.Reservations.Persistence.csproj", "{845176B1-21F4-46A0-82AF-99A0C4D65FED}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{FAEF8AFF-74B0-4828-9C16-50A4527ABF42}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Reservations.ReservationService", "src\Reservations\Presentation\HotelBackend.Reservations.ReservationService\HotelBackend.Reservations.ReservationService.csproj", "{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2}"
@@ -105,10 +103,6 @@ Global
 		{1B040983-4061-4E3A-873A-0649718C5CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B040983-4061-4E3A-873A-0649718C5CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B040983-4061-4E3A-873A-0649718C5CB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{845176B1-21F4-46A0-82AF-99A0C4D65FED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{845176B1-21F4-46A0-82AF-99A0C4D65FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{845176B1-21F4-46A0-82AF-99A0C4D65FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{845176B1-21F4-46A0-82AF-99A0C4D65FED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -141,7 +135,6 @@ Global
 		{E208851A-8C37-4C73-B66C-8813C214C968} = {F1C4C8E9-17D4-432F-BBBB-C7764D173C1C}
 		{B93B14AE-9095-4F6A-95AD-790AC721E700} = {3B8300BD-CB70-41E7-9B07-B0E057A92472}
 		{1B040983-4061-4E3A-873A-0649718C5CB2} = {B93B14AE-9095-4F6A-95AD-790AC721E700}
-		{845176B1-21F4-46A0-82AF-99A0C4D65FED} = {B93B14AE-9095-4F6A-95AD-790AC721E700}
 		{FAEF8AFF-74B0-4828-9C16-50A4527ABF42} = {3B8300BD-CB70-41E7-9B07-B0E057A92472}
 		{E6004BC9-9B93-4C2C-ACDB-B946DCCE51D2} = {FAEF8AFF-74B0-4828-9C16-50A4527ABF42}
 		{6E13762D-9930-4129-A09C-1F0EE2066965} = {5855B05C-D0F3-426D-86B2-B6B8704231A4}

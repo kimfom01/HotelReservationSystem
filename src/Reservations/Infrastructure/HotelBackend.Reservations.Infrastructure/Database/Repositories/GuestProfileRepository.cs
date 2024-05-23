@@ -1,12 +1,12 @@
-using HotelBackend.Reservations.Application.Contracts.Persistence;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Reservations.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBackend.Reservations.Persistence.Data.Repositories.Implementations;
+namespace HotelBackend.Reservations.Infrastructure.Database.Repositories;
 
 public class GuestProfileRepository : Repository<GuestProfile>, IGuestProfileRepository
 {
-    public GuestProfileRepository(DatabaseContext databaseContext) : base(databaseContext)
+    public GuestProfileRepository(ReservationDataContext reservationDataContext) : base(reservationDataContext)
     {
     }
 

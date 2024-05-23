@@ -1,5 +1,5 @@
 using AutoMapper;
-using HotelBackend.Reservations.Application.Contracts.Persistence;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Reservations.Application.Dtos;
 using HotelBackend.Reservations.Application.Features.Rooms.Requests.Queries;
 using MediatR;
@@ -26,13 +26,13 @@ public class GetAvailableRoomsInHotelRequestHandler : IRequestHandler<GetAvailab
     public async Task<List<RoomDto>> Handle(GetAvailableRoomsInHotelRequest request,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Getting available rooms in hotel={hotelId}", request.HotelId);
+        _logger.LogInformation("Getting available rooms in hotel={HotelId}", request.HotelId);
 
         var rooms = await _unitOfWork.Rooms.GetAllAvailableRooms(request.HotelId, cancellationToken);
 
         if (rooms.Count == 0)
         {
-            _logger.LogWarning("No available rooms in hotel={hotelId}", request.HotelId);
+            _logger.LogWarning("No available rooms in hotel={HotelId}", request.HotelId);
             return [];
         }
 

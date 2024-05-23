@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure;
 using HotelBackend.Common.Models;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
@@ -46,7 +46,7 @@ public class EmailQueuePublisher : IEmailQueuePublisher
         var serializedMessage = JsonSerializer.Serialize(message);
         var messageBodyBytes = Encoding.UTF8.GetBytes(serializedMessage);
 
-        _logger.LogInformation("Publishing message to {queueName}", _queueName);
+        _logger.LogInformation("Publishing message to {QueueName}", _queueName);
         return Task.Run(() => _channel.BasicPublish(_exchangeName, _routingKey, null, messageBodyBytes));
     }
 

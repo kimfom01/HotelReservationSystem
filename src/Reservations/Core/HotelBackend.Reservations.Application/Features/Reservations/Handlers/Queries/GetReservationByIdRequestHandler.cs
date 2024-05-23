@@ -1,5 +1,5 @@
 using AutoMapper;
-using HotelBackend.Reservations.Application.Contracts.Persistence;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Exceptions;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Queries;
@@ -26,13 +26,13 @@ public class GetReservationByIdRequestHandler : IRequestHandler<GetReservationBy
 
     public async Task<GetReservationDetailsDto> Handle(GetReservationByIdRequest request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Getting reservation={reservationId}", request.ReservationId);
+        _logger.LogInformation("Getting reservation={ReservationId}", request.ReservationId);
         var reservation =
             await _unitOfWork.Reservations.GetEntity(res => res.Id == request.ReservationId, cancellationToken);
 
         if (reservation is null)
         {
-            _logger.LogError("Reservation with id={reservationId} does not exist", request.ReservationId);
+            _logger.LogError("Reservation with id={ReservationId} does not exist", request.ReservationId);
             throw new NotFoundException($"Reservation with id={request.ReservationId} does not exist");
         }
 

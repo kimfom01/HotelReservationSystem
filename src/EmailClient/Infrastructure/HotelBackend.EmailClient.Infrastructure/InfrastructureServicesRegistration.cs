@@ -36,10 +36,6 @@ public static class InfrastructureServicesRegistration
         }
         else
         {
-            Console.WriteLine("Sender: " + emailOption.SenderEmail);
-            Console.WriteLine("Host: " + emailOption.Host);
-            Console.WriteLine("Password: " + emailOption.Password);
-            Console.WriteLine("Port: " + emailOption.Port);
             services
                 .AddFluentEmail(emailOption.SenderEmail)
                 .AddRazorRenderer()

@@ -1,4 +1,4 @@
-namespace HotelBackend.Reservations.Application.Contracts.Persistence;
+namespace HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 
 public interface IUnitOfWork : IDisposable
 {
