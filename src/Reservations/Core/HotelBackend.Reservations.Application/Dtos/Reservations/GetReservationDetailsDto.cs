@@ -6,7 +6,7 @@ namespace HotelBackend.Reservations.Application.Dtos.Reservations;
 
 public class GetReservationDetailsDto : BaseDto
 {
-    public DateTime CreationDate { get; set; }
+    public DateTime CreatedAt { get; set; }
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public ReservationStatus ReservationStatus { get; set; }

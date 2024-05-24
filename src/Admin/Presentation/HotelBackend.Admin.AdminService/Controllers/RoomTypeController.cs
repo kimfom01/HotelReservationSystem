@@ -55,7 +55,12 @@ public class RoomTypeController : ControllerBase
                 RoomTypeDto = roomTypeDto
             }, cancellationToken);
 
-            return Ok(roomType);
+            return CreatedAtAction(nameof(GetRoomType), new
+                {
+                    roomTypeId = roomType.Id,
+                    hotelId = roomType.HotelId
+                },
+                roomType);
         }
         catch (ValidationException ex)
         {

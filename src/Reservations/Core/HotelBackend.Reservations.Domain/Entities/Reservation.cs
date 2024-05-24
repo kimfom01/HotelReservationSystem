@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using HotelBackend.Common.Enums;
+using HotelBackend.Reservations.Domain.Entities.Common;
 
 namespace HotelBackend.Reservations.Domain.Entities;
 
-public class Reservation
+public class Reservation : BaseEntity
 {
-    public Guid Id { get; set; }
-    public DateTime CreationDate { get; private set; } = DateTime.Now;
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public ReservationStatus ReservationStatus { get; set; } = ReservationStatus.PENDING;
