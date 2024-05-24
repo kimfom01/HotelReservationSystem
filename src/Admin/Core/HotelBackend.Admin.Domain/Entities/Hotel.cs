@@ -10,6 +10,5 @@ public class Hotel : BaseEntity
     public string EmailAddress { get; set; } = string.Empty;
 
     public IEnumerable<Room>? Rooms { get; set; }
-    public IEnumerable<RoomPrice>? RoomPrices { get; set; }
     public IEnumerable<RoomType>? RoomTypes { get; set; }
 }

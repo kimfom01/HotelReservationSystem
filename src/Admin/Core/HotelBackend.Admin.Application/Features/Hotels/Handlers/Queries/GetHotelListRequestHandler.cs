@@ -1,13 +1,13 @@
 using AutoMapper;
 using HotelBackend.Admin.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Admin.Application.Dtos;
+using HotelBackend.Admin.Application.Dtos.Hotels;
 using HotelBackend.Admin.Application.Features.Hotels.Requests.Queries;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Admin.Application.Features.Hotels.Handlers.Queries;
 
-public class GetHotelListRequestHandler : IRequestHandler<GetHotelListRequest, List<HotelDto>>
+public class GetHotelListRequestHandler : IRequestHandler<GetHotelListRequest, List<GetHotelDto>>
 {
     private readonly ILogger<GetHotelListRequestHandler> _logger;
     private readonly IMapper _mapper;
@@ -23,10 +23,10 @@ public class GetHotelListRequestHandler : IRequestHandler<GetHotelListRequest, L
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<HotelDto>> Handle(GetHotelListRequest request, CancellationToken cancellationToken)
+    public async Task<List<GetHotelDto>> Handle(GetHotelListRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting all hotels");
-        var hotels = await _unitOfWork.Hotels.GetEntities(hot => true, cancellationToken);
+        var hotels = await _unitOfWork.Hotels.GetEntities(hot => true);
 
         if (hotels.Count == 0)
         {
@@ -34,6 +34,6 @@ public class GetHotelListRequestHandler : IRequestHandler<GetHotelListRequest, L
             return [];
         }
 
-        return _mapper.Map<List<HotelDto>>(hotels);
+        return _mapper.Map<List<GetHotelDto>>(hotels);
     }
 }

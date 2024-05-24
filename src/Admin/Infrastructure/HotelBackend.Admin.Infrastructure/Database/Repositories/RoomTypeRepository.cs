@@ -3,9 +3,9 @@ using HotelBackend.Admin.Domain.Entities;
 
 namespace HotelBackend.Admin.Infrastructure.Database.Repositories;
 
-public class PriceRepository : Repository<RoomPrice>, IPriceRepository
+public class RoomTypeRepository : Repository<RoomType>, IRoomTypeRepository
 {
-    public PriceRepository(AdminDataContext adminDataContext) : base(adminDataContext)
+    public RoomTypeRepository(AdminDataContext adminDataContext) : base(adminDataContext)
     {
     }
 }

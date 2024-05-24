@@ -37,11 +37,17 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
     public async Task<GetPaymentDto> Handle(AddPaymentRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Adding payment info");
+
+        if (request.PaymentDto is null)
+        {
+            throw new ArgumentNullException(nameof(request), "PaymentDto is required");
+        }
+
         var validationResults = await _validator.ValidateAsync(request.PaymentDto, cancellationToken);
 
         if (!validationResults.IsValid)
         {
-            _logger.LogError("Validation failed: {validationError}", validationResults.Errors);
+            _logger.LogError("Validation failed: {ValidationError}", validationResults.Errors);
             throw new ValidationException(validationResults.Errors);
         }
 

@@ -1,13 +1,13 @@
 using AutoMapper;
 using HotelBackend.Admin.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Admin.Application.Dtos;
+using HotelBackend.Admin.Application.Dtos.Rooms;
 using HotelBackend.Admin.Application.Features.Rooms.Requests.Queries;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Admin.Application.Features.Rooms.Handlers.Queries;
 
-public class GetAvailableRoomsInHotelRequestHandler : IRequestHandler<GetAvailableRoomsInHotelRequest, List<RoomDto>>
+public class GetAvailableRoomsInHotelRequestHandler : IRequestHandler<GetAvailableRoomsInHotelRequest, List<GetRoomDto>>
 {
     private readonly ILogger<GetAvailableRoomsInHotelRequestHandler> _logger;
     private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ public class GetAvailableRoomsInHotelRequestHandler : IRequestHandler<GetAvailab
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<RoomDto>> Handle(GetAvailableRoomsInHotelRequest request,
+    public async Task<List<GetRoomDto>> Handle(GetAvailableRoomsInHotelRequest request,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting available rooms in hotel={HotelId}", request.HotelId);
@@ -36,6 +36,6 @@ public class GetAvailableRoomsInHotelRequestHandler : IRequestHandler<GetAvailab
             return [];
         }
 
-        return _mapper.Map<List<RoomDto>>(rooms);
+        return _mapper.Map<List<GetRoomDto>>(rooms);
     }
 }

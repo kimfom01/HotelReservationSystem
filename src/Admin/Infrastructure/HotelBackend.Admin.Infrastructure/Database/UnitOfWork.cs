@@ -12,12 +12,12 @@ public class UnitOfWork : IUnitOfWork
         _adminDataContext = adminDataContext;
         Rooms = new RoomRepository(_adminDataContext);
         Hotels = new HotelRepository(_adminDataContext);
-        Prices = new PriceRepository(_adminDataContext);
+        RoomTypes = new RoomTypeRepository(_adminDataContext);
     }
 
     public IRoomRepository Rooms { get; }
     public IHotelRepository Hotels { get; }
-    public IPriceRepository Prices { get; }
+    public IRoomTypeRepository RoomTypes { get; }
 
     public async Task<int> SaveChanges(CancellationToken cancellationToken)
     {

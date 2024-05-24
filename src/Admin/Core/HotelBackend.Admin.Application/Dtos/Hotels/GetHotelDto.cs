@@ -1,8 +1,8 @@
 ﻿using HotelBackend.Admin.Application.Dtos.Common;
 
-namespace HotelBackend.Admin.Application.Dtos;
+namespace HotelBackend.Admin.Application.Dtos.Hotels;
 
-public class HotelDto : BaseDto
+public class GetHotelDto : BaseDto
 {
     public string Name { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;

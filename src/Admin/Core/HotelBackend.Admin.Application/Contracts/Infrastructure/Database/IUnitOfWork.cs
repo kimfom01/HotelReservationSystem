@@ -4,6 +4,6 @@ public interface IUnitOfWork : IDisposable
 {
     public IRoomRepository Rooms { get; }
     public IHotelRepository Hotels { get; }
-    public IPriceRepository Prices { get; }
+    public IRoomTypeRepository RoomTypes { get; }
     public Task<int> SaveChanges(CancellationToken cancellationToken);
 }

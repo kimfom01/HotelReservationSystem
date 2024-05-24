@@ -7,7 +7,7 @@ public class RoomType : BaseEntity
     public string Type { get; set; } = string.Empty;
     public int Capacity { get; set; }
     public string Description { get; set; } = string.Empty;
-    public RoomPrice? Price { get; set; }
+    public decimal RoomPrice { get; set; }
     public Guid HotelId { get; set; }
     public Hotel? Hotel { get; set; }
 

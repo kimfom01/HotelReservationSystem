@@ -1,5 +1,5 @@
 using System.Net;
-using HotelBackend.Admin.Application.Dtos;
+using HotelBackend.Admin.Application.Dtos.Rooms;
 using HotelBackend.Admin.Application.Features.Rooms.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ public class RoomController : ControllerBase
 
     [HttpGet("available/{hotelId:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<ActionResult<RoomDto>> GetAvailableRooms(Guid hotelId)
+    public async Task<ActionResult<GetRoomDto>> GetAvailableRooms(Guid hotelId)
     {
         var rooms = await _mediator.Send(new GetAvailableRoomsInHotelRequest { HotelId = hotelId });
         
