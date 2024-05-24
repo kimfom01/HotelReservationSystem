@@ -36,6 +36,7 @@ public class ReservationDataContext : DbContext
                 CheckOut = DateTime.Now.AddDays(5),
                 NumberOfGuests = 5,
                 RoomId = new Guid("6d2ee634-519f-48df-b701-b789aa5599a0"),
+                HotelId = new Guid("772e0735-5e83-4894-aa59-d5dc56105404"),
                 GuestProfileId = new Guid("91555d72-5259-433c-a597-23eeab1da9e3"),
                 PaymentStatus = PaymentStatus.PENDING,
                 ReservationStatus = ReservationStatus.PENDING

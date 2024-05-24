@@ -53,13 +53,7 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
 
         var payment = _mapper.Map<Payment>(request.PaymentDto);
 
-        var statuses = Enum.GetValues(typeof(PaymentStatus));
-
-        var rand = new Random();
-
-        var status = (PaymentStatus)(statuses.GetValue(rand.Next(statuses.Length)) ?? PaymentStatus.PENDING);
-
-        payment.Status = status;
+        payment.Status = request.PaymentDto.Status;
 
         var added = await _unitOfWork.Payments.AddItem(payment);
         await _unitOfWork.SaveChanges();
