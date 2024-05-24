@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Admin.Application.Features.Hotels.Handlers.Commands;
 
-public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, GetHotelDto>
+public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, GetHotelDto> 
 {
     private readonly ILogger<CreateHotelRequestHandler> _logger;
     private readonly IMapper _mapper;

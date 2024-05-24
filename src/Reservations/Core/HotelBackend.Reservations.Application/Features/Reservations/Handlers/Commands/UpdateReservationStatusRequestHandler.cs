@@ -73,6 +73,7 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
         if (request.UpdateReservationPaymentStatusDto.Status == PaymentStatus.CANCELED ||
             request.UpdateReservationPaymentStatusDto.Status == PaymentStatus.REFUNDED)
         {
+            // TODO: Free up room if refunded or cancelled
             reservation.ReservationStatus = ReservationStatus.CANCELLED;
         }
 

@@ -1,23 +1,17 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/Admin/Presentation/HotelBackend.Admin.AdminService/HotelBackend.Admin.AdminService.csproj", "src/Admin/Presentation/HotelBackend.Admin.AdminService/"]
-RUN dotnet restore "src/Admin/Presentation/HotelBackend.Admin.AdminService/HotelBackend.Admin.AdminService.csproj"
-COPY . .
-WORKDIR "/src/src/Admin/Presentation/HotelBackend.Admin.AdminService"
-RUN dotnet build "HotelBackend.Admin.AdminService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "HotelBackend.Admin.AdminService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+COPY ./Common/ ./Common/
 
-FROM base AS final
+COPY ./Admin/ ./Admin/
+
+RUN dotnet restore ./Admin/Presentation/HotelBackend.Admin.AdminService/HotelBackend.Admin.AdminService.csproj
+
+RUN dotnet publish ./Admin/Presentation/HotelBackend.Admin.AdminService/HotelBackend.Admin.AdminService.csproj -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=base /app/publish .
+
 ENTRYPOINT ["dotnet", "HotelBackend.Admin.AdminService.dll"]
