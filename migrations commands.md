@@ -36,9 +36,25 @@ cd ./src/Payments
 dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Payments.Infrastructure/HotelBackend.Payments.Infrastructure.csproj --context PaymentDataContext --output-dir ./Migrations/
 ```
 
+## To generate migrations for Admin
+
+### Navigate to Admin directory
+
+```sh
+cd ./src/Admin
+```
+
+### Run the following to generage admin migration
+
+```sh
+dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Admin.Infrastructure/HotelBackend.Admin.Infrastructure.csproj --context AdminDataContext --output-dir ./Migrations/
+```
+
 #### In a nutshell
 
 ```sh
+rm -rf **/**/Migrations/
+
 cd ./src/Reservations
 
 dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Reservations.Infrastructure/HotelBackend.Reservations.Infrastructure.csproj --context ReservationDataContext --output-dir ./Migrations/
@@ -48,6 +64,12 @@ cd ../../
 cd ./src/Payments
 
 dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Payments.Infrastructure/HotelBackend.Payments.Infrastructure.csproj --context PaymentDataContext --output-dir ./Migrations/
+
+cd ../../
+
+cd ./src/Admin
+
+dotnet ef migrations add InitialCreate --project Infrastructure/HotelBackend.Admin.Infrastructure/HotelBackend.Admin.Infrastructure.csproj --context AdminDataContext --output-dir ./Migrations/
 
 cd ../../
 ```

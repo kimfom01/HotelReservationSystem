@@ -18,5 +18,4 @@ public class Reservation
     public Guid GuestProfileId { get; set; }
     public GuestProfile? GuestProfile { get; set; }
     public Guid RoomId { get; set; }
-    public Room? Room { get; set; }
 }

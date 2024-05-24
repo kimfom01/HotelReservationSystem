@@ -53,7 +53,9 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
 
         var reservation = _mapper.Map<Reservation>(request.CreateReservationDto);
 
-        var room = await _unitOfWork.Rooms.GetEntity(r => r.Id == reservation.RoomId, cancellationToken);
+        // TODO: replace with http call to admin service, also set room as unavailable using http call
+        
+        /*var room = await _unitOfWork.Rooms.GetEntity(r => r.Id == reservation.RoomId, cancellationToken);
 
         if (room is null)
         {
@@ -65,7 +67,7 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
             throw new NotAvailableException($"Room with id={reservation.RoomId} already taken");
         }
 
-        room.Availability = false;
+        room.Availability = false;*/
 
         var newGuest = await _unitOfWork.GuestProfiles.Add(reservation.GuestProfile!, cancellationToken);
 

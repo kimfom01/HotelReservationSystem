@@ -1,0 +1,105 @@
+using System.Runtime.Serialization;
+using System.Text;
+using System.Text.Json;
+using AutoMapper;
+using HotelBackend.Reservations.Application.Dtos.Reservations;
+using HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
+using HotelBackend.Common.Models;
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+
+namespace HotelBackend.Reservations.Infrastructure.MessageBroker;
+
+public class PaymentQueueSubscriber : IPaymentQueueSubscriber
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<PaymentQueueSubscriber> _logger;
+    private readonly IMapper _mapper;
+    private readonly PaymentQueueOption _paymentQueueOption;
+
+    public PaymentQueueSubscriber(
+        IServiceProvider serviceProvider,
+        ILogger<PaymentQueueSubscriber> logger,
+        IOptions<Config> configOptions,
+        IMapper mapper
+    )
+    {
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+        _mapper = mapper;
+        _paymentQueueOption = configOptions.Value.PaymentQueueOption!;
+    }
+
+    public Task SubscribeToQueue(CancellationToken stoppingToken)
+    {
+        var scope = _serviceProvider.CreateScope();
+        var factory = scope.ServiceProvider.GetRequiredService<IConnectionFactory>();
+
+        factory.Uri =
+            new Uri(
+                $"amqp://{_paymentQueueOption.User}:{_paymentQueueOption.Password}@{_paymentQueueOption.Host}:{_paymentQueueOption.Port}");
+
+        factory.ClientProvidedName = _paymentQueueOption.ClientName;
+
+        var connection = factory.CreateConnection();
+
+        var channel = connection.CreateModel();
+
+        var exchangeName = _paymentQueueOption.Exchange;
+        var routingKey = _paymentQueueOption.RoutingKey;
+        var queueName = _paymentQueueOption.QueueName;
+
+        channel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
+        channel.QueueDeclare(queueName, false, false, false, null);
+        channel.QueueBind(queueName, exchangeName, routingKey, null);
+        channel.BasicQos(0, 1, false);
+
+        try
+        {
+            scope = _serviceProvider.CreateScope();
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+            var consumer = new EventingBasicConsumer(channel);
+
+            consumer.Received += async (_, args) =>
+            {
+                var body = args.Body.ToArray();
+
+                var json = Encoding.UTF8.GetString(body);
+
+                var paymentStatusMessage = JsonSerializer.Deserialize<PaymentStatusMessage>(json);
+
+                if (paymentStatusMessage is null)
+                {
+                    _logger.LogError("Unable to deserialize the update event");
+                    throw new SerializationException(
+                        "Unable to deserialize the update event");
+                }
+
+                var updateReservationPaymentStatusDto =
+                    _mapper.Map<UpdateReservationPaymentStatusDto>(paymentStatusMessage);
+
+                await mediator.Send(new UpdateReservationStatusRequest
+                {
+                    UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto
+                }, stoppingToken);
+
+                channel.BasicAck(args.DeliveryTag, false);
+            };
+
+            _logger.LogInformation("Listening to payment events");
+            channel.BasicConsume(queueName, false, consumer);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError("Exception: {Exception}", exception.Message);
+        }
+
+        return Task.CompletedTask;
+    }
+}

@@ -12,7 +12,6 @@ public static class ApplicationServicesRegistration
         this IServiceCollection services, IConfiguration config)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddMediatR(conf => conf.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.Configure<Config>(config.GetSection(nameof(Config)));
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
