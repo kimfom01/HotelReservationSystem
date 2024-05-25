@@ -9,6 +9,7 @@ public class AdminDataContext : DbContext
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<RoomType> RoomTypes { get; set; }
+    public DbSet<Employee> Employees { get; set; }
 
     public AdminDataContext(
         DbContextOptions<AdminDataContext> options) : base(options)

@@ -1,4 +1,6 @@
+using HotelBackend.Admin.Application.Contracts.Authentication;
 using HotelBackend.Admin.Application.Contracts.Infrastructure.Database;
+using HotelBackend.Admin.Infrastructure.Authentication;
 using HotelBackend.Admin.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -24,6 +26,9 @@ public static class InfrastructureServicesRegistration
 
             // options.UseInMemoryDatabase("DefaultConnection"); // For testing purpose... will revert to postgres when needed
         });
+
+        services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<IPasswordManager, PasswordManager>();
 
         return services;
     }

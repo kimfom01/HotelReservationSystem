@@ -13,11 +13,13 @@ public class UnitOfWork : IUnitOfWork
         Rooms = new RoomRepository(_adminDataContext);
         Hotels = new HotelRepository(_adminDataContext);
         RoomTypes = new RoomTypeRepository(_adminDataContext);
+        Employees = new EmployeeRepository(_adminDataContext);
     }
 
     public IRoomRepository Rooms { get; }
     public IHotelRepository Hotels { get; }
     public IRoomTypeRepository RoomTypes { get; }
+    public IEmployeeRepository Employees { get; set; }
 
     public async Task<int> SaveChanges(CancellationToken cancellationToken)
     {

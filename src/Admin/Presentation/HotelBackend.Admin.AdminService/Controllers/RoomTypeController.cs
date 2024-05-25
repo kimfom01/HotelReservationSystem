@@ -20,7 +20,7 @@ public class RoomTypeController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("roomTypeId={roomTypeId:guid}&hotelId={hotelId:guid}")]
+    [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<ActionResult<GetRoomTypeDto>> GetRoomType(Guid roomTypeId, Guid hotelId,
