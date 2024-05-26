@@ -3,12 +3,21 @@ using System.Security.Claims;
 using System.Text;
 using HotelBackend.Admin.Application.Contracts.Authentication;
 using HotelBackend.Admin.Domain.Entities;
+using HotelBackend.Common.Models;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace HotelBackend.Admin.Infrastructure.Authentication;
 
 public class JwtProvider : IJwtProvider
 {
+    private readonly JwtConfigOption _jwtConfig;
+
+    public JwtProvider(IOptions<Config> configOptions)
+    {
+        _jwtConfig = configOptions.Value.JwtConfigOption!;
+    }
+
     public string Generate(Employee employee)
     {
         List<Claim> claims =
@@ -20,9 +29,9 @@ public class JwtProvider : IJwtProvider
             new Claim("Role", employee.Role)
         ];
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("security key here make sure you change this latter and it should be pretty long"));
-        var issuer = "issuer here";
-        var audience = "audience here";
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
+        var issuer = _jwtConfig.Issuer;
+        var audience = _jwtConfig.Audience;
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

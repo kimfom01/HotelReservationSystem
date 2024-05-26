@@ -5,6 +5,7 @@ using HotelBackend.Admin.Application.Exceptions;
 using HotelBackend.Admin.Application.Features.Employees.Requests.Commands;
 using HotelBackend.Admin.Application.Features.Employees.Requests.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBackend.Admin.AdminService.Controllers;
@@ -67,6 +68,7 @@ public class EmployeeController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]

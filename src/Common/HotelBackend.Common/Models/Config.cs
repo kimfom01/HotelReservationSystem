@@ -4,4 +4,5 @@ public class Config
 {
     public EmailQueueOption? EmailQueueOption { get; set; }
     public PaymentQueueOption? PaymentQueueOption { get; set; }
+    public JwtConfigOption? JwtConfigOption { get; set; }
 }

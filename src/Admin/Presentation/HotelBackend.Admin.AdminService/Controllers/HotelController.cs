@@ -5,10 +5,12 @@ using HotelBackend.Admin.Application.Exceptions;
 using HotelBackend.Admin.Application.Features.Hotels.Requests.Commands;
 using HotelBackend.Admin.Application.Features.Hotels.Requests.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBackend.Admin.AdminService.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("/api/[controller]")]
 public class HotelController : ControllerBase
