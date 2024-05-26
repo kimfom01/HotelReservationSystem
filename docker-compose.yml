@@ -35,8 +35,8 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
-      interval: 30s
-      timeout: 10s
+      interval: 10s
+      timeout: 5s
       retries: 5
   mailpit:
     image: axllent/mailpit
@@ -65,6 +65,8 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      admin:
+        condition: service_started
     env_file:
       - ./.env
     networks:
