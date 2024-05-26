@@ -33,7 +33,8 @@ public class UpdateRoomAvailabilityRequestHandler : IRequestHandler<UpdateRoomAv
 
         if (request.RoomDto is null)
         {
-            throw new ArgumentNullException(nameof(request), "RoomDto is required");
+            _logger.LogError("{RoomDto} is required", nameof(request.RoomDto));
+            throw new ArgumentNullException(nameof(request), $"{nameof(request.RoomDto)} is required");
         }
 
         var validationResult = await _validator.ValidateAsync(request.RoomDto, cancellationToken);

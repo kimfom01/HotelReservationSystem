@@ -1,5 +1,5 @@
 using System.Text;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Models.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

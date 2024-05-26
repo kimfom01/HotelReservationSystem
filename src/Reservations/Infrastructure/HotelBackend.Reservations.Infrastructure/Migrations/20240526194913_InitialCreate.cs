@@ -66,18 +66,6 @@ namespace HotelBackend.Reservations.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                schema: "reservations",
-                table: "GuestProfiles",
-                columns: new[] { "Id", "Adult", "Age", "ContactEmail", "CreatedAt", "FirstName", "LastModifiedAt", "LastName", "Sex" },
-                values: new object[] { new Guid("91555d72-5259-433c-a597-23eeab1da9e3"), false, 0, "guestprofile@mail.com", new DateTime(2024, 5, 26, 10, 42, 11, 864, DateTimeKind.Local).AddTicks(9755), "Guest", null, "Profile", "" });
-
-            migrationBuilder.InsertData(
-                schema: "reservations",
-                table: "Reservations",
-                columns: new[] { "Id", "CheckIn", "CheckOut", "CreatedAt", "GuestProfileId", "HotelId", "LastModifiedAt", "NumberOfGuests", "PaymentId", "PaymentStatus", "ReservationStatus", "RoomId", "RoomPreferences", "SpecialRequests" },
-                values: new object[] { new Guid("37dfb45a-77e8-4aa0-9c96-50209a772c90"), new DateTime(2024, 5, 26, 10, 42, 11, 864, DateTimeKind.Local).AddTicks(9952), new DateTime(2024, 5, 31, 10, 42, 11, 864, DateTimeKind.Local).AddTicks(9966), new DateTime(2024, 5, 26, 10, 42, 11, 864, DateTimeKind.Local).AddTicks(9932), new Guid("91555d72-5259-433c-a597-23eeab1da9e3"), new Guid("772e0735-5e83-4894-aa59-d5dc56105404"), null, 5, null, 0, 0, new Guid("6d2ee634-519f-48df-b701-b789aa5599a0"), null, null });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_GuestProfileId",
                 schema: "reservations",

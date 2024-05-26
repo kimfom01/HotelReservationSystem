@@ -1,6 +1,6 @@
-namespace HotelBackend.Common.Models;
+namespace HotelBackend.Common.Models.Options;
 
-public abstract class BaseQueueOption
+public abstract class BaseQueueOptions
 {
     public string User { get; set; } = string.Empty;
 

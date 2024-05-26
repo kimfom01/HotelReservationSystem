@@ -5,5 +5,4 @@ namespace HotelBackend.Admin.Application.Features.Hotels.Requests.Queries;
 
 public class GetHotelListRequest : IRequest<List<GetHotelDto>>
 {
-    public Guid AdminId { get; set; }
 }

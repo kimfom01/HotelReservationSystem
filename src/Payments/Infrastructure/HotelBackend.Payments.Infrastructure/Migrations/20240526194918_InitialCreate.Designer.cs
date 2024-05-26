@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelBackend.Payments.Infrastructure.Migrations
 {
     [DbContext(typeof(PaymentDataContext))]
-    [Migration("20240526074217_InitialCreate")]
+    [Migration("20240526194918_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

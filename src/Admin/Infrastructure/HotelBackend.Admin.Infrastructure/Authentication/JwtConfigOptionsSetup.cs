@@ -1,4 +1,4 @@
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Models.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 

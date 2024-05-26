@@ -18,6 +18,7 @@ public static class InfrastructureServicesRegistration
         services.AddScoped<IPaymentStatusPublisher, PaymentStatusPublisher>();
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.ConfigureOptions<PaymentQueueOptionsSetup>();
 
         services.AddDbContext<PaymentDataContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),

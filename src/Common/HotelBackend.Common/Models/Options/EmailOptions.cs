@@ -1,6 +1,6 @@
-namespace HotelBackend.Common.Models;
+namespace HotelBackend.Common.Models.Options;
 
-public class EmailOption
+public class EmailOptions
 {
     public string SenderEmail { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;

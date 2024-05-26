@@ -23,15 +23,5 @@ public class CreateReservationDtoValidator : AbstractValidator<CreateReservation
         RuleFor(dto => dto.GuestProfile)
             .NotNull()
             .SetValidator(new GuestProfileValidator()!);
-        // TODO: Either replace this with new http call or remove
-        // RuleFor(dto => dto.RoomId)
-        //     .NotNull()
-        //     .MustAsync(async (roomId, token) =>
-        //     {
-        //         var room = await unitOfWork.Rooms.GetEntity(hot => hot.Id == roomId, token);
-        //
-        //         return room is not null;
-        //     })
-        //     .WithMessage("{PropertyName} does not exist");
     }
 }

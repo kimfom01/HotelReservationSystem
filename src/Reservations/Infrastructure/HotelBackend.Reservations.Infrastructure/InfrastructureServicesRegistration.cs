@@ -1,5 +1,7 @@
+using HotelBackend.Reservations.Application.Contracts.ApiServices;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
+using HotelBackend.Reservations.Infrastructure.ApiServices;
 using HotelBackend.Reservations.Infrastructure.BackgroundServices;
 using HotelBackend.Reservations.Infrastructure.Database;
 using HotelBackend.Reservations.Infrastructure.MessageBroker;
@@ -22,13 +24,15 @@ public static class InfrastructureServicesRegistration
         services.AddScoped<IEmailQueuePublisher, EmailQueuePublisher>();
         services.AddTransient<IPaymentQueueSubscriber, PaymentQueueSubscriber>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddHttpClient<IRoomApiService, RoomApiService>();
+        services.ConfigureOptions<RoomApiOptionsSetup>();
+        services.ConfigureOptions<EmailQueueOptionsSetup>();
+        services.ConfigureOptions<PaymentQueueOptionsSetup>();
 
         services.AddDbContext<ReservationDataContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations"));
-
-            // options.UseInMemoryDatabase("DefaultConnection"); // For testing purpose... will revert to postgres when needed
         });
 
         return services;

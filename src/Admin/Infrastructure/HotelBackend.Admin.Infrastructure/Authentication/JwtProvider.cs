@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using HotelBackend.Admin.Application.Contracts.Authentication;
 using HotelBackend.Admin.Domain.Entities;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Models.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -36,7 +36,7 @@ public class JwtProvider : IJwtProvider
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
         var token = new JwtSecurityToken(issuer, audience, claims,
-            expires: DateTime.Now.Add(TimeSpan.FromMinutes(5)), signingCredentials: credentials);
+            expires: DateTime.Now.Add(TimeSpan.FromMinutes(_jwtConfig.ExpiresIn)), signingCredentials: credentials);
 
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 

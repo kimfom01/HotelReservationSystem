@@ -27,12 +27,12 @@ public class EmailSender : IEmailSender
 
         switch (reservationMessage.PaymentStatus)
         {
-            case PaymentStatus.PAID:
+            case PaymentStatus.Paid:
                 htmlMessageStringbuilder
                     .Append(
                         "<div>Your reservation on @Model.HotelName, @Model.HotelLocation was successfully paid</div>");
                 break;
-            case PaymentStatus.CANCELED:
+            case PaymentStatus.Canceled:
                 htmlMessageStringbuilder
                     .Append(
                         "<div>Your reservation on @Model.HotelName, @Model.HotelLocation was cancelled</div>");
@@ -48,13 +48,13 @@ public class EmailSender : IEmailSender
 
         switch (reservationMessage.ReservationStatus)
         {
-            case ReservationStatus.PENDING:
+            case ReservationStatus.Pending:
                 htmlMessageStringbuilder.Append("<span>PENDING</span>");
                 break;
-            case ReservationStatus.CONFIRMED:
+            case ReservationStatus.Confirmed:
                 htmlMessageStringbuilder.Append("<span>CONFIRMED</span>:");
                 break;
-            case ReservationStatus.CANCELLED:
+            case ReservationStatus.Cancelled:
                 htmlMessageStringbuilder.Append("<span>CANCELLED</span>");
                 break;
         }
@@ -72,7 +72,7 @@ public class EmailSender : IEmailSender
 
         if (!sendResponse.Successful)
         {
-            _logger.LogError("Error occured while sending email: {errors}", sendResponse.ErrorMessages);
+            _logger.LogError("Error occured while sending email: {Errors}", sendResponse.ErrorMessages);
             throw new SendFailException("Failed to send email:");
         }
 

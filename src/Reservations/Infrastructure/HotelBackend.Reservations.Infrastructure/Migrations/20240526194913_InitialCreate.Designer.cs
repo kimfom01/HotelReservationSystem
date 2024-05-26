@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelBackend.Reservations.Infrastructure.Migrations
 {
     [DbContext(typeof(ReservationDataContext))]
-    [Migration("20240526074212_InitialCreate")]
+    [Migration("20240526194913_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -63,19 +63,6 @@ namespace HotelBackend.Reservations.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GuestProfiles", "reservations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("91555d72-5259-433c-a597-23eeab1da9e3"),
-                            Adult = false,
-                            Age = 0,
-                            ContactEmail = "guestprofile@mail.com",
-                            CreatedAt = new DateTime(2024, 5, 26, 10, 42, 11, 864, DateTimeKind.Local).AddTicks(9755),
-                            FirstName = "Guest",
-                            LastName = "Profile",
-                            Sex = ""
-                        });
                 });
 
             modelBuilder.Entity("HotelBackend.Reservations.Domain.Entities.Reservation", b =>
@@ -131,21 +118,6 @@ namespace HotelBackend.Reservations.Infrastructure.Migrations
                     b.HasIndex("GuestProfileId");
 
                     b.ToTable("Reservations", "reservations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("37dfb45a-77e8-4aa0-9c96-50209a772c90"),
-                            CheckIn = new DateTime(2024, 5, 26, 10, 42, 11, 864, DateTimeKind.Local).AddTicks(9952),
-                            CheckOut = new DateTime(2024, 5, 31, 10, 42, 11, 864, DateTimeKind.Local).AddTicks(9966),
-                            CreatedAt = new DateTime(2024, 5, 26, 10, 42, 11, 864, DateTimeKind.Local).AddTicks(9932),
-                            GuestProfileId = new Guid("91555d72-5259-433c-a597-23eeab1da9e3"),
-                            HotelId = new Guid("772e0735-5e83-4894-aa59-d5dc56105404"),
-                            NumberOfGuests = 5,
-                            PaymentStatus = 0,
-                            ReservationStatus = 0,
-                            RoomId = new Guid("6d2ee634-519f-48df-b701-b789aa5599a0")
-                        });
                 });
 
             modelBuilder.Entity("HotelBackend.Reservations.Domain.Entities.Reservation", b =>

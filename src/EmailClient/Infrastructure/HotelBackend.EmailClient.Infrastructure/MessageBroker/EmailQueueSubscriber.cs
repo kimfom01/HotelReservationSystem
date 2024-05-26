@@ -1,49 +1,50 @@
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
-using HotelBackend.EmailClient.Application.Contracts.Infrastructure;
 using HotelBackend.Common.Models;
+using HotelBackend.Common.Models.Options;
+using HotelBackend.EmailClient.Application.Contracts.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace HotelBackend.EmailClient.Infrastructure.Listeners;
+namespace HotelBackend.EmailClient.Infrastructure.MessageBroker;
 
-public class EmailerListener : IDisposable
+public class EmailQueueSubscriber : IDisposable
 {
-    private readonly ILogger<EmailerListener> _logger;
+    private readonly ILogger<EmailQueueSubscriber> _logger;
     private readonly IServiceProvider _serviceProvider;
     private readonly IConnection _connection;
     private readonly IModel _channel;
     private string _consumerTag = string.Empty;
     private readonly string _queueName;
 
-    public EmailerListener(
-        IOptions<Config> configOptions,
+    public EmailQueueSubscriber(
+        IOptions<EmailQueueOptions> configOptions,
         IConnectionFactory factory,
-        ILogger<EmailerListener> logger,
+        ILogger<EmailQueueSubscriber> logger,
         IServiceProvider serviceProvider)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
-        var emailQueueOption = configOptions.Value.EmailQueueOption;
+        var queueOptions = configOptions.Value;
         factory.Uri =
             new Uri(
-                $"amqp://{emailQueueOption!.User}:{emailQueueOption.Password}@{emailQueueOption.Host}:{emailQueueOption.Port}");
+                $"amqp://{queueOptions.User}:{queueOptions.Password}@{queueOptions.Host}:{queueOptions.Port}");
 
-        factory.ClientProvidedName = emailQueueOption.ClientName;
+        factory.ClientProvidedName = queueOptions.ClientName;
 
         _connection = factory.CreateConnection();
 
         _channel = _connection.CreateModel();
 
-        _queueName = emailQueueOption.QueueName;
+        _queueName = queueOptions.QueueName;
 
-        _channel.ExchangeDeclare(emailQueueOption.Exchange, ExchangeType.Direct);
+        _channel.ExchangeDeclare(queueOptions.Exchange, ExchangeType.Direct);
         _channel.QueueDeclare(_queueName, false, false, false, null);
-        _channel.QueueBind(_queueName, emailQueueOption.Exchange, emailQueueOption.RoutingKey, null);
+        _channel.QueueBind(_queueName, queueOptions.Exchange, queueOptions.RoutingKey, null);
         _channel.BasicQos(0, 1, false);
     }
 
@@ -72,7 +73,7 @@ public class EmailerListener : IDisposable
                     {
                         throw new SerializationException("Unable to deserialize the update event");
                     }
-                    
+
                     await emailSender.SendEmailAsync(
                         reservationDetailsEmail.ReceiverEmail,
                         reservationDetailsEmail.Subject,
@@ -86,7 +87,7 @@ public class EmailerListener : IDisposable
         }
         catch (Exception exception)
         {
-            _logger.LogError("Exception: {Exception}", exception.Message);
+            _logger.LogError(exception,"Exception: {Exception}", exception);
         }
 
         return Task.CompletedTask;

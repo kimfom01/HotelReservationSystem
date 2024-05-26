@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Models.Options;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,21 +20,21 @@ public class EmailQueuePublisher : IEmailQueuePublisher
 
     public EmailQueuePublisher(
         ILogger<EmailQueuePublisher> logger,
-        IOptions<Config> configOptions,
+        IOptions<EmailQueueOptions> configOptions,
         IConnectionFactory factory)
     {
         _logger = logger;
-        var emailQueueOptions = configOptions.Value.EmailQueueOption;
+        var queueOptions = configOptions.Value;
         factory.Uri =
             new Uri(
-                $"amqp://{emailQueueOptions!.User}:{emailQueueOptions.Password}@{emailQueueOptions.Host}:{emailQueueOptions.Port}");
-        factory.ClientProvidedName = emailQueueOptions.ClientName;
+                $"amqp://{queueOptions.User}:{queueOptions.Password}@{queueOptions.Host}:{queueOptions.Port}");
+        factory.ClientProvidedName = queueOptions.ClientName;
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
 
-        _exchangeName = emailQueueOptions.Exchange;
-        _routingKey = emailQueueOptions.RoutingKey;
-        _queueName = emailQueueOptions.QueueName;
+        _exchangeName = queueOptions.Exchange;
+        _routingKey = queueOptions.RoutingKey;
+        _queueName = queueOptions.QueueName;
 
         _channel.ExchangeDeclare(_exchangeName, ExchangeType.Direct);
         _channel.QueueDeclare(_queueName, false, false, false, null);

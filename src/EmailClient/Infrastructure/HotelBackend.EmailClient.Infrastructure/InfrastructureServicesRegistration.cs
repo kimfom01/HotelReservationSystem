@@ -2,9 +2,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Security;
 using HotelBackend.EmailClient.Application.Contracts.Infrastructure;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Models.Options;
 using HotelBackend.EmailClient.Infrastructure.EmailProvider;
-using HotelBackend.EmailClient.Infrastructure.Listeners;
+using HotelBackend.EmailClient.Infrastructure.MessageBroker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -21,11 +21,14 @@ public static class InfrastructureServicesRegistration
     {
         services.AddScoped<IConnectionFactory, ConnectionFactory>();
         services.AddScoped<IEmailSender, EmailSender>();
-        services.AddScoped<EmailerListener>();
+        services.AddScoped<EmailQueueSubscriber>();
+        services.ConfigureOptions<EmailQueueOptionsSetup>();
+        services.ConfigureOptions<EmailOptionsSetup>();
 
-        var emailOption = new EmailOption();
+        var emailOption = new EmailOptions();
 
-        configuration.GetSection(nameof(EmailOption)).Bind(emailOption);
+        // TODO: figure out how to configure smtp using IConfigureNamedOptions pattern
+        configuration.GetSection(nameof(EmailOptions)).Bind(emailOption);
 
         if (isDevelopment)
         {

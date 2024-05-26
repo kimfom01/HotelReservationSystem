@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Admin.Application.Features.Hotels.Handlers.Commands;
 
-public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, GetHotelDto> 
+public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, GetHotelDto>
 {
     private readonly ILogger<CreateHotelRequestHandler> _logger;
     private readonly IMapper _mapper;
@@ -34,8 +34,8 @@ public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, Get
 
         if (request.HotelDto is null)
         {
-            _logger.LogError("Error: HotelDto is null");
-            throw new ArgumentNullException(nameof(request), "HotelDto is required.");
+            _logger.LogError("Error: {HotelDto} is null", nameof(request.HotelDto));
+            throw new ArgumentNullException(nameof(request), $"{nameof(request.HotelDto)} is required.");
         }
 
         var validationResult = await _validator.ValidateAsync(request.HotelDto, cancellationToken);

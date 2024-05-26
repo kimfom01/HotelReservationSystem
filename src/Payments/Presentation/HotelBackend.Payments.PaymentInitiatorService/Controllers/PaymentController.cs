@@ -1,3 +1,4 @@
+using FluentValidation;
 using HotelBackend.Payments.Application.Dtos.Payments;
 using HotelBackend.Payments.Application.Features.Payments.Requests.Commands;
 using MediatR;
@@ -25,11 +26,18 @@ public class PaymentController : ControllerBase
     [HttpPost("pay")]
     public async Task<IActionResult> PayForReservation(AddPaymentDto paymentDto, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new AddPaymentRequest
+        try
         {
-            PaymentDto = paymentDto
-        }, cancellationToken);
+            await _mediator.Send(new AddPaymentRequest
+            {
+                PaymentDto = paymentDto
+            }, cancellationToken);
 
-        return Ok("Payment initiated");
+            return Ok("Payment initiated");
+        }
+        catch (ValidationException exception)
+        {
+            return BadRequest(exception.Errors);
+        }
     }
 }

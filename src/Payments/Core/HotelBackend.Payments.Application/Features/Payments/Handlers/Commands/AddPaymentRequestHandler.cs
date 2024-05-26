@@ -39,7 +39,8 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
 
         if (request.PaymentDto is null)
         {
-            throw new ArgumentNullException(nameof(request), "PaymentDto is required");
+            _logger.LogError("{PaymentDto} is required", nameof(request.PaymentDto));
+            throw new ArgumentNullException(nameof(request), $"{nameof(request.PaymentDto)} is required");
         }
 
         var validationResults = await _validator.ValidateAsync(request.PaymentDto, cancellationToken);

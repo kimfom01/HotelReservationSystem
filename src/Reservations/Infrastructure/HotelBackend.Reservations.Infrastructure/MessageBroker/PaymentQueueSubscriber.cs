@@ -5,6 +5,7 @@ using AutoMapper;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
 using HotelBackend.Common.Models;
+using HotelBackend.Common.Models.Options;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,19 +21,19 @@ public class PaymentQueueSubscriber : IPaymentQueueSubscriber
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<PaymentQueueSubscriber> _logger;
     private readonly IMapper _mapper;
-    private readonly PaymentQueueOption _paymentQueueOption;
+    private readonly PaymentQueueOptions _queueOptions;
 
     public PaymentQueueSubscriber(
         IServiceProvider serviceProvider,
         ILogger<PaymentQueueSubscriber> logger,
-        IOptions<Config> configOptions,
+        IOptions<PaymentQueueOptions> configOptions,
         IMapper mapper
     )
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
         _mapper = mapper;
-        _paymentQueueOption = configOptions.Value.PaymentQueueOption!;
+        _queueOptions = configOptions.Value;
     }
 
     public Task SubscribeToQueue(CancellationToken stoppingToken)
@@ -42,17 +43,17 @@ public class PaymentQueueSubscriber : IPaymentQueueSubscriber
 
         factory.Uri =
             new Uri(
-                $"amqp://{_paymentQueueOption.User}:{_paymentQueueOption.Password}@{_paymentQueueOption.Host}:{_paymentQueueOption.Port}");
+                $"amqp://{_queueOptions.User}:{_queueOptions.Password}@{_queueOptions.Host}:{_queueOptions.Port}");
 
-        factory.ClientProvidedName = _paymentQueueOption.ClientName;
+        factory.ClientProvidedName = _queueOptions.ClientName;
 
         var connection = factory.CreateConnection();
 
         var channel = connection.CreateModel();
 
-        var exchangeName = _paymentQueueOption.Exchange;
-        var routingKey = _paymentQueueOption.RoutingKey;
-        var queueName = _paymentQueueOption.QueueName;
+        var exchangeName = _queueOptions.Exchange;
+        var routingKey = _queueOptions.RoutingKey;
+        var queueName = _queueOptions.QueueName;
 
         channel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
         channel.QueueDeclare(queueName, false, false, false, null);
@@ -97,7 +98,7 @@ public class PaymentQueueSubscriber : IPaymentQueueSubscriber
         }
         catch (Exception exception)
         {
-            _logger.LogError("Exception: {Exception}", exception.Message);
+            _logger.LogError(exception, "Exception: {Exception}", exception);
         }
 
         return Task.CompletedTask;

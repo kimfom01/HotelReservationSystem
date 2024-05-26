@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBackend.Admin.AdminService.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("/api/[controller]")]
 public class HotelController : ControllerBase
@@ -26,12 +25,7 @@ public class HotelController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<GetHotelDto>>> GetHotels(CancellationToken cancellationToken)
     {
-        var adminId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ?? string.Empty);
-
-        var hotelsDto = await _mediator.Send(new GetHotelListRequest
-        {
-            AdminId = adminId
-        }, cancellationToken);
+        var hotelsDto = await _mediator.Send(new GetHotelListRequest(), cancellationToken);
 
         return Ok(hotelsDto);
     }
@@ -43,12 +37,9 @@ public class HotelController : ControllerBase
     {
         try
         {
-            var adminId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ?? string.Empty);
-
             var hotel = await _mediator.Send(new GetHotelRequest
             {
-                HotelId = hotelId,
-                AdminId = adminId
+                HotelId = hotelId
             }, cancellationToken);
 
             return Ok(hotel);
@@ -59,6 +50,7 @@ public class HotelController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]

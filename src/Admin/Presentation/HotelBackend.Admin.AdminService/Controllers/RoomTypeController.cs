@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBackend.Admin.AdminService.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("/api/[controller]")]
 public class RoomTypeController : ControllerBase
@@ -44,6 +43,7 @@ public class RoomTypeController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]

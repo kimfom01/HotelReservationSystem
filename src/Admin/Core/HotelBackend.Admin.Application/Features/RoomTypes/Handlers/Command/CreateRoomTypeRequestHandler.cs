@@ -27,14 +27,14 @@ public class CreateRoomTypeRequestHandler : IRequestHandler<CreateRoomTypeReques
         _unitOfWork = unitOfWork;
         _validator = validator;
     }
-    
+
     public async Task<GetRoomTypeDto> Handle(CreateRoomTypeRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Creating room type");
         if (request.RoomTypeDto is null)
         {
-            _logger.LogError("Error: RoomTypeDto is null");
-            throw new ArgumentNullException(nameof(request), "RoomTypeDto is required.");
+            _logger.LogError("Error: {RoomTypeDto} is null", nameof(request.RoomTypeDto));
+            throw new ArgumentNullException(nameof(request), $"{nameof(request.RoomTypeDto)} is required.");
         }
 
         var validationResult = await _validator.ValidateAsync(request.RoomTypeDto, cancellationToken);

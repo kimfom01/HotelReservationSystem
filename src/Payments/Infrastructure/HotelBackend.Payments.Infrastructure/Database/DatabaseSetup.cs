@@ -2,15 +2,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HotelBackend.Reservations.Infrastructure.Database;
+namespace HotelBackend.Payments.Infrastructure.Database;
 
-public static class DatabaseReset
+public static class DatabaseSetup
 {
     public static WebApplication ApplyMigrations(this WebApplication app)
     {
         var scope = app.Services.CreateScope();
-
-        var context = scope.ServiceProvider.GetRequiredService<ReservationDataContext>();
+        
+        var context = scope.ServiceProvider.GetRequiredService<PaymentDataContext>();
 
         var migrations = context.Database.GetPendingMigrations();
 

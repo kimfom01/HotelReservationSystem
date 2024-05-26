@@ -38,7 +38,7 @@ public class CreateEmployeeRequestHandler : IRequestHandler<CreateEmployeeReques
         _logger.LogInformation("Registering employee");
         if (request.EmployeeDto is null)
         {
-            _logger.LogError("EmployeeDto is null");
+            _logger.LogError("{EmployeeDto} is null", nameof(request.EmployeeDto));
             throw new ArgumentNullException(nameof(request), $"{request.EmployeeDto} is required");
         }
 

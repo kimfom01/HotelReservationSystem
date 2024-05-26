@@ -34,7 +34,8 @@ public class CreateRoomRequestHandler : IRequestHandler<CreateRoomRequest, GetRo
 
         if (request.RoomDto is null)
         {
-            throw new ArgumentNullException(nameof(request), "RoomDto is required");
+            _logger.LogError("Error: {RoomDto} is null", nameof(request.RoomDto));
+            throw new ArgumentNullException(nameof(request), $"{nameof(request.RoomDto)} is required");
         }
 
         var validationResult = await _validator.ValidateAsync(request.RoomDto, cancellationToken);

@@ -8,8 +8,8 @@ public class Reservation : BaseEntity
 {
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
-    public ReservationStatus ReservationStatus { get; set; } = ReservationStatus.PENDING;
-    public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.PENDING;
+    public ReservationStatus ReservationStatus { get; set; } = ReservationStatus.Pending;
+    public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
     [MaxLength(200)] public Guid? PaymentId { get; set; }
     [MaxLength(500)] public string? SpecialRequests { get; set; }
     [MaxLength(500)] public string? RoomPreferences { get; set; }

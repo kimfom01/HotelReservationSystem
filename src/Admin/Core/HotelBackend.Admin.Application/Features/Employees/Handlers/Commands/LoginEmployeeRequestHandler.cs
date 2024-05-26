@@ -45,6 +45,7 @@ public class LoginEmployeeRequestHandler : IRequestHandler<LoginEmployeeRequest,
 
         if (!validationResult.IsValid)
         {
+            _logger.LogError("Error validating login request: {Errors}", validationResult.Errors);
             throw new ValidationException(validationResult.Errors);
         }
 

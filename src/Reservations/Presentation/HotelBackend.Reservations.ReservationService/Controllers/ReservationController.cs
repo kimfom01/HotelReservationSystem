@@ -1,5 +1,4 @@
 using System.Net;
-using AutoMapper;
 using FluentValidation;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Exceptions;
@@ -15,15 +14,10 @@ namespace HotelBackend.Reservations.ReservationService.Controllers;
 public class ReservationController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly ILogger<ReservationController> _logger;
 
-    public ReservationController(
-        IMediator mediator,
-        IMapper mapper,
-        ILogger<ReservationController> logger)
+    public ReservationController(IMediator mediator)
     {
         _mediator = mediator;
-        _logger = logger;
     }
 
     [HttpGet("{id:Guid}")]
@@ -69,31 +63,18 @@ public class ReservationController : ControllerBase
                 CreateReservationDto = createReservationDto
             }, cancellationToken);
 
-            _logger.LogInformation("Successfully made reservation with id={reservationId}", added.Id);
             return CreatedAtAction(nameof(GetReservation), new { id = added.Id }, added);
         }
         catch (ValidationException validationException)
         {
-            _logger.LogError("{Exception} occured: {exceptionMessage}", nameof(ValidationException),
-                validationException.Message);
             return BadRequest(validationException.Errors);
         }
         catch (NotFoundException notFoundException)
         {
-            _logger.LogError("{Exception} occured: {exceptionMessage}", nameof(NotFoundException),
-                notFoundException.Message);
             return BadRequest(notFoundException.Message);
-        }
-        catch (NotAvailableException notAvailableException)
-        {
-            _logger.LogError("{Exception} occured: {exceptionMessage}", nameof(NotAvailableException),
-                notAvailableException.Message);
-            return BadRequest(notAvailableException.Message);
         }
         catch (ReservationException reservationException)
         {
-            _logger.LogError("{Exception} occured: {exceptionMessage}", nameof(ReservationException),
-                reservationException.Message);
             return BadRequest(reservationException.Message);
         }
     }
