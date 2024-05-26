@@ -45,7 +45,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
-builder.Services.ConfigureApplicationServices(builder.Configuration);
+builder.Services.ConfigureApplicationServices();
 
 var app = builder.Build();
 

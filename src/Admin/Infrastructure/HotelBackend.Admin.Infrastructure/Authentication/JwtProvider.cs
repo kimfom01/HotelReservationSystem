@@ -11,11 +11,11 @@ namespace HotelBackend.Admin.Infrastructure.Authentication;
 
 public class JwtProvider : IJwtProvider
 {
-    private readonly JwtConfigOption _jwtConfig;
+    private readonly JwtConfigOptions _jwtConfig;
 
-    public JwtProvider(IOptions<Config> configOptions)
+    public JwtProvider(IOptions<JwtConfigOptions> configOptions)
     {
-        _jwtConfig = configOptions.Value.JwtConfigOption!;
+        _jwtConfig = configOptions.Value;
     }
 
     public string Generate(Employee employee)
@@ -35,8 +35,8 @@ public class JwtProvider : IJwtProvider
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-        var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.Add(TimeSpan.FromMinutes(5)),
-            audience: audience, issuer: issuer, signingCredentials: credentials);
+        var token = new JwtSecurityToken(issuer, audience, claims,
+            expires: DateTime.Now.Add(TimeSpan.FromMinutes(5)), signingCredentials: credentials);
 
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 

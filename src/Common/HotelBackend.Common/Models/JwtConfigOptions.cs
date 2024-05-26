@@ -1,6 +1,6 @@
 namespace HotelBackend.Common.Models;
 
-public class JwtConfigOption
+public class JwtConfigOptions
 {
     public string Key { get; set; } = string.Empty;
     public string Issuer { get; set; } = string.Empty;

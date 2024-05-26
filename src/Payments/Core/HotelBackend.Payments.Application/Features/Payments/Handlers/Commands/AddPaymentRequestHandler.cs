@@ -1,6 +1,5 @@
 using AutoMapper;
 using FluentValidation;
-using HotelBackend.Common.Enums;
 using HotelBackend.Common.Models;
 using HotelBackend.Payments.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Payments.Application.Contracts.Infrastructure.MessageBroker;
