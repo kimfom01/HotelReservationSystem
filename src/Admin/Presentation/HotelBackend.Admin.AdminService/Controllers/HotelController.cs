@@ -26,7 +26,12 @@ public class HotelController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<GetHotelDto>>> GetHotels(CancellationToken cancellationToken)
     {
-        var hotelsDto = await _mediator.Send(new GetHotelListRequest(), cancellationToken);
+        var adminId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ?? string.Empty);
+
+        var hotelsDto = await _mediator.Send(new GetHotelListRequest
+        {
+            AdminId = adminId
+        }, cancellationToken);
 
         return Ok(hotelsDto);
     }
@@ -38,9 +43,12 @@ public class HotelController : ControllerBase
     {
         try
         {
+            var adminId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ?? string.Empty);
+
             var hotel = await _mediator.Send(new GetHotelRequest
             {
-                HotelId = hotelId
+                HotelId = hotelId,
+                AdminId = adminId
             }, cancellationToken);
 
             return Ok(hotel);
@@ -59,9 +67,12 @@ public class HotelController : ControllerBase
     {
         try
         {
+            var adminId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ?? string.Empty);
+
             var created = await _mediator.Send(new CreateHotelRequest
             {
-                HotelDto = hotelDto
+                HotelDto = hotelDto,
+                AdminId = adminId
             }, cancellationToken);
 
             return CreatedAtAction(nameof(GetHotel), new { hotelId = created.Id }, created);

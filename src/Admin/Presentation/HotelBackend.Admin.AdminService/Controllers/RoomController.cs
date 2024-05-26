@@ -1,5 +1,8 @@
 using System.Net;
+using FluentValidation;
 using HotelBackend.Admin.Application.Dtos.Rooms;
+using HotelBackend.Admin.Application.Exceptions;
+using HotelBackend.Admin.Application.Features.Rooms.Requests.Commands;
 using HotelBackend.Admin.Application.Features.Rooms.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +24,80 @@ public class RoomController : ControllerBase
 
     [HttpGet("available/{hotelId:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<ActionResult<GetRoomDto>> GetAvailableRooms(Guid hotelId)
+    public async Task<ActionResult<GetRoomDto>> GetAvailableRooms(Guid hotelId, CancellationToken cancellationToken)
     {
-        var rooms = await _mediator.Send(new GetAvailableRoomsInHotelRequest { HotelId = hotelId });
-        
+        var rooms = await _mediator.Send(new GetAvailableRoomsRequest
+        {
+            HotelId = hotelId
+        }, cancellationToken);
+
         return Ok(rooms);
+    }
+
+    [HttpPost]
+    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<ActionResult<GetRoomDto>> CreateRoom(CreateRoomDto roomDto, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var added = await _mediator.Send(new CreateRoomRequest
+            {
+                RoomDto = roomDto
+            }, cancellationToken);
+
+            return CreatedAtAction(nameof(GetRoomById), new
+            {
+                hotelId = added.HotelId, roomId = added.Id
+            }, added);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<ActionResult<GetRoomDto>> GetRoomById(Guid hotelId, Guid roomId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var rooms = await _mediator.Send(new GetRoomByIdRequest
+            {
+                HotelId = hotelId,
+                RoomId = roomId
+            }, cancellationToken);
+
+            return Ok(rooms);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpPatch]
+    [AllowAnonymous]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> UpdateRoom(UpdateRoomAvailabilityDto roomAvailabilityDto,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _mediator.Send(new UpdateRoomAvailabilityRequest
+            {
+                RoomDto = roomAvailabilityDto
+            }, cancellationToken);
+
+            return NoContent();
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

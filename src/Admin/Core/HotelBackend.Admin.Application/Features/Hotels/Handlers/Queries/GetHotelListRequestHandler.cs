@@ -26,7 +26,7 @@ public class GetHotelListRequestHandler : IRequestHandler<GetHotelListRequest, L
     public async Task<List<GetHotelDto>> Handle(GetHotelListRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting all hotels");
-        var hotels = await _unitOfWork.Hotels.GetEntities(hot => true);
+        var hotels = await _unitOfWork.Hotels.GetEntities(hot => hot.AdminId == request.AdminId);
 
         if (hotels.Count == 0)
         {

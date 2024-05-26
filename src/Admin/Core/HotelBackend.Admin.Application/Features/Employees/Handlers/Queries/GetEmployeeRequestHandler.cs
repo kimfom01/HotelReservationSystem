@@ -28,8 +28,7 @@ public class GetEmployeeRequestHandler : IRequestHandler<GetEmployeeRequest, Get
     {
         _logger.LogInformation("Getting employee with id={EmployeeId}", request.EmployeeId);
 
-        var employee = await _unitOfWork.Employees.GetEntity(emp =>
-            emp.Id == request.EmployeeId && emp.HotelId == request.HotelId);
+        var employee = await _unitOfWork.Employees.GetEntity(emp => emp.Id == request.EmployeeId);
 
         if (employee is null)
         {

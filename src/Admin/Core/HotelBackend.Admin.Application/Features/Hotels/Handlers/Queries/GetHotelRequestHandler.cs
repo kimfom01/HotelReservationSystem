@@ -27,7 +27,8 @@ public class GetHotelRequestHandler : IRequestHandler<GetHotelRequest, GetHotelD
     public async Task<GetHotelDto> Handle(GetHotelRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting hotel with id={HotelId}", request.HotelId);
-        var hotel = await _unitOfWork.Hotels.GetEntity(hot => hot.Id == request.HotelId);
+        var hotel = await _unitOfWork.Hotels.GetEntity(hot =>
+            hot.Id == request.HotelId && hot.AdminId == request.AdminId);
 
         if (hotel is null)
         {

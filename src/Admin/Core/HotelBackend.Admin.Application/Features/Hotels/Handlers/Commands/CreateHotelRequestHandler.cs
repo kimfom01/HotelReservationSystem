@@ -47,6 +47,7 @@ public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, Get
         }
 
         var hotel = _mapper.Map<Hotel>(request.HotelDto);
+        hotel.AdminId = request.AdminId;
 
         var added = await _unitOfWork.Hotels.Add(hotel);
         await _unitOfWork.SaveChanges(cancellationToken);

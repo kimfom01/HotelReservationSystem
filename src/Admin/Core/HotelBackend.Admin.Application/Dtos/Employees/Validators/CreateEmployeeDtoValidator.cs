@@ -23,8 +23,8 @@ public class CreateEmployeeDtoValidator : AbstractValidator<CreateEmployeeDto>
         RuleFor(emp => emp.Password)
             .NotEmpty()
             .WithMessage("{PropertyName} is required.")
-            .Must(x => x.Length > 5)
-            .WithMessage("{PropertyName} must be greater than 5.");
+            .MinimumLength(5)
+            .WithMessage("{PropertyValue} or more required for {PropertyName}.");
 
         RuleFor(emp => emp.ConfirmPassword)
             .NotEmpty()

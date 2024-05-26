@@ -72,15 +72,15 @@ public class EmployeeController : ControllerBase
     [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult<GetEmployeeDto>> GetEmployee(Guid employeeId,
-        CancellationToken cancellationToken, Guid? hotelId)
+    public async Task<ActionResult<GetEmployeeDto>> GetEmployee(CancellationToken cancellationToken)
     {
         try
         {
+            var employeeId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ?? string.Empty);
+
             var employee = await _mediator.Send(new GetEmployeeRequest
             {
                 EmployeeId = employeeId,
-                HotelId = hotelId
             }, cancellationToken);
 
             return Ok(employee);

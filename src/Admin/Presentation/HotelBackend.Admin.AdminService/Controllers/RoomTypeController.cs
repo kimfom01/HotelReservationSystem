@@ -22,7 +22,7 @@ public class RoomTypeController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet]
+    [HttpGet("s")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<ActionResult<GetRoomTypeDto>> GetRoomType(Guid roomTypeId, Guid hotelId,
@@ -74,7 +74,7 @@ public class RoomTypeController : ControllerBase
         }
     }
 
-    [HttpGet("{hotelId:guid}")]
+    [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<GetRoomTypeDto>>> GetRoomTypes(Guid hotelId,
         CancellationToken cancellationToken)

@@ -7,14 +7,14 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Admin.Application.Features.Rooms.Handlers.Queries;
 
-public class GetAvailableRoomsInHotelRequestHandler : IRequestHandler<GetAvailableRoomsInHotelRequest, List<GetRoomDto>>
+public class GetAvailableRoomsRequestHandler : IRequestHandler<GetAvailableRoomsRequest, List<GetRoomDto>>
 {
-    private readonly ILogger<GetAvailableRoomsInHotelRequestHandler> _logger;
+    private readonly ILogger<GetAvailableRoomsRequestHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetAvailableRoomsInHotelRequestHandler(
-        ILogger<GetAvailableRoomsInHotelRequestHandler> logger,
+    public GetAvailableRoomsRequestHandler(
+        ILogger<GetAvailableRoomsRequestHandler> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork)
     {
@@ -23,7 +23,7 @@ public class GetAvailableRoomsInHotelRequestHandler : IRequestHandler<GetAvailab
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<GetRoomDto>> Handle(GetAvailableRoomsInHotelRequest request,
+    public async Task<List<GetRoomDto>> Handle(GetAvailableRoomsRequest request,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting available rooms in hotel={HotelId}", request.HotelId);
