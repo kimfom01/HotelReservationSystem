@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using HotelBackend.Admin.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Admin.Application.Dtos.Rooms;
+using HotelBackend.Admin.Application.Exceptions;
 using HotelBackend.Admin.Application.Features.Rooms.Requests.Commands;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -47,6 +48,12 @@ public class UpdateRoomAvailabilityRequestHandler : IRequestHandler<UpdateRoomAv
 
         var room = await _unitOfWork.Rooms.GetEntity(rom =>
             rom.Id == request.RoomDto.RoomId && rom.HotelId == request.RoomDto.HotelId);
+
+        if (room is null)
+        {
+            _logger.LogError("Room={RoomId} does not exist", request.RoomDto.RoomId);
+            throw new NotFoundException($"Room={nameof(request.RoomDto.RoomId)} does not exist");
+        }
 
         _mapper.Map(request.RoomDto, room);
         await _unitOfWork.SaveChanges(cancellationToken);

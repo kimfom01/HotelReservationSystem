@@ -83,7 +83,7 @@ public class RoomController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> UpdateRoom(UpdateRoomAvailabilityDto roomAvailabilityDto,
+    public async Task<IActionResult> UpdateRoomAvailability(UpdateRoomAvailabilityDto roomAvailabilityDto,
         CancellationToken cancellationToken)
     {
         try
@@ -96,6 +96,10 @@ public class RoomController : ControllerBase
             return NoContent();
         }
         catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (NotFoundException ex)
         {
             return BadRequest(ex.Message);
         }

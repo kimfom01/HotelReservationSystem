@@ -2,11 +2,13 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using AutoMapper;
+using FluentValidation;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
 using HotelBackend.Common.Models;
 using HotelBackend.Common.Models.Options;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
+using HotelBackend.Reservations.Application.Exceptions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -85,10 +87,21 @@ public class PaymentQueueSubscriber : IPaymentQueueSubscriber
                 var updateReservationPaymentStatusDto =
                     _mapper.Map<UpdateReservationPaymentStatusDto>(paymentStatusMessage);
 
-                await mediator.Send(new UpdateReservationStatusRequest
+                try
                 {
-                    UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto
-                }, stoppingToken);
+                    await mediator.Send(new UpdateReservationStatusRequest
+                    {
+                        UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto
+                    }, stoppingToken);
+                }
+                catch (ValidationException exception)
+                {
+                    _logger.LogError(exception, "ValidationException: {Exception}", exception);
+                }
+                catch (ReservationException exception)
+                {
+                    _logger.LogError(exception, "ReservationException: {Exception}", exception);
+                }
 
                 channel.BasicAck(args.DeliveryTag, false);
             };
