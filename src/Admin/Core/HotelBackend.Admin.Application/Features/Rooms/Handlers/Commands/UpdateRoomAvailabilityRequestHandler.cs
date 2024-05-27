@@ -47,12 +47,12 @@ public class UpdateRoomAvailabilityRequestHandler : IRequestHandler<UpdateRoomAv
         }
 
         var room = await _unitOfWork.Rooms.GetEntity(rom =>
-            rom.Id == request.RoomDto.RoomId && rom.HotelId == request.RoomDto.HotelId);
+            rom.Id == request.RoomDto.RoomId && rom.HotelId == request.RoomDto.HotelId && rom.Availability);
 
         if (room is null)
         {
-            _logger.LogError("Room={RoomId} does not exist", request.RoomDto.RoomId);
-            throw new NotFoundException($"Room={nameof(request.RoomDto.RoomId)} does not exist");
+            _logger.LogError("Room={RoomId} does not exist or unavailable", request.RoomDto.RoomId);
+            throw new NotFoundException($"Room={request.RoomDto.RoomId} does not exist or unavailable");
         }
 
         _mapper.Map(request.RoomDto, room);
