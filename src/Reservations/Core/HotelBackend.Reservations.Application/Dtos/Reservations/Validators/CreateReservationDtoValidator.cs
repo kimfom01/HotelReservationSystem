@@ -1,12 +1,11 @@
 using FluentValidation;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Reservations.Application.Dtos.GuestProfiles.Validators;
 
 namespace HotelBackend.Reservations.Application.Dtos.Reservations.Validators;
 
 public class CreateReservationDtoValidator : AbstractValidator<CreateReservationDto>
 {
-    public CreateReservationDtoValidator(IUnitOfWork unitOfWork)
+    public CreateReservationDtoValidator()
     {
         RuleFor(dto => dto.CheckIn)
             .LessThan(dto => dto.CheckOut)

@@ -24,7 +24,8 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
         ILogger<AddPaymentRequestHandler> logger,
         IUnitOfWork unitOfWork,
         IValidator<AddPaymentDto> validator,
-        IPaymentStatusPublisher paymentStatusPublisher)
+        IPaymentStatusPublisher paymentStatusPublisher
+    )
     {
         _mapper = mapper;
         _logger = logger;

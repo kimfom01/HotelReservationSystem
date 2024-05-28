@@ -13,9 +13,10 @@ public class GuestProfileValidator : AbstractValidator<CreateGuestProfileDto>
         RuleFor(dto => dto.LastName)
             .NotEmpty()
             .WithMessage("{PropertyName} is required.");
-        
+
         RuleFor(dto => dto.ContactEmail)
             .NotEmpty()
-            .EmailAddress();
+            .EmailAddress()
+            .WithMessage("{PropertyName} is required and must be a valid email address.");
     }
 }

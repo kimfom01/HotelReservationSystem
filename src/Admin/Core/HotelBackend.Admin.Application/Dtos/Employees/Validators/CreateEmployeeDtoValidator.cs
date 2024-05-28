@@ -24,11 +24,12 @@ public class CreateEmployeeDtoValidator : AbstractValidator<CreateEmployeeDto>
             .NotEmpty()
             .WithMessage("{PropertyName} is required.")
             .MinimumLength(5)
-            .WithMessage("{PropertyValue} or more required for {PropertyName}.");
+            .WithMessage("{MinLength} or more required for {PropertyName}.");
 
         RuleFor(emp => emp.ConfirmPassword)
             .NotEmpty()
             .WithMessage("{PropertyName} is required.")
-            .Must((emp, x) => x == emp.Password);
+            .Must((emp, x) => x == emp.Password)
+            .WithMessage("{PropertyName} must match Password.");
     }
 }
