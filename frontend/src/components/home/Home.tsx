@@ -144,7 +144,7 @@ export const Home = () => {
                 <div className="grid grid-cols-2">
                   <label htmlFor="adult">Adult?: </label>
                   <input
-                    className="checked:text-green-500 focus:ring-green-500"
+                    className="rounded checked:text-blue-500 checked:outline-none focus:outline-none focus:ring-blue-500"
                     id="adult"
                     type="checkbox"
                     name="adult"
@@ -199,7 +199,7 @@ export const Home = () => {
                 <div className="flex justify-center">
                   <button
                     type="submit"
-                    className="border dark:border-white border-slate-900 w-fit p-4 rounded-xl active:translate-x-1 active:translate-y-1"
+                    className="bg-blue-700 dark:bg-blue-600 w-fit p-4 rounded-xl focus:ring-blue-300 focus:ring-4 focus:outline-none active:ring-blue-300"
                   >
                     Reserve room
                   </button>
