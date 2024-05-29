@@ -12,7 +12,7 @@ export interface Room {
 
 interface AvailableRoomsProps {
   hotelId: string;
-  setRoom: React.Dispatch<React.SetStateAction<Room | undefined>>;
+  setRoom: React.Dispatch<React.SetStateAction<Room>>;
   setRoomType: React.Dispatch<React.SetStateAction<RoomType | undefined>>;
 }
 

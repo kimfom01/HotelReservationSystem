@@ -6,21 +6,25 @@ import {
   RoomType,
 } from "./AvailableRoomsDropDown";
 import { HotelsDropDown } from "./HotelsDropDown";
-import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
+import Datepicker, {
+  DateType,
+  DateValueType,
+} from "react-tailwindcss-datepicker";
 import { DropDownList } from "../utils/DropDownList";
+import { VITE_RESERVATION_URL } from "../utils/ApiUtil";
 
-interface ReservationProps {
-  checkIn: Date;
-  checkOut: Date;
+interface Reservation {
+  checkIn?: DateType;
+  checkOut?: DateType;
   specialRequests: string;
   roomPreferences: string;
   numberOfGuests: number;
-  guestProfile: GuestProfileProps;
+  guestProfile?: GuestProfile;
   roomId: string;
   hotelId: string;
 }
 
-interface GuestProfileProps {
+interface GuestProfile {
   firstName: string;
   lastName: string;
   contactEmail: string;
@@ -30,17 +34,60 @@ interface GuestProfileProps {
 }
 
 export const Home = () => {
-  const [hotelId, setHotelId] = useState<string>();
-  const [room, setRoom] = useState<Room>();
+  const [hotelId, setHotelId] = useState<string>("");
+  const [room, setRoom] = useState<Room>({
+    roomNumber: "",
+    availability: true,
+    hotelId: "",
+    roomTypeId: "",
+    id: "",
+  });
   const [roomType, setRoomType] = useState<RoomType>();
   const [dateValue, setDateValue] = useState<DateValueType>({
     startDate: new Date(),
     endDate: null,
   });
+  const [reservation, setReservation] = useState<Reservation>({
+    checkIn: new Date(),
+    checkOut: new Date(),
+    specialRequests: "",
+    roomPreferences: "",
+    numberOfGuests: 1,
+    roomId: "",
+    hotelId: "",
+  });
+  const [guestProfile, setGuestProfile] = useState<GuestProfile>({
+    firstName: "",
+    lastName: "",
+    contactEmail: "",
+    sex: "",
+    age: 0,
+    adult: true,
+  });
 
-  const handleValueChange = (newValue: DateValueType) => {
-    console.log("newValue:", newValue);
-    setDateValue(newValue);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const payload: Reservation = {
+      ...reservation,
+      guestProfile: guestProfile,
+      hotelId: hotelId,
+      roomId: room?.id,
+      checkIn: dateValue?.startDate,
+      checkOut: dateValue?.endDate,
+    };
+
+    const res = await fetch(`${VITE_RESERVATION_URL}/api/Reservation`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    console.table(data);
   };
 
   return (
@@ -79,15 +126,24 @@ export const Home = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 gap-8">
-          <div className="row-span-1">
-            <Datepicker value={dateValue} onChange={handleValueChange} />
-          </div>
           <div className="border rounded-lg border-slate-500 dark:border-white row-span-11 p-4 w-full h-full">
-            <form onSubmit={() => {}}>
+            <form onSubmit={handleSubmit}>
               <h3 className="text-2xl font-bold text-center mb-8">
                 Reservation Form
               </h3>
               <div className="grid gap-4">
+                <div className="row-span-1">
+                  <Datepicker
+                    value={dateValue}
+                    showFooter={true}
+                    separator={"to"}
+                    placeholder={"Select Check in and Checkout Dates"}
+                    minDate={new Date()}
+                    onChange={(newValue: DateValueType) => {
+                      setDateValue(newValue);
+                    }}
+                  />
+                </div>
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="firstName">First Name: </label>
                   <input
@@ -97,6 +153,12 @@ export const Home = () => {
                     name="firstName"
                     required
                     min={1}
+                    onChange={(e) =>
+                      setGuestProfile({
+                        ...guestProfile,
+                        firstName: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
@@ -108,6 +170,12 @@ export const Home = () => {
                     name="lastName"
                     required
                     min={1}
+                    onChange={(e) =>
+                      setGuestProfile({
+                        ...guestProfile,
+                        lastName: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
@@ -118,6 +186,12 @@ export const Home = () => {
                     type="email"
                     name="contactEmail"
                     required
+                    onChange={(e) =>
+                      setGuestProfile({
+                        ...guestProfile,
+                        contactEmail: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
@@ -130,11 +204,27 @@ export const Home = () => {
                     min={16}
                     max={100}
                     required
+                    onChange={(e) =>
+                      setGuestProfile({
+                        ...guestProfile,
+                        age: parseInt(e.target.value),
+                      })
+                    }
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="sex">Sex: </label>
-                  <DropDownList id="sex" name="sex" required>
+                  <DropDownList
+                    onChange={(e) =>
+                      setGuestProfile({
+                        ...guestProfile,
+                        sex: e.target.value,
+                      })
+                    }
+                    id="sex"
+                    name="sex"
+                    required
+                  >
                     <option value={""}>-- Select Gender --</option>
                     <option value={"male"}>Male</option>
                     <option value={"female"}>Female</option>
@@ -148,6 +238,12 @@ export const Home = () => {
                     id="adult"
                     type="checkbox"
                     name="adult"
+                    onChange={(e) =>
+                      setGuestProfile({
+                        ...guestProfile,
+                        adult: e.target.checked,
+                      })
+                    }
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
@@ -156,7 +252,12 @@ export const Home = () => {
                     className=" bg-white dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded required:border required:border-red-500 valid:border valid:border-green-500 in-valid:border invalid:border-red-500"
                     id="specialRequests"
                     name="specialRequests"
-                    required
+                    onChange={(e) =>
+                      setReservation({
+                        ...reservation,
+                        specialRequests: e.target.value,
+                      })
+                    }
                   ></textarea>
                 </div>
                 <div className="grid lg:grid-cols-2">
@@ -165,35 +266,31 @@ export const Home = () => {
                     className=" bg-white dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded required:border required:border-red-500 valid:border valid:border-green-500 in-valid:border invalid:border-red-500"
                     id="roomPreferences"
                     name="roomPreferences"
-                    required
+                    onChange={(e) =>
+                      setReservation({
+                        ...reservation,
+                        roomPreferences: e.target.value,
+                      })
+                    }
                   ></textarea>
-                </div>{" "}
+                </div>
                 <div className="grid lg:grid-cols-2">
-                  <label htmlFor="numberOfGuests">Number of Guests: </label>{" "}
+                  <label htmlFor="numberOfGuests">Number of Guests: </label>
                   <input
                     className=" bg-white out-of-range:border-red-500 required:border required:border-red-500 out-of-range:border in-range:border-green-500 in-range:border dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded"
                     id="numberOfGuests"
                     type="number"
                     name="numberOfGuests"
                     min={1}
-                    max={10} // should be capacity of currently selected room
+                    max={roomType?.capacity}
+                    value={reservation.numberOfGuests}
                     required
-                  />
-                </div>
-                <div>
-                  <input
-                    id="roomId"
-                    type="text"
-                    name="roomId"
-                    hidden
-                    required
-                  />
-                  <input
-                    id="hotelId"
-                    type="text"
-                    name="hotelId"
-                    hidden
-                    required
+                    onChange={(e) =>
+                      setReservation({
+                        ...reservation,
+                        numberOfGuests: parseInt(e.target.value),
+                      })
+                    }
                   />
                 </div>
                 <div className="flex justify-center">
