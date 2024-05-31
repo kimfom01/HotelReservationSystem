@@ -10,8 +10,12 @@ import Datepicker, {
   DateType,
   DateValueType,
 } from "react-tailwindcss-datepicker";
-import { DropDownList } from "../utils/DropDownList";
+import { DropDownList } from "../common/DropDownList";
 import { VITE_RESERVATION_URL } from "../utils/ApiUtil";
+import { Button } from "../common/Button";
+import { InputField } from "../common/InputField";
+import { TextBox } from "../common/TextBox";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Reservation {
   checkIn?: DateType;
@@ -34,6 +38,7 @@ interface GuestProfile {
 }
 
 export const Home = () => {
+  const queryClient = useQueryClient();
   const [hotelId, setHotelId] = useState<string>("");
   const [room, setRoom] = useState<Room>({
     roomNumber: "",
@@ -77,7 +82,7 @@ export const Home = () => {
       checkOut: dateValue?.endDate,
     };
 
-    const res = await fetch(`${VITE_RESERVATION_URL}/api/Reservation`, {
+    const res = await fetch(`${VITE_RESERVATION_URL}`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -87,8 +92,17 @@ export const Home = () => {
 
     const data = await res.json();
 
-    console.table(data);
+    return data;
   };
+
+  const { mutateAsync } = useMutation({
+    mutationFn: handleSubmit,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["rooms"],
+      });
+    },
+  });
 
   return (
     <Base>
@@ -106,7 +120,7 @@ export const Home = () => {
               />
             )}
           </div>
-          <div className="border rounded-lg border-slate-500 dark:border-white p-4 grid row-span-10 gap-4">
+          <div className="border rounded-lg border-slate-500 dark:border-white p-6 grid row-span-10 gap-4">
             <div className="grid grid-cols-2">
               Room Number: {room && <span>{room.roomNumber}</span>}
             </div>
@@ -126,12 +140,12 @@ export const Home = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 gap-8">
-          <div className="border rounded-lg border-slate-500 dark:border-white row-span-11 p-4 w-full h-full">
-            <form onSubmit={handleSubmit}>
+          <div className="border rounded-lg border-slate-500 dark:border-white row-span-11 p-6 w-full h-full">
+            <form onSubmit={mutateAsync}>
               <h3 className="text-2xl font-bold text-center mb-8">
                 Reservation Form
               </h3>
-              <div className="grid gap-4">
+              <div className="grid gap-8">
                 <div className="row-span-1">
                   <Datepicker
                     value={dateValue}
@@ -146,8 +160,7 @@ export const Home = () => {
                 </div>
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="firstName">First Name: </label>
-                  <input
-                    className=" bg-white dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded required:border required:border-red-500 valid:border valid:border-green-500 in-valid:border invalid:border-red-500"
+                  <InputField
                     id="firstName"
                     type="text"
                     name="firstName"
@@ -163,8 +176,7 @@ export const Home = () => {
                 </div>
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="lastName">Last Name: </label>
-                  <input
-                    className=" bg-white dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded required:border required:border-red-500 valid:border valid:border-green-500 in-valid:border invalid:border-red-500"
+                  <InputField
                     id="lastName"
                     type="text"
                     name="lastName"
@@ -180,8 +192,7 @@ export const Home = () => {
                 </div>
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="contactEmail">Contact Email: </label>
-                  <input
-                    className=" bg-white dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded required:border required:border-red-500 valid:border valid:border-green-500 in-valid:border invalid:border-red-500"
+                  <InputField
                     id="contactEmail"
                     type="email"
                     name="contactEmail"
@@ -196,8 +207,7 @@ export const Home = () => {
                 </div>
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="age">Age: </label>
-                  <input
-                    className=" bg-white out-of-range:border-red-500 required:border required:border-red-500 out-of-range:border in-range:border-green-500 in-range:border dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded"
+                  <InputField
                     id="age"
                     type="number"
                     name="age"
@@ -231,9 +241,9 @@ export const Home = () => {
                     <option value={"none"}>Rather not say</option>
                   </DropDownList>
                 </div>
-                <div className="grid grid-cols-2">
+                {/* <div className="grid grid-cols-2">
                   <label htmlFor="adult">Adult?: </label>
-                  <input
+                  <InputField
                     className="rounded checked:text-blue-500 checked:outline-none focus:outline-none focus:ring-blue-500"
                     id="adult"
                     type="checkbox"
@@ -245,11 +255,10 @@ export const Home = () => {
                       })
                     }
                   />
-                </div>
+                </div> */}
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="specialRequests">Special Requests: </label>
-                  <textarea
-                    className=" bg-white dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded required:border required:border-red-500 valid:border valid:border-green-500 in-valid:border invalid:border-red-500"
+                  <TextBox
                     id="specialRequests"
                     name="specialRequests"
                     onChange={(e) =>
@@ -258,12 +267,11 @@ export const Home = () => {
                         specialRequests: e.target.value,
                       })
                     }
-                  ></textarea>
+                  ></TextBox>
                 </div>
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="roomPreferences">Room Preferences: </label>
-                  <textarea
-                    className=" bg-white dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded required:border required:border-red-500 valid:border valid:border-green-500 in-valid:border invalid:border-red-500"
+                  <TextBox
                     id="roomPreferences"
                     name="roomPreferences"
                     onChange={(e) =>
@@ -272,12 +280,11 @@ export const Home = () => {
                         roomPreferences: e.target.value,
                       })
                     }
-                  ></textarea>
+                  ></TextBox>
                 </div>
                 <div className="grid lg:grid-cols-2">
                   <label htmlFor="numberOfGuests">Number of Guests: </label>
-                  <input
-                    className=" bg-white out-of-range:border-red-500 required:border required:border-red-500 out-of-range:border in-range:border-green-500 in-range:border dark:bg-slate-500 text-slate-500 dark:text-white p-1 rounded"
+                  <InputField
                     id="numberOfGuests"
                     type="number"
                     name="numberOfGuests"
@@ -293,14 +300,7 @@ export const Home = () => {
                     }
                   />
                 </div>
-                <div className="flex justify-center">
-                  <button
-                    type="submit"
-                    className="bg-blue-700 dark:bg-blue-600 w-fit p-4 rounded-xl focus:ring-blue-300 focus:ring-4 focus:outline-none active:ring-blue-300"
-                  >
-                    Reserve room
-                  </button>
-                </div>
+                <Button content={"Reserve room"} />
               </div>
             </form>
           </div>

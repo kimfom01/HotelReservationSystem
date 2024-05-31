@@ -6,8 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "react-auth-kit";
 import createStore from "react-auth-kit/createStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { User } from "./models/User.ts";
 
-const store = createStore({
+const store = createStore<User>({
   authName: "_auth",
   authType: "cookie",
   cookieDomain: window.location.hostname,
