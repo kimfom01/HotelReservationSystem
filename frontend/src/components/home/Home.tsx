@@ -1,11 +1,8 @@
 import { Base } from "../utils/Base";
 import { useState } from "react";
-import {
-  AvailableRoomsDropDown,
-  Room,
-  RoomType,
-} from "./AvailableRoomsDropDown";
-import { HotelsDropDown } from "./HotelsDropDown";
+import { AvailableRoomsDropDown, RoomType } from "./AvailableRoomsDropDown";
+import { Room } from "../../models/Room";
+import { HotelsDropDown } from "../common/HotelsDropDown";
 import Datepicker, {
   DateType,
   DateValueType,

@@ -1,15 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
-import { DropDownList } from "../common/DropDownList";
-
-interface Hotel {
-  name: string;
-  location: string;
-  id: string;
-}
+import { DropDownList } from "./DropDownList";
+import { Hotel } from "../../models/Hotel";
 
 interface HotelsDropDownProps {
-  setHotelId: React.Dispatch<React.SetStateAction<string>>;
+  setHotelId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 export const HotelsDropDown = ({ setHotelId }: HotelsDropDownProps) => {

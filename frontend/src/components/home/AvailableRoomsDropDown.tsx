@@ -1,14 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
 import { DropDownList } from "../common/DropDownList";
-
-export interface Room {
-  roomNumber: string;
-  availability: boolean;
-  hotelId: string;
-  roomTypeId: string;
-  id: string;
-}
+import { Room } from "../../models/Room";
 
 interface AvailableRoomsProps {
   hotelId: string;
