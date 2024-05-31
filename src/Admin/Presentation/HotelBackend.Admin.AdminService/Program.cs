@@ -41,7 +41,11 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: corsPolicy, policy => policy.WithOrigins().AllowAnyOrigin());
+    options.AddPolicy(name: corsPolicy,
+        policy =>
+            policy.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod());
 });
 
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
