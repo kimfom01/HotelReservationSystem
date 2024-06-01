@@ -36,7 +36,7 @@ interface GuestProfile {
 
 export const Home = () => {
   const queryClient = useQueryClient();
-  const [hotelId, setHotelId] = useState<string>("");
+  const [hotelId, setHotelId] = useState<string>();
   const [room, setRoom] = useState<Room>({
     roomNumber: "",
     availability: true,
@@ -73,7 +73,7 @@ export const Home = () => {
     const payload: Reservation = {
       ...reservation,
       guestProfile: guestProfile,
-      hotelId: hotelId,
+      hotelId: hotelId!,
       roomId: room?.id,
       checkIn: dateValue?.startDate,
       checkOut: dateValue?.endDate,

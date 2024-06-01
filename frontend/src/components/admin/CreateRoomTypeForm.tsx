@@ -23,7 +23,7 @@ export const CreateRoomTypeForm = () => {
     roomPrice: 0,
     hotelId: "",
   });
-  const [hotelId, setHotelId] = useState("");
+  const [hotelId, setHotelId] = useState<string>();
   const authHeader = useAuthHeader();
   const queryClient = useQueryClient();
 
@@ -38,7 +38,7 @@ export const CreateRoomTypeForm = () => {
 
     const payload: RoomTypeForm = {
       ...roomTypeForm,
-      hotelId: hotelId,
+      hotelId: hotelId!,
     };
 
     const res = await fetch(`${VITE_ADMIN_URL}/api/roomtype`, {
