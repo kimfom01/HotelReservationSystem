@@ -6,7 +6,7 @@ import { Room } from "../../models/Room";
 interface AvailableRoomsProps {
   hotelId: string;
   setRoom: React.Dispatch<React.SetStateAction<Room>>;
-  setRoomType: React.Dispatch<React.SetStateAction<RoomType | undefined>>;
+  setRoomType: React.Dispatch<React.SetStateAction<RoomType>>;
 }
 
 export interface RoomType {

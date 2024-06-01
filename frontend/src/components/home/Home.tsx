@@ -44,7 +44,14 @@ export const Home = () => {
     roomTypeId: "",
     id: "",
   });
-  const [roomType, setRoomType] = useState<RoomType>();
+  const [roomType, setRoomType] = useState<RoomType>({
+    type: "",
+    capacity: 0,
+    description: "",
+    roomPrice: 0,
+    hotelId: "",
+    id: "",
+  });
   const [dateValue, setDateValue] = useState<DateValueType>({
     startDate: new Date(),
     endDate: null,
@@ -79,7 +86,7 @@ export const Home = () => {
       checkOut: dateValue?.endDate,
     };
 
-    const res = await fetch(`${VITE_RESERVATION_URL}`, {
+    const res = await fetch(`${VITE_RESERVATION_URL}/api/reservation`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -95,6 +102,44 @@ export const Home = () => {
   const { mutateAsync } = useMutation({
     mutationFn: handleSubmit,
     onSuccess: () => {
+      setRoom({
+        roomNumber: "",
+        availability: true,
+        hotelId: "",
+        roomTypeId: "",
+        id: "",
+      });
+      setRoomType({
+        type: "",
+        capacity: 0,
+        description: "",
+        roomPrice: 0,
+        hotelId: "",
+        id: "",
+      });
+      setDateValue({
+        startDate: new Date(),
+        endDate: null,
+      });
+      setReservation({
+        checkIn: new Date(),
+        checkOut: new Date(),
+        specialRequests: "",
+        roomPreferences: "",
+        numberOfGuests: 1,
+        roomId: "",
+        hotelId: "",
+      });
+
+      setGuestProfile({
+        firstName: "",
+        lastName: "",
+        contactEmail: "",
+        sex: "",
+        age: 0,
+        adult: true,
+      });
+
       queryClient.invalidateQueries({
         queryKey: ["rooms"],
       });
