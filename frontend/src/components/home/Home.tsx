@@ -118,7 +118,7 @@ export const Home = () => {
         id: "",
       });
       setDateValue({
-        startDate: new Date(),
+        startDate: null,
         endDate: null,
       });
       setReservation({
@@ -208,6 +208,7 @@ export const Home = () => {
                     name="firstName"
                     required
                     min={1}
+                    value={guestProfile.firstName}
                     onChange={(e) =>
                       setGuestProfile({
                         ...guestProfile,
@@ -224,6 +225,7 @@ export const Home = () => {
                     name="lastName"
                     required
                     min={1}
+                    value={guestProfile.lastName}
                     onChange={(e) =>
                       setGuestProfile({
                         ...guestProfile,
@@ -239,6 +241,7 @@ export const Home = () => {
                     type="email"
                     name="contactEmail"
                     required
+                    value={guestProfile.contactEmail}
                     onChange={(e) =>
                       setGuestProfile({
                         ...guestProfile,
@@ -256,6 +259,7 @@ export const Home = () => {
                     min={16}
                     max={100}
                     required
+                    value={guestProfile.age}
                     onChange={(e) =>
                       setGuestProfile({
                         ...guestProfile,
@@ -276,6 +280,7 @@ export const Home = () => {
                     id="sex"
                     name="sex"
                     required
+                    value={guestProfile.sex}
                   >
                     <option value={""}>-- Select Gender --</option>
                     <option value={"male"}>Male</option>
@@ -303,6 +308,7 @@ export const Home = () => {
                   <TextBox
                     id="specialRequests"
                     name="specialRequests"
+                    value={reservation.specialRequests}
                     onChange={(e) =>
                       setReservation({
                         ...reservation,
@@ -316,6 +322,7 @@ export const Home = () => {
                   <TextBox
                     id="roomPreferences"
                     name="roomPreferences"
+                    value={reservation.roomPreferences}
                     onChange={(e) =>
                       setReservation({
                         ...reservation,

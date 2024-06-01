@@ -6,6 +6,7 @@ interface DropDownListProps {
   id?: string;
   name?: string;
   required?: boolean;
+  value?: string | number | readonly string[];
 }
 
 export const DropDownList = ({
@@ -13,12 +14,14 @@ export const DropDownList = ({
   children,
   id,
   name,
+  value,
   required,
 }: DropDownListProps) => {
   return (
     <select
       id={id}
       name={name}
+      value={value}
       onChange={onChange}
       required={required}
       className="bg-gray-50 border border-slate-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
