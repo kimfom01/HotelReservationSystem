@@ -20,7 +20,7 @@ export const CreateRoomForm = () => {
     roomTypeId: "",
   });
   const [hotelId, setHotelId] = useState<string>();
-  const [roomTypeId, setRoomTypeId] = useState("");
+  const [roomTypeId, setRoomTypeId] = useState<string>();
   const authHeader = useAuthHeader();
   const queryClient = useQueryClient();
 
@@ -34,7 +34,7 @@ export const CreateRoomForm = () => {
     const payload: RoomForm = {
       ...roomForm,
       hotelId: hotelId!,
-      roomTypeId: roomTypeId,
+      roomTypeId: roomTypeId!,
     };
 
     const res = await fetch(`${VITE_ADMIN_URL}/api/room`, {
@@ -57,7 +57,7 @@ export const CreateRoomForm = () => {
         roomTypeId: "",
       });
       queryClient.invalidateQueries({
-        queryKey: ["roomTypes, rooms"],
+        queryKey: ["roomTypes", "rooms"],
       });
     },
   });
@@ -69,7 +69,7 @@ export const CreateRoomForm = () => {
   return (
     <div>
       <form onSubmit={mutateAsync}>
-        <div className="border rounded-md border-slate-500 dark:border-white grid row-span-10 gap-8 md:text-xl p-8">
+        <div className="dark:bg-slate-800 bg-white rounded-md grid row-span-10 gap-8 md:text-xl p-8">
           <div className="flex justify-center font-bold text-2xl">
             <h1 className="text-3xl">Create Room Form</h1>
           </div>

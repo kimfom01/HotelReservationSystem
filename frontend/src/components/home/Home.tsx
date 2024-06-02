@@ -1,7 +1,5 @@
 import { Base } from "../utils/Base";
 import { useState } from "react";
-import { AvailableRoomsDropDown, RoomType } from "./AvailableRoomsDropDown";
-import { Room } from "../../models/Room";
 import { HotelsDropDown } from "../common/HotelsDropDown";
 import Datepicker, {
   DateType,
@@ -13,6 +11,8 @@ import { Button } from "../common/Button";
 import { InputField } from "../common/InputField";
 import { TextBox } from "../common/TextBox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { RoomTypesDropDown } from "../common/RoomTypesDropDown";
+import { RoomDetails } from "./RoomDetails";
 
 interface Reservation {
   checkIn?: DateType;
@@ -21,7 +21,7 @@ interface Reservation {
   roomPreferences: string;
   numberOfGuests: number;
   guestProfile?: GuestProfile;
-  roomId: string;
+  roomTypeId: string;
   hotelId: string;
 }
 
@@ -37,21 +37,8 @@ interface GuestProfile {
 export const Home = () => {
   const queryClient = useQueryClient();
   const [hotelId, setHotelId] = useState<string>();
-  const [room, setRoom] = useState<Room>({
-    roomNumber: "",
-    availability: true,
-    hotelId: "",
-    roomTypeId: "",
-    id: "",
-  });
-  const [roomType, setRoomType] = useState<RoomType>({
-    type: "",
-    capacity: 0,
-    description: "",
-    roomPrice: 0,
-    hotelId: "",
-    id: "",
-  });
+  const [capacity, setCapacity] = useState<number>(1);
+  const [roomTypeId, setRoomTypeId] = useState<string>();
   const [dateValue, setDateValue] = useState<DateValueType>({
     startDate: new Date(),
     endDate: null,
@@ -62,7 +49,7 @@ export const Home = () => {
     specialRequests: "",
     roomPreferences: "",
     numberOfGuests: 1,
-    roomId: "",
+    roomTypeId: "",
     hotelId: "",
   });
   const [guestProfile, setGuestProfile] = useState<GuestProfile>({
@@ -81,7 +68,7 @@ export const Home = () => {
       ...reservation,
       guestProfile: guestProfile,
       hotelId: hotelId!,
-      roomId: room?.id,
+      roomTypeId: roomTypeId!,
       checkIn: dateValue?.startDate,
       checkOut: dateValue?.endDate,
     };
@@ -94,7 +81,11 @@ export const Home = () => {
       body: JSON.stringify(payload),
     });
 
-    const data = await res.json();
+    if (!res.ok) {
+      throw new Error();
+    }
+
+    const data: Reservation = await res.json();
 
     return data;
   };
@@ -102,21 +93,6 @@ export const Home = () => {
   const { mutateAsync } = useMutation({
     mutationFn: handleSubmit,
     onSuccess: () => {
-      setRoom({
-        roomNumber: "",
-        availability: true,
-        hotelId: "",
-        roomTypeId: "",
-        id: "",
-      });
-      setRoomType({
-        type: "",
-        capacity: 0,
-        description: "",
-        roomPrice: 0,
-        hotelId: "",
-        id: "",
-      });
       setDateValue({
         startDate: null,
         endDate: null,
@@ -127,7 +103,7 @@ export const Home = () => {
         specialRequests: "",
         roomPreferences: "",
         numberOfGuests: 1,
-        roomId: "",
+        roomTypeId: "",
         hotelId: "",
       });
 
@@ -141,8 +117,11 @@ export const Home = () => {
       });
 
       queryClient.invalidateQueries({
-        queryKey: ["rooms"],
+        queryKey: ["rooms", "roomDetails"],
       });
+    },
+    onError: (error) => {
+      console.log(error.message);
     },
   });
 
@@ -155,34 +134,22 @@ export const Home = () => {
           </div>
           <div className="row-span-1">
             {hotelId && (
-              <AvailableRoomsDropDown
+              <RoomTypesDropDown
                 hotelId={hotelId}
-                setRoom={setRoom}
-                setRoomType={setRoomType}
+                setRoomTypeId={setRoomTypeId}
               />
             )}
           </div>
-          <div className="border rounded-lg border-slate-500 dark:border-white p-6 grid row-span-10 gap-4">
-            <div className="grid grid-cols-2">
-              Room Number: {room && <span>{room.roomNumber}</span>}
-            </div>
-            <div className="grid grid-cols-2">
-              Description:
-              {roomType && <span>{roomType.description}</span>}
-            </div>
-            <div className="grid grid-cols-2">
-              Type: {roomType && <span>{roomType.type}</span>}
-            </div>
-            <div className="grid grid-cols-2">
-              Capacity: {roomType && <span>{roomType.capacity}</span>}
-            </div>
-            <div className="grid grid-cols-2">
-              Price: {roomType && <span>{roomType.roomPrice}</span>}
-            </div>
-          </div>
+          {hotelId && roomTypeId && (
+            <RoomDetails
+              roomTypeId={roomTypeId}
+              hotelId={hotelId}
+              setCapacity={setCapacity}
+            />
+          )}
         </div>
         <div className="grid grid-cols-1 gap-8">
-          <div className="border rounded-lg border-slate-500 dark:border-white row-span-11 p-6 w-full h-full">
+          <div className="dark:bg-slate-800 bg-white rounded-lg row-span-11 p-6 w-full h-full">
             <form onSubmit={mutateAsync}>
               <h3 className="text-2xl font-bold text-center mb-8">
                 Reservation Form
@@ -201,7 +168,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
-                  <label htmlFor="firstName">First Name: </label>
+                  <label htmlFor="firstName">First Name:</label>
                   <InputField
                     id="firstName"
                     type="text"
@@ -218,7 +185,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
-                  <label htmlFor="lastName">Last Name: </label>
+                  <label htmlFor="lastName">Last Name:</label>
                   <InputField
                     id="lastName"
                     type="text"
@@ -235,7 +202,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
-                  <label htmlFor="contactEmail">Contact Email: </label>
+                  <label htmlFor="contactEmail">Contact Email:</label>
                   <InputField
                     id="contactEmail"
                     type="email"
@@ -251,7 +218,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
-                  <label htmlFor="age">Age: </label>
+                  <label htmlFor="age">Age:</label>
                   <InputField
                     id="age"
                     type="number"
@@ -269,7 +236,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="grid lg:grid-cols-2">
-                  <label htmlFor="sex">Sex: </label>
+                  <label htmlFor="sex">Sex:</label>
                   <DropDownList
                     onChange={(e) =>
                       setGuestProfile({
@@ -288,23 +255,8 @@ export const Home = () => {
                     <option value={"none"}>Rather not say</option>
                   </DropDownList>
                 </div>
-                {/* <div className="grid grid-cols-2">
-                  <label htmlFor="adult">Adult?: </label>
-                  <InputField
-                    className="rounded checked:text-blue-500 checked:outline-none focus:outline-none focus:ring-blue-500"
-                    id="adult"
-                    type="checkbox"
-                    name="adult"
-                    onChange={(e) =>
-                      setGuestProfile({
-                        ...guestProfile,
-                        adult: e.target.checked,
-                      })
-                    }
-                  />
-                </div> */}
                 <div className="grid lg:grid-cols-2">
-                  <label htmlFor="specialRequests">Special Requests: </label>
+                  <label htmlFor="specialRequests">Special Requests:</label>
                   <TextBox
                     id="specialRequests"
                     name="specialRequests"
@@ -318,7 +270,7 @@ export const Home = () => {
                   ></TextBox>
                 </div>
                 <div className="grid lg:grid-cols-2">
-                  <label htmlFor="roomPreferences">Room Preferences: </label>
+                  <label htmlFor="roomPreferences">Room Preferences:</label>
                   <TextBox
                     id="roomPreferences"
                     name="roomPreferences"
@@ -338,7 +290,7 @@ export const Home = () => {
                     type="number"
                     name="numberOfGuests"
                     min={1}
-                    max={roomType?.capacity}
+                    max={capacity}
                     value={reservation.numberOfGuests}
                     required
                     onChange={(e) =>

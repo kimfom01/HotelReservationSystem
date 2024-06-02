@@ -70,7 +70,7 @@ export const CreateRoomTypeForm = () => {
   return (
     <div>
       <form onSubmit={mutateAsync}>
-        <div className="border rounded-md border-slate-500 dark:border-white grid row-span-10 gap-8 md:text-xl p-8">
+        <div className="dark:bg-slate-800 bg-white rounded-md grid row-span-10 gap-8 md:text-xl p-8">
           <div className="flex justify-center font-bold text-2xl">
             <h1 className="text-3xl">Create Room Type Form</h1>
           </div>

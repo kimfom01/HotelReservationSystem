@@ -4,7 +4,7 @@ import { VITE_ADMIN_URL } from "../utils/ApiUtil";
 import { DropDownList } from "./DropDownList";
 
 interface RoomTypesDropDownProps {
-  setRoomTypeId: React.Dispatch<React.SetStateAction<string>>;
+  setRoomTypeId: React.Dispatch<React.SetStateAction<string | undefined>>;
   hotelId?: string;
 }
 
