@@ -79,21 +79,21 @@ public class RoomController : ControllerBase
         }
     }
 
-    [HttpPatch]
+    [HttpPost("hold")]
     [AllowAnonymous]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> UpdateRoomAvailability(UpdateRoomAvailabilityDto roomAvailabilityDto,
+    public async Task<ActionResult<ReserveRoomResponse>> ReserveRoom(ReserveRoomRequestDto roomRequestDto,
         CancellationToken cancellationToken)
     {
         try
         {
-            await _mediator.Send(new UpdateRoomAvailabilityRequest
+            var response = await _mediator.Send(new ReserveRoomRequest
             {
-                RoomDto = roomAvailabilityDto
+                RoomRequestDto = roomRequestDto
             }, cancellationToken);
 
-            return NoContent();
+            return Ok(response);
         }
         catch (ValidationException ex)
         {

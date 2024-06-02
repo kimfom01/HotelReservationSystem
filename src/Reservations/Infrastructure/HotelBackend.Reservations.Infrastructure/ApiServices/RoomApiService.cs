@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using HotelBackend.Common.Models.Options;
@@ -21,17 +22,26 @@ public class RoomApiService : IRoomApiService
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
-    public async Task<bool> SetRoomAvailability(UpdateRoomAvailabilityDto roomAvailabilityDto)
+    public async Task<ReserveRoomResponse> PlaceOnHold(ReserveRoomRequestDto roomRequestDto)
     {
-        using StringContent jsonContent = new(
-            JsonSerializer.Serialize(roomAvailabilityDto),
-            Encoding.UTF8,
-            "application/json");
-
-        using var response = await _httpClient.PatchAsync("api/Room/", jsonContent);
+        using var response = await _httpClient.PostAsJsonAsync("api/Room/hold", roomRequestDto);
 
         var success = response.IsSuccessStatusCode;
 
-        return success;
+        var reserveRoomResponse =
+            await JsonSerializer.DeserializeAsync<ReserveRoomResponse>(await response.Content.ReadAsStreamAsync());
+
+        return new ReserveRoomResponse
+        {
+            Success = success,
+            RoomId = reserveRoomResponse?.RoomId
+        };
+    }
+
+    public async Task<bool> FreeUpRoom(FreeRoomRequestDto roomRequestDto)
+    {
+        // TODO: Implement new free room request
+
+        throw new NotImplementedException();
     }
 }

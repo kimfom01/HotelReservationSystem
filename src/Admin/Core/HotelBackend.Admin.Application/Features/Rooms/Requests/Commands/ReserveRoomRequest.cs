@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelBackend.Admin.Application.Features.Rooms.Requests.Commands;
 
-public class UpdateRoomAvailabilityRequest : IRequest<Unit>
+public class ReserveRoomRequest : IRequest<ReserveRoomResponse>
 {
-    public UpdateRoomAvailabilityDto? RoomDto { get; set; }
+    public ReserveRoomRequestDto? RoomRequestDto { get; set; }
 }

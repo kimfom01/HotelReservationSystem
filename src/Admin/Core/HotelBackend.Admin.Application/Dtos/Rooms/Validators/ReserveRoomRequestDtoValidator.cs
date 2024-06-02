@@ -2,19 +2,15 @@ using FluentValidation;
 
 namespace HotelBackend.Admin.Application.Dtos.Rooms.Validators;
 
-public class UpdateRoomAvailabilityDtoValidator : AbstractValidator<UpdateRoomAvailabilityDto>
+public class ReserveRoomRequestDtoValidator : AbstractValidator<ReserveRoomRequestDto>
 {
-    public UpdateRoomAvailabilityDtoValidator()
+    public ReserveRoomRequestDtoValidator()
     {
-        RuleFor(rom => rom.Availability)
+        RuleFor(rom => rom.RoomTypeId)
             .NotNull()
             .WithMessage("{PropertyName} is required.");
 
         RuleFor(rom => rom.HotelId)
-            .NotEmpty()
-            .WithMessage("{PropertyName} is required.");
-
-        RuleFor(rom => rom.RoomId)
             .NotEmpty()
             .WithMessage("{PropertyName} is required.");
     }

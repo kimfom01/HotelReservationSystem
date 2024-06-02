@@ -9,7 +9,6 @@ public class GuestProfile : BaseEntity
     public string ContactEmail { get; set; } = string.Empty;
     public string Sex { get; set; } = string.Empty;
     public int Age { get; set; }
-    public bool Adult { get; set; }
 
     public IEnumerable<Reservation>? Reservations { get; set; }
 }

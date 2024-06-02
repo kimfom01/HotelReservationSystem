@@ -10,6 +10,6 @@ public class RoomMappings : Profile
     {
         CreateMap<Room, GetRoomDto>().ReverseMap();
         CreateMap<Room, CreateRoomDto>().ReverseMap();
-        CreateMap<Room, UpdateRoomAvailabilityDto>().ReverseMap();
+        CreateMap<Room, ReserveRoomRequestDto>().ReverseMap();
     }
 }

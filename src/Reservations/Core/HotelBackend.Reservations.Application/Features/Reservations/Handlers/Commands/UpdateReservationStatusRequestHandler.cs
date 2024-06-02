@@ -87,11 +87,10 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
 
         if (request.UpdateReservationPaymentStatusDto.Status is PaymentStatus.Canceled or PaymentStatus.Refunded)
         {
-            var roomIsFreed = await _roomApiService.SetRoomAvailability(new UpdateRoomAvailabilityDto
+            var roomIsFreed = await _roomApiService.FreeUpRoom(new FreeRoomRequestDto
             {
                 RoomId = reservation.RoomId,
                 HotelId = reservation.HotelId,
-                Availability = true
             });
 
             if (!roomIsFreed)

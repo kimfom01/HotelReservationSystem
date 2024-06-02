@@ -60,14 +60,13 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
 
         var reservation = _mapper.Map<Reservation>(request.CreateReservationDto);
 
-        var roomOnHold = await _roomApiService.SetRoomAvailability(new UpdateRoomAvailabilityDto
+        var reserveRoomResponse = await _roomApiService.PlaceOnHold(new ReserveRoomRequestDto
         {
-            Availability = false,
-            RoomId = reservation.RoomId,
+            RoomTypeId = request.CreateReservationDto.RoomTypeId,
             HotelId = reservation.HotelId
         });
 
-        if (!roomOnHold)
+        if (!reserveRoomResponse.Success)
         {
             _logger.LogError("An error occured while marking room as unavailable for reservation={ReservationId}",
                 reservation.Id);
@@ -78,6 +77,7 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
 
         reservation.GuestProfileId = newGuest!.Id;
 
+        reservation.RoomId = reserveRoomResponse.RoomId!.Value;
         var added = await _unitOfWork.Reservations.Add(reservation, cancellationToken);
         await _unitOfWork.SaveChanges(cancellationToken);
         _logger.LogInformation("Successfully created a reservation");

@@ -4,5 +4,6 @@ namespace HotelBackend.Reservations.Application.Contracts.ApiServices;
 
 public interface IRoomApiService
 {
-    Task<bool> SetRoomAvailability(UpdateRoomAvailabilityDto roomAvailabilityDto);
+    Task<ReserveRoomResponse> PlaceOnHold(ReserveRoomRequestDto roomRequestDto);
+    Task<bool> FreeUpRoom(FreeRoomRequestDto roomRequestDto);
 }

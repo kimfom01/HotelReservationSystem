@@ -17,4 +17,13 @@ public class RoomRepository : Repository<Room>, IRoomRepository
                            && room.Availability)
             .AsNoTracking().ToListAsync(cancellationToken);
     }
+
+    public async Task<Room?> GetRoomOfType(Guid hotelId, Guid roomTypeId)
+    {
+        return await DbSet
+            .FirstOrDefaultAsync(room =>
+                room.HotelId == hotelId
+                && room.RoomTypeId == roomTypeId
+                && room.Availability);
+    }
 }

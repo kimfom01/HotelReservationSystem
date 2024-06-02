@@ -10,6 +10,6 @@ public class CreateReservationDto
     public string RoomPreferences { get; set; } = string.Empty;
     public int NumberOfGuests { get; set; }
     public CreateGuestProfileDto? GuestProfile { get; set; }
-    public Guid RoomId { get; set; }
+    public Guid RoomTypeId { get; set; }
     public Guid HotelId { get; set; }
 }
