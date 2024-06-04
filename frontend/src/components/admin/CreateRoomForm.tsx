@@ -2,7 +2,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { Button } from "../common/Button";
-import { HotelsDropDown } from "../common/HotelsDropDown";
+import { HotelsDropDown } from "../hotel/HotelsDropDown";
 import { InputField } from "../common/InputField";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
 import { RoomTypesDropDown } from "../room/RoomTypesDropDown";

@@ -5,7 +5,7 @@ import { Button } from "../common/Button";
 import { InputField } from "../common/InputField";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
 import { TextBox } from "../common/TextBox";
-import { HotelsDropDown } from "../common/HotelsDropDown";
+import { HotelsDropDown } from "../hotel/HotelsDropDown";
 
 interface RoomTypeForm {
   type: string;

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { RoomType } from "../home/AvailableRoomsDropDown";
+import { RoomType } from "../room/AvailableRoomsDropDown";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
 import { DropDownList } from "../common/DropDownList";
 

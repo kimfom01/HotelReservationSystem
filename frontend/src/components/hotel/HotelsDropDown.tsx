@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
-import { DropDownList } from "./DropDownList";
+import { DropDownList } from "../common/DropDownList";
 import { Hotel } from "../../models/Hotel";
 
 interface HotelsDropDownProps {
