@@ -36,9 +36,9 @@ interface GuestProfile {
 
 export const Home = () => {
   const queryClient = useQueryClient();
-  const [hotelId, setHotelId] = useState<string>();
+  const [hotelId, setHotelId] = useState<string>("");
   const [capacity, setCapacity] = useState<number>(1);
-  const [roomTypeId, setRoomTypeId] = useState<string>();
+  const [roomTypeId, setRoomTypeId] = useState<string>("");
   const [dateValue, setDateValue] = useState<DateValueType>({
     startDate: new Date(),
     endDate: null,
@@ -135,20 +135,22 @@ export const Home = () => {
           <div className="row-span-1">
             {hotelId && (
               <RoomTypesDropDown
+                key={hotelId}
                 hotelId={hotelId}
                 setRoomTypeId={setRoomTypeId}
               />
             )}
           </div>
-          {hotelId && roomTypeId && (
+          {roomTypeId && (
             <RoomDetails
+              key={roomTypeId}
               roomTypeId={roomTypeId}
               hotelId={hotelId}
               setCapacity={setCapacity}
             />
           )}
         </div>
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 shadow-lg gap-8">
           <div className="dark:bg-slate-800 bg-white rounded-lg row-span-11 p-6 w-full h-full">
             <form onSubmit={mutateAsync}>
               <h3 className="text-2xl font-bold text-center mb-8">

@@ -4,7 +4,7 @@ import { DropDownList } from "./DropDownList";
 import { Hotel } from "../../models/Hotel";
 
 interface HotelsDropDownProps {
-  setHotelId: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setHotelId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const HotelsDropDown = ({ setHotelId }: HotelsDropDownProps) => {

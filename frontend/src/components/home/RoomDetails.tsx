@@ -9,7 +9,7 @@ interface RoomTypeDetailsRowProp {
 
 const RoomTypeDetailsRow = ({ name, item }: RoomTypeDetailsRowProp) => {
   return (
-    <div className="grid grid-cols-2 border-b dark:border-slate-400 last:border-none">
+    <div className="grid grid-cols-2 border-b border-slate-500 dark:border-slate-400 last:border-none">
       <div className="self-center">
         <span className="lg:bg-slate-100 lg:dark:bg-slate-900 rounded lg:p-2">
           {name}:
@@ -62,7 +62,7 @@ export const RoomDetails = ({
   }
 
   return (
-    <div className="dark:bg-slate-800 bg-white rounded-lg p-6 grid row-span-10 gap-4">
+    <div className="dark:bg-slate-800 bg-white shadow-lg rounded-lg p-6 grid row-span-10 gap-4">
       <div className="text-3xl font-bold flex justify-center">Room Details</div>
       <RoomTypeDetailsRow
         item={`${roomType?.description}`}

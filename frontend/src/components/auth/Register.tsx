@@ -52,7 +52,7 @@ export const Register = () => {
   return (
     <div className="">
       <form onSubmit={mutateAsync}>
-        <div className="border rounded-md border-slate-500 dark:border-white grid row-span-10 gap-8 md:text-xl p-8">
+        <div className="dark:bg-slate-800 shadow-lg bg-white rounded-md grid row-span-10 gap-8 md:text-xl p-8">
           <div className="flex justify-center font-bold text-2xl">
             <h1 className="text-3xl">Registration Form</h1>
           </div>

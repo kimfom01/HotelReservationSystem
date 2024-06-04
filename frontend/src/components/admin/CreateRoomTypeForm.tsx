@@ -23,7 +23,7 @@ export const CreateRoomTypeForm = () => {
     roomPrice: 0,
     hotelId: "",
   });
-  const [hotelId, setHotelId] = useState<string>();
+  const [hotelId, setHotelId] = useState<string>("");
   const authHeader = useAuthHeader();
   const queryClient = useQueryClient();
 
@@ -70,7 +70,7 @@ export const CreateRoomTypeForm = () => {
   return (
     <div>
       <form onSubmit={mutateAsync}>
-        <div className="dark:bg-slate-800 bg-white rounded-md grid row-span-10 gap-8 md:text-xl p-8">
+        <div className="dark:bg-slate-800 shadow-lg bg-white rounded-md grid row-span-10 gap-8 md:text-xl p-8">
           <div className="flex justify-center font-bold text-2xl">
             <h1 className="text-3xl">Create Room Type Form</h1>
           </div>
