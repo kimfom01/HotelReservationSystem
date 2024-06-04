@@ -38,7 +38,7 @@ export const CreateRoomTypeForm = () => {
 
     const payload: RoomTypeForm = {
       ...roomTypeForm,
-      hotelId: hotelId!,
+      hotelId: hotelId,
     };
 
     const res = await fetch(`${VITE_ADMIN_URL}/api/roomtype`, {

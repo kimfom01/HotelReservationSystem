@@ -5,7 +5,7 @@ import { Button } from "../common/Button";
 import { HotelsDropDown } from "../common/HotelsDropDown";
 import { InputField } from "../common/InputField";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
-import { RoomTypesDropDown } from "../common/RoomTypesDropDown";
+import { RoomTypesDropDown } from "../room/RoomTypesDropDown";
 
 interface RoomForm {
   roomNumber: string;
@@ -20,7 +20,7 @@ export const CreateRoomForm = () => {
     roomTypeId: "",
   });
   const [hotelId, setHotelId] = useState<string>("");
-  const [roomTypeId, setRoomTypeId] = useState<string>();
+  const [roomTypeId, setRoomTypeId] = useState<string>("");
   const authHeader = useAuthHeader();
   const queryClient = useQueryClient();
 
@@ -33,8 +33,8 @@ export const CreateRoomForm = () => {
 
     const payload: RoomForm = {
       ...roomForm,
-      hotelId: hotelId!,
-      roomTypeId: roomTypeId!,
+      hotelId: hotelId,
+      roomTypeId: roomTypeId,
     };
 
     const res = await fetch(`${VITE_ADMIN_URL}/api/room`, {

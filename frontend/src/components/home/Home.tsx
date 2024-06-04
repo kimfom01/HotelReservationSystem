@@ -11,8 +11,8 @@ import { Button } from "../common/Button";
 import { InputField } from "../common/InputField";
 import { TextBox } from "../common/TextBox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { RoomTypesDropDown } from "../common/RoomTypesDropDown";
-import { RoomDetails } from "./RoomDetails";
+import { RoomTypesDropDown } from "../room/RoomTypesDropDown";
+import { RoomDetails } from "../room/RoomDetails";
 
 interface Reservation {
   checkIn?: DateType;
@@ -67,8 +67,8 @@ export const Home = () => {
     const payload: Reservation = {
       ...reservation,
       guestProfile: guestProfile,
-      hotelId: hotelId!,
-      roomTypeId: roomTypeId!,
+      hotelId: hotelId,
+      roomTypeId: roomTypeId,
       checkIn: dateValue?.startDate,
       checkOut: dateValue?.endDate,
     };
