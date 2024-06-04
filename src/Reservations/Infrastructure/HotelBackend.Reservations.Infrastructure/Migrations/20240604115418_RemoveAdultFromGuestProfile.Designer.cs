@@ -3,6 +3,7 @@ using System;
 using HotelBackend.Reservations.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelBackend.Reservations.Infrastructure.Migrations
 {
     [DbContext(typeof(ReservationDataContext))]
-    partial class ReservationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240604115418_RemoveAdultFromGuestProfile")]
+    partial class RemoveAdultFromGuestProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

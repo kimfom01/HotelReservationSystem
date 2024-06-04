@@ -1,6 +1,5 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using HotelBackend.Common.Models.Options;
 using HotelBackend.Reservations.Application.Contracts.ApiServices;
@@ -28,14 +27,16 @@ public class RoomApiService : IRoomApiService
 
         var success = response.IsSuccessStatusCode;
 
-        var reserveRoomResponse =
-            await JsonSerializer.DeserializeAsync<ReserveRoomResponse>(await response.Content.ReadAsStreamAsync());
+        ReserveRoomResponse? reserveRoomResponse = new();
 
-        return new ReserveRoomResponse
+        if (success)
         {
-            Success = success,
-            RoomId = reserveRoomResponse?.RoomId
-        };
+            reserveRoomResponse = await JsonSerializer.DeserializeAsync<ReserveRoomResponse>(
+                await response.Content.ReadAsStreamAsync()
+            );
+        }
+
+        return new ReserveRoomResponse { Success = success, RoomId = reserveRoomResponse?.RoomId };
     }
 
     public async Task<bool> FreeUpRoom(FreeRoomRequestDto roomRequestDto)
