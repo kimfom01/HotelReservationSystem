@@ -1,12 +1,7 @@
-import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
-import useSignOut from "react-auth-kit/hooks/useSignOut";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Logout } from "../auth/Logout";
 
 export const Header = () => {
-  const isAuthenticated = useIsAuthenticated();
-  const signOut = useSignOut();
-  const navigate = useNavigate();
-
   return (
     <header>
       <div className="flex justify-between items-center">
@@ -20,17 +15,7 @@ export const Header = () => {
           >
             Admin
           </Link>
-          {isAuthenticated && (
-            <button
-              className="dark:text-white visited:text-purple-600 hover:underline"
-              onClick={() => {
-                signOut();
-                navigate("/auth");
-              }}
-            >
-              Logout
-            </button>
-          )}
+          <Logout />
         </div>
       </div>
     </header>

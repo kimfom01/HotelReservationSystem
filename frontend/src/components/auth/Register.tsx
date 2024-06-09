@@ -3,6 +3,8 @@ import { useState } from "react";
 import { InputField } from "../common/InputField";
 import { Button } from "../common/Button";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
+import { toast } from "react-toastify";
+import axios, { AxiosResponse } from "axios";
 
 interface RegisterForm {
   firstName: string;
@@ -21,32 +23,48 @@ export const Register = () => {
     confirmPassword: "",
   });
 
+  const reset = () => {
+    setRegisterForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+  };
+
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const res = await fetch(`${VITE_ADMIN_URL}/api/employee/register`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(registerForm),
-    });
 
-    const data = await res.json();
+    const res: AxiosResponse = await toast.promise(
+      axios.post<RegisterForm>(
+        `${VITE_ADMIN_URL}/api/employee/register`,
+        JSON.stringify(registerForm),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ),
+      {
+        pending: "Registering...",
+        success: "User successfully registered!",
+        error: "Error registering new user",
+      }
+    );
+
+    if (res.status === 204) {
+      reset();
+    }
+
+    const data = await res.data;
 
     return data;
   };
 
   const { mutateAsync } = useMutation({
     mutationFn: handleRegister,
-    onSuccess: () => {
-      setRegisterForm({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-    },
+    onSuccess: () => {},
   });
 
   return (
@@ -129,7 +147,6 @@ export const Register = () => {
               }
             />
           </div>
-          {/* TODO: Add error message  */}
           <Button content="Register" />
         </div>
       </form>

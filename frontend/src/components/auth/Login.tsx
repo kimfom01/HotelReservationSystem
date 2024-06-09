@@ -5,6 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { VITE_ADMIN_URL } from "../utils/ApiUtil";
 import { useNavigate } from "react-router-dom";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
+import axios, { AxiosResponse } from "axios";
+import { toast } from "react-toastify";
 
 interface LoginForm {
   email: string;
@@ -13,6 +15,11 @@ interface LoginForm {
 
 interface LoginResponse {
   token: string;
+  expires_in: number;
+  refresh_token: string;
+  refresh_expires_in: number;
+  token_type: string;
+  status: number;
 }
 
 export const Login = () => {
@@ -26,37 +33,44 @@ export const Login = () => {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const res = await fetch(`${VITE_ADMIN_URL}/api/employee/login`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
+    const res: AxiosResponse = await toast.promise(
+      axios.post<LoginForm>(
+        `${VITE_ADMIN_URL}/api/employee/login`,
+        JSON.stringify(loginForm),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ),
+      {
+        pending: "Logging in...",
+        success: "User successfully logged in!",
+        error: "Error logging in user",
+      }
+    );
+
+    const data: LoginResponse = await res.data;
+
+    const success = signInUser({
+      auth: {
+        token: data!.token,
+        type: "Bearer",
       },
-      body: JSON.stringify(loginForm),
+      userState: { email: loginForm.email },
     });
 
-    const data: LoginResponse = await res.json();
+    if (success) {
+      navigate("/admin");
+    } else {
+      console.log("unsuccessful sign in attempt");
+    }
 
     return data;
   };
 
   const { mutateAsync } = useMutation({
     mutationFn: handleLogin,
-    onSuccess: (data) => {
-      const success = signInUser({
-        auth: {
-          token: data.token,
-          type: "Bearer",
-        },
-        userState: { email: loginForm.email },
-      });
-
-      if (success) {
-        console.log("signing in");
-        navigate("/admin");
-      } else {
-        console.log("unsuccessful sign in attempt");
-      }
-    },
   });
 
   return (
@@ -94,7 +108,6 @@ export const Login = () => {
               }
             />
           </div>
-          {/* TODO: Add error message  */}
           <Button content="Login" />
         </div>
       </form>
