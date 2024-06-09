@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using HotelBackend.Admin.Application.Contracts.Authentication;
 using HotelBackend.Admin.Domain.Entities;
-using HotelBackend.Common.Models.Options;
+using HotelBackend.Common.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

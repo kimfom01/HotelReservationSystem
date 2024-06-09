@@ -1,5 +1,5 @@
 using AutoMapper;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Messages;
 using HotelBackend.Reservations.Domain.Entities;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 

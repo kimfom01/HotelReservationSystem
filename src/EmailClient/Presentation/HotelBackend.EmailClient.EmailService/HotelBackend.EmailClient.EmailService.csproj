@@ -13,7 +13,6 @@
       <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
       <PackageReference Include="FluentEmail.Smtp" Version="3.0.2" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-      <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
     </ItemGroup>
 
     <ItemGroup>

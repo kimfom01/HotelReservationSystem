@@ -1,6 +1,6 @@
 using HotelBackend.Common.Enums;
 
-namespace HotelBackend.Common.Models;
+namespace HotelBackend.Common.Messages;
 
 public class PaymentStatusMessage
 {

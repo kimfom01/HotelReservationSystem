@@ -1,5 +1,5 @@
 using AutoMapper;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Messages;
 using HotelBackend.Payments.Application.Dtos.Payments;
 using HotelBackend.Payments.Domain.Entities;
 

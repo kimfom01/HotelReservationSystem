@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
 
 namespace HotelBackend.Admin.Infrastructure;
 
@@ -18,7 +17,6 @@ public static class InfrastructureServicesRegistration
         IConfiguration configuration
     )
     {
-        services.AddSingleton<IConnectionFactory, ConnectionFactory>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddDbContext<AdminDataContext>(options =>

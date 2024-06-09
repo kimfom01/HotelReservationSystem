@@ -1,14 +1,14 @@
 using AutoMapper;
 using FluentValidation;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Messages;
 using HotelBackend.Reservations.Application.Contracts.ApiServices;
 using HotelBackend.Reservations.Domain.Entities;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using HotelBackend.Reservations.Application.Dtos.AdminApi.RoomApi;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Exceptions;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -19,24 +19,24 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
     private readonly ILogger<CreateReservationRequestHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IEmailQueuePublisher _emailQueuePublisher;
     private readonly IValidator<CreateReservationDto> _validator;
     private readonly IRoomApiService _roomApiService;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     public CreateReservationRequestHandler(
         ILogger<CreateReservationRequestHandler> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork,
-        IEmailQueuePublisher emailQueuePublisher,
         IValidator<CreateReservationDto> validator,
-        IRoomApiService roomApiService)
+        IRoomApiService roomApiService,
+        IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _emailQueuePublisher = emailQueuePublisher;
         _validator = validator;
         _roomApiService = roomApiService;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<GetReservationDetailsDto> Handle(CreateReservationRequest request,
@@ -50,13 +50,7 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
             throw new ArgumentNullException(nameof(request), $"{nameof(CreateReservationDto)} is null");
         }
 
-        var validationResult = await _validator.ValidateAsync(request.CreateReservationDto, cancellationToken);
-
-        if (!validationResult.IsValid)
-        {
-            _logger.LogError("Error occured while validating request: {Errors}", validationResult.Errors);
-            throw new ValidationException(validationResult.Errors);
-        }
+        await _validator.ValidateAndThrowAsync(request.CreateReservationDto, cancellationToken);
 
         var reservation = _mapper.Map<Reservation>(request.CreateReservationDto);
 
@@ -91,12 +85,12 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
         var reservationMessage = _mapper.Map<ReservationMessage>(added);
         var reservationDetailsDto = _mapper.Map<GetReservationDetailsDto>(added);
 
-        await _emailQueuePublisher.PublishMessage(new ReservationDetailsEmail
+        await _publishEndpoint.Publish(new ReservationDetailsEmailMessage
         {
             ReservationMessage = reservationMessage,
             ReceiverEmail = reservationMessage.GuestContactEmail,
             Subject = "Reservation created successfully"
-        });
+        }, cancellationToken);
         _logger.LogInformation("Successfully pushed message to email queue");
 
         return reservationDetailsDto;

@@ -1,59 +1,70 @@
 using System.Net;
 using System.Net.Mail;
+using System.Reflection;
 using System.Security;
+using HotelBackend.Common.Options;
 using HotelBackend.EmailClient.Application.Contracts.Infrastructure;
-using HotelBackend.Common.Models.Options;
 using HotelBackend.EmailClient.Infrastructure.EmailProvider;
-using HotelBackend.EmailClient.Infrastructure.MessageBroker;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
+using Microsoft.Extensions.Options;
 
 namespace HotelBackend.EmailClient.Infrastructure;
 
 public static class InfrastructureServicesRegistration
 {
-    public static IServiceCollection ConfigureInfrastructureServices(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        bool isDevelopment
-    )
+    public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services,
+        bool isDevelopment, IConfiguration configuration)
     {
-        services.AddScoped<IConnectionFactory, ConnectionFactory>();
         services.AddScoped<IEmailSender, EmailSender>();
-        services.AddScoped<EmailQueueSubscriber>();
-        services.ConfigureOptions<EmailQueueOptionsSetup>();
         services.ConfigureOptions<EmailOptionsSetup>();
 
-        var emailOption = new EmailOptions();
-
-        // TODO: figure out how to configure smtp using IConfigureNamedOptions pattern
-        configuration.GetSection(nameof(EmailOptions)).Bind(emailOption);
+        var emailOptions = services.BuildServiceProvider()
+            .GetRequiredService<IOptions<EmailOptions>>().Value;
 
         if (isDevelopment)
         {
             services
-                .AddFluentEmail(emailOption.SenderEmail)
+                .AddFluentEmail(emailOptions.SenderEmail)
                 .AddRazorRenderer()
                 .AddSmtpSender("localhost", 1025);
         }
         else
         {
             services
-                .AddFluentEmail(emailOption.SenderEmail)
+                .AddFluentEmail(emailOptions.SenderEmail)
                 .AddRazorRenderer()
                 .AddSmtpSender(
-                    new SmtpClient(emailOption.Host, emailOption.Port)
+                    new SmtpClient(emailOptions.Host, emailOptions.Port)
                     {
                         Credentials = new NetworkCredential(
-                            emailOption.SenderEmail,
-                            GetSecurePassword(emailOption.Password)
+                            emailOptions.SenderEmail,
+                            GetSecurePassword(emailOptions.Password)
                         ),
                         EnableSsl = false,
                         DeliveryMethod = SmtpDeliveryMethod.Network
                     }
                 );
         }
+
+        services.AddMassTransit(busConfigurator =>
+        {
+            busConfigurator.SetKebabCaseEndpointNameFormatter();
+
+            busConfigurator.AddConsumers(Assembly.GetExecutingAssembly());
+
+            busConfigurator.UsingRabbitMq((context, configurator) =>
+            {
+                configurator.Host(new Uri(configuration["MessageBroker:Host"]!), h =>
+                {
+                    h.Username(configuration["MessageBroker:User"]!);
+                    h.Password(configuration["MessageBroker:Password"]!);
+                });
+
+                configurator.ConfigureEndpoints(context);
+            });
+        });
 
         return services;
     }

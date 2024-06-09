@@ -1,11 +1,11 @@
 using AutoMapper;
 using FluentValidation;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Messages;
 using HotelBackend.Payments.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Payments.Application.Contracts.Infrastructure.MessageBroker;
 using HotelBackend.Payments.Application.Dtos.Payments;
 using HotelBackend.Payments.Application.Features.Payments.Requests.Commands;
 using HotelBackend.Payments.Domain.Entities;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -17,21 +17,20 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
     private readonly ILogger<AddPaymentRequestHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<AddPaymentDto> _validator;
-    private readonly IPaymentStatusPublisher _paymentStatusPublisher;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     public AddPaymentRequestHandler(
         IMapper mapper,
         ILogger<AddPaymentRequestHandler> logger,
         IUnitOfWork unitOfWork,
         IValidator<AddPaymentDto> validator,
-        IPaymentStatusPublisher paymentStatusPublisher
-    )
+        IPublishEndpoint publishEndpoint)
     {
         _mapper = mapper;
         _logger = logger;
         _unitOfWork = unitOfWork;
         _validator = validator;
-        _paymentStatusPublisher = paymentStatusPublisher;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<GetPaymentDto> Handle(AddPaymentRequest request, CancellationToken cancellationToken)
@@ -44,13 +43,7 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
             throw new ArgumentNullException(nameof(request), $"{nameof(request.PaymentDto)} is required");
         }
 
-        var validationResults = await _validator.ValidateAsync(request.PaymentDto, cancellationToken);
-
-        if (!validationResults.IsValid)
-        {
-            _logger.LogError("Validation failed: {ValidationError}", validationResults.Errors);
-            throw new ValidationException(validationResults.Errors);
-        }
+        await _validator.ValidateAndThrowAsync(request.PaymentDto, cancellationToken);
 
         var payment = _mapper.Map<Payment>(request.PaymentDto);
 
@@ -61,7 +54,7 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
 
         var paymentMessage = _mapper.Map<PaymentStatusMessage>(added);
 
-        await _paymentStatusPublisher.PublishMessage(paymentMessage);
+        await _publishEndpoint.Publish(paymentMessage, cancellationToken);
 
         return _mapper.Map<GetPaymentDto>(added);
     }

@@ -3,7 +3,7 @@ using FluentEmail.Core;
 using HotelBackend.EmailClient.Application.Contracts.Infrastructure;
 using HotelBackend.EmailClient.Application.Exceptions;
 using HotelBackend.Common.Enums;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.EmailClient.Infrastructure.EmailProvider;
@@ -13,17 +13,22 @@ public class EmailSender : IEmailSender
     private readonly ILogger<EmailSender> _logger;
     private readonly IFluentEmail _fluentEmail;
 
-    public EmailSender(ILogger<EmailSender> logger,
-        IFluentEmail fluentEmail)
+    public EmailSender(ILogger<EmailSender> logger, IFluentEmail fluentEmail)
     {
         _logger = logger;
         _fluentEmail = fluentEmail;
     }
 
-    public async Task SendEmailAsync(string email, string? subject, ReservationMessage reservationMessage)
+    public async Task SendEmailAsync(string email, string? subject, ReservationMessage? reservationMessage)
     {
         var htmlMessageStringbuilder = new StringBuilder()
             .Append("<h3>Hello, @Model.GuestFirstName</h3>");
+
+        if (reservationMessage is null)
+        {
+            _logger.LogError("Reservation object is empty");
+            return;
+        }
 
         switch (reservationMessage.PaymentStatus)
         {

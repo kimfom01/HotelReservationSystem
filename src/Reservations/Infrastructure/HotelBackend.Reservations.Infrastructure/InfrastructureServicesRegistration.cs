@@ -1,10 +1,9 @@
+using System.Reflection;
 using HotelBackend.Reservations.Application.Contracts.ApiServices;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using HotelBackend.Reservations.Infrastructure.ApiServices;
-using HotelBackend.Reservations.Infrastructure.BackgroundServices;
 using HotelBackend.Reservations.Infrastructure.Database;
-using HotelBackend.Reservations.Infrastructure.MessageBroker;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -20,19 +19,32 @@ public static class InfrastructureServicesRegistration
     )
     {
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-        services.AddHostedService<PaymentStatusEventHandler>();
-        services.AddScoped<IEmailQueuePublisher, EmailQueuePublisher>();
-        services.AddTransient<IPaymentQueueSubscriber, PaymentQueueSubscriber>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHttpClient<IRoomApiService, RoomApiService>();
         services.ConfigureOptions<RoomApiOptionsSetup>();
-        services.ConfigureOptions<EmailQueueOptionsSetup>();
-        services.ConfigureOptions<PaymentQueueOptionsSetup>();
 
         services.AddDbContext<ReservationDataContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations"));
+        });
+
+        services.AddMassTransit(busConfigurator =>
+        {
+            busConfigurator.SetKebabCaseEndpointNameFormatter();
+            
+            busConfigurator.AddConsumers(Assembly.GetExecutingAssembly());
+            
+            busConfigurator.UsingRabbitMq((context, configurator) =>
+            {
+                configurator.Host(new Uri(configuration["MessageBroker:Host"]!), h =>
+                {
+                    h.Username(configuration["MessageBroker:User"]!);
+                    h.Password(configuration["MessageBroker:Password"]!);
+                });
+                
+                configurator.ConfigureEndpoints(context);
+            });
         });
 
         return services;

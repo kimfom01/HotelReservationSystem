@@ -1,14 +1,14 @@
 using AutoMapper;
 using FluentValidation;
 using HotelBackend.Common.Enums;
-using HotelBackend.Common.Models;
+using HotelBackend.Common.Messages;
 using HotelBackend.Reservations.Application.Contracts.ApiServices;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using HotelBackend.Reservations.Application.Dtos.AdminApi.RoomApi;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Exceptions;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -19,24 +19,24 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
     private readonly ILogger<UpdateReservationStatusRequestHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UpdateReservationPaymentStatusDto> _validator;
-    private readonly IEmailQueuePublisher _queuePublisher;
     private readonly IMapper _mapper;
     private readonly IRoomApiService _roomApiService;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     public UpdateReservationStatusRequestHandler(
         ILogger<UpdateReservationStatusRequestHandler> logger,
         IUnitOfWork unitOfWork,
         IValidator<UpdateReservationPaymentStatusDto> validator,
-        IEmailQueuePublisher queuePublisher,
         IMapper mapper,
-        IRoomApiService roomApiService)
+        IRoomApiService roomApiService,
+        IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
         _validator = validator;
-        _queuePublisher = queuePublisher;
         _mapper = mapper;
         _roomApiService = roomApiService;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<Unit> Handle(UpdateReservationStatusRequest request, CancellationToken cancellationToken)
@@ -49,14 +49,7 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
             throw new ArgumentNullException(nameof(request), $"{nameof(UpdateReservationPaymentStatusDto)} is null");
         }
 
-        var validationResult =
-            await _validator.ValidateAsync(request.UpdateReservationPaymentStatusDto, cancellationToken);
-
-        if (!validationResult.IsValid)
-        {
-            _logger.LogError("Error occured while validating request: {Errors}", validationResult.Errors);
-            throw new ValidationException(validationResult.Errors);
-        }
+        await _validator.ValidateAndThrowAsync(request.UpdateReservationPaymentStatusDto, cancellationToken);
 
         var reservation =
             await _unitOfWork.Reservations.GetReservationDetails(
@@ -107,12 +100,12 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
 
         var reservationDetailsDto = _mapper.Map<ReservationMessage>(reservation);
 
-        await _queuePublisher.PublishMessage(new ReservationDetailsEmail
+        await _publishEndpoint.Publish(new ReservationDetailsEmailMessage
         {
             ReservationMessage = reservationDetailsDto,
             ReceiverEmail = reservationDetailsDto.GuestContactEmail,
             Subject = "Payment for reservation"
-        });
+        }, cancellationToken);
         _logger.LogInformation("Successfully pushed message to email queue");
 
         return Unit.Value;

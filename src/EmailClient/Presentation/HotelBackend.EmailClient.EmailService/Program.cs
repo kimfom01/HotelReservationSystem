@@ -1,8 +1,6 @@
 ﻿using HotelBackend.EmailClient.Application;
 using HotelBackend.EmailClient.Infrastructure;
-using HotelBackend.EmailClient.Infrastructure.MessageBroker;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 var builder = Host.CreateDefaultBuilder(args);
@@ -16,18 +14,12 @@ builder.ConfigureServices(
             .AddEnvironmentVariables()
             .Build();
         services.ConfigureApplicationServices();
-        services.ConfigureInfrastructureServices(
-            consoleConfig,
-            builderContext.HostingEnvironment.IsDevelopment()
-        );
+        services.ConfigureInfrastructureServices(builderContext.HostingEnvironment.IsDevelopment(), consoleConfig);
     }
 );
 
 var app = builder.Build();
 
-var scope = app.Services.CreateScope();
-
-var emailerListener = scope.ServiceProvider.GetRequiredService<EmailQueueSubscriber>();
-
 Console.WriteLine("Listening for email event...");
-await emailerListener.ExecuteAsync();
+
+app.Run();
