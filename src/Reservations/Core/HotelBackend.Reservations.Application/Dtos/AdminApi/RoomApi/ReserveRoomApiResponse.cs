@@ -2,9 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace HotelBackend.Reservations.Application.Dtos.AdminApi.RoomApi;
 
-public class ReserveRoomResponse
+public record ReserveRoomApiResponse
 {
-    public bool Success { get; set; }
+    public bool Success { get; init; }
     [JsonPropertyName("roomId")]
-    public Guid? RoomId { get; set; }
+    public Guid? RoomId { get; init; }
 }

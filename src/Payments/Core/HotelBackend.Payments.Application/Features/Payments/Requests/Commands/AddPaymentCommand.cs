@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelBackend.Payments.Application.Features.Payments.Requests.Commands;
 
-public class AddPaymentRequest : IRequest<GetPaymentDto>
+public record AddPaymentCommand : IRequest<GetPaymentResponse>
 {
-    public AddPaymentDto? PaymentDto { get; set; }
+    public AddPaymentRequest? PaymentRequest { get; init; }
 }

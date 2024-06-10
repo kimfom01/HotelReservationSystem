@@ -4,7 +4,7 @@ using HotelBackend.Payments.Application.Features.Payments.Requests.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HotelBackend.Payments.PaymentInitiatorService.Controllers;
+namespace HotelBackend.Payments.PaymentService.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
@@ -24,16 +24,17 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost("pay")]
-    public async Task<IActionResult> PayForReservation(AddPaymentDto paymentDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> PayForReservation(AddPaymentRequest paymentRequest,
+        CancellationToken cancellationToken)
     {
         try
         {
-            await _mediator.Send(new AddPaymentRequest
+            await _mediator.Send(new AddPaymentCommand
             {
-                PaymentDto = paymentDto
+                PaymentRequest = paymentRequest
             }, cancellationToken);
 
-            return Ok("Payment initiated");
+            return Ok("Payment saved");
         }
         catch (ValidationException exception)
         {

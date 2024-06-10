@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace HotelBackend.Reservations.Application.Dtos.GuestProfiles.Validators;
 
-public class GuestProfileValidator : AbstractValidator<CreateGuestProfileDto>
+public class CreateGuestProfileRequestValidator : AbstractValidator<CreateGuestProfileRequest>
 {
-    public GuestProfileValidator()
+    public CreateGuestProfileRequestValidator()
     {
         RuleFor(dto => dto.FirstName)
             .NotEmpty()

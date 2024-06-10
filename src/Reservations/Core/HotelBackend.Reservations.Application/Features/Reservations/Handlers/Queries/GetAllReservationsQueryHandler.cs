@@ -7,14 +7,14 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Reservations.Application.Features.Reservations.Handlers.Queries;
 
-public class GetAllReservationsRequestHandler : IRequestHandler<GetAllReservationsRequest, List<GetReservationDetailsDto>>
+public class GetAllReservationsQueryHandler : IRequestHandler<GetAllReservationsQuery, List<GetReservationDetailsResponse>>
 {
-    private readonly ILogger<GetAllReservationsRequestHandler> _logger;
+    private readonly ILogger<GetAllReservationsQueryHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public GetAllReservationsRequestHandler(
-        ILogger<GetAllReservationsRequestHandler> logger,
+    public GetAllReservationsQueryHandler(
+        ILogger<GetAllReservationsQueryHandler> logger,
         IUnitOfWork unitOfWork,
         IMapper mapper)
     {
@@ -23,7 +23,7 @@ public class GetAllReservationsRequestHandler : IRequestHandler<GetAllReservatio
         _mapper = mapper;
     }
 
-    public async Task<List<GetReservationDetailsDto>> Handle(GetAllReservationsRequest request,
+    public async Task<List<GetReservationDetailsResponse>> Handle(GetAllReservationsQuery query,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting all reservations");
@@ -34,6 +34,6 @@ public class GetAllReservationsRequestHandler : IRequestHandler<GetAllReservatio
             return [];
         }
 
-        return _mapper.Map<List<GetReservationDetailsDto>>(reservations);
+        return _mapper.Map<List<GetReservationDetailsResponse>>(reservations);
     }
 }

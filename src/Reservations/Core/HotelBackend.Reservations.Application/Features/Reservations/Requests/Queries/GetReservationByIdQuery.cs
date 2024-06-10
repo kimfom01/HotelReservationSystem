@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelBackend.Reservations.Application.Features.Reservations.Requests.Queries;
 
-public class GetReservationByIdRequest : IRequest<GetReservationDetailsDto>
+public class GetReservationByIdQuery : IRequest<GetReservationDetailsResponse>
 {
     public Guid ReservationId { get; set; }
 }

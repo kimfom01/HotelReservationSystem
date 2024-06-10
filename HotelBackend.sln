@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Payments.Infra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{5EDF151A-60A0-4AFF-AC95-2A42B7A4E8D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Payments.PaymentInitiatorService", "src\Payments\Presentation\HotelBackend.Payments.PaymentInitiatorService\HotelBackend.Payments.PaymentInitiatorService.csproj", "{EF90DFF0-FA92-4034-B4F8-F3661A3F45AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Payments.PaymentService", "src\Payments\Presentation\HotelBackend.Payments.PaymentService\HotelBackend.Payments.PaymentService.csproj", "{EF90DFF0-FA92-4034-B4F8-F3661A3F45AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reservations", "Reservations", "{3B8300BD-CB70-41E7-9B07-B0E057A92472}"
 EndProject

@@ -14,19 +14,19 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Reservations.Application.Features.Reservations.Handlers.Commands;
 
-public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReservationStatusRequest, Unit>
+public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReservationStatusCommand, Unit>
 {
-    private readonly ILogger<UpdateReservationStatusRequestHandler> _logger;
+    private readonly ILogger<UpdateReservationStatusCommandHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<UpdateReservationPaymentStatusDto> _validator;
+    private readonly IValidator<UpdateReservationPaymentStatusRequest> _validator;
     private readonly IMapper _mapper;
     private readonly IRoomApiService _roomApiService;
     private readonly IPublishEndpoint _publishEndpoint;
 
-    public UpdateReservationStatusRequestHandler(
-        ILogger<UpdateReservationStatusRequestHandler> logger,
+    public UpdateReservationStatusCommandHandler(
+        ILogger<UpdateReservationStatusCommandHandler> logger,
         IUnitOfWork unitOfWork,
-        IValidator<UpdateReservationPaymentStatusDto> validator,
+        IValidator<UpdateReservationPaymentStatusRequest> validator,
         IMapper mapper,
         IRoomApiService roomApiService,
         IPublishEndpoint publishEndpoint)
@@ -39,29 +39,29 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<Unit> Handle(UpdateReservationStatusRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateReservationStatusCommand command, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Updating reservation status");
 
-        if (request.UpdateReservationPaymentStatusDto is null)
+        if (command.UpdateReservationPaymentStatusDto is null)
         {
-            _logger.LogError("An error occured: {ReservationDto} is null", nameof(UpdateReservationPaymentStatusDto));
-            throw new ArgumentNullException(nameof(request), $"{nameof(UpdateReservationPaymentStatusDto)} is null");
+            _logger.LogError("An error occured: {ReservationDto} is null", nameof(UpdateReservationPaymentStatusRequest));
+            throw new ArgumentNullException(nameof(command), $"{nameof(UpdateReservationPaymentStatusRequest)} is null");
         }
 
-        await _validator.ValidateAndThrowAsync(request.UpdateReservationPaymentStatusDto, cancellationToken);
+        await _validator.ValidateAndThrowAsync(command.UpdateReservationPaymentStatusDto, cancellationToken);
 
         var reservation =
             await _unitOfWork.Reservations.GetReservationDetails(
-                request.UpdateReservationPaymentStatusDto.ReservationId,
+                command.UpdateReservationPaymentStatusDto.ReservationId,
                 cancellationToken);
 
         if (reservation is null)
         {
             _logger.LogError("Reservation with id={ReservationId} could not be found",
-                request.UpdateReservationPaymentStatusDto.ReservationId);
+                command.UpdateReservationPaymentStatusDto.ReservationId);
             throw new NotFoundException(
-                $"Reservation with id={request.UpdateReservationPaymentStatusDto.ReservationId} could not be found");
+                $"Reservation with id={command.UpdateReservationPaymentStatusDto.ReservationId} could not be found");
         }
 
         if (reservation.ReservationStatus == ReservationStatus.Cancelled)
@@ -70,17 +70,17 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
             throw new ReservationException("Reservation is already cancelled");
         }
 
-        reservation.PaymentStatus = request.UpdateReservationPaymentStatusDto.Status;
-        reservation.PaymentId = request.UpdateReservationPaymentStatusDto.PaymentId;
+        reservation.PaymentStatus = command.UpdateReservationPaymentStatusDto.Status;
+        reservation.PaymentId = command.UpdateReservationPaymentStatusDto.PaymentId;
 
-        if (request.UpdateReservationPaymentStatusDto.Status == PaymentStatus.Paid)
+        if (command.UpdateReservationPaymentStatusDto.Status == PaymentStatus.Paid)
         {
             reservation.ReservationStatus = ReservationStatus.Confirmed;
         }
 
-        if (request.UpdateReservationPaymentStatusDto.Status is PaymentStatus.Canceled or PaymentStatus.Refunded)
+        if (command.UpdateReservationPaymentStatusDto.Status is PaymentStatus.Canceled or PaymentStatus.Refunded)
         {
-            var roomIsFreed = await _roomApiService.FreeUpRoom(new FreeRoomRequestDto
+            var roomIsFreed = await _roomApiService.FreeUpRoom(new FreeRoomApiRequest
             {
                 RoomId = reservation.RoomId,
                 HotelId = reservation.HotelId,

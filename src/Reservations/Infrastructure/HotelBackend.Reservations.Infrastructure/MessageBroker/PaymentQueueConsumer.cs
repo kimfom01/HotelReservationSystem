@@ -27,11 +27,11 @@ public class PaymentQueueConsumer : IPaymentQueueConsumer
     public async Task Consume(ConsumeContext<PaymentSavedMessage> context)
     {
         var updateReservationPaymentStatusDto =
-            _mapper.Map<UpdateReservationPaymentStatusDto>(context.Message);
+            _mapper.Map<UpdateReservationPaymentStatusRequest>(context.Message);
 
         try
         {
-            await _mediator.Send(new UpdateReservationStatusRequest
+            await _mediator.Send(new UpdateReservationStatusCommand
             {
                 UpdateReservationPaymentStatusDto = updateReservationPaymentStatusDto
             }, context.CancellationToken);

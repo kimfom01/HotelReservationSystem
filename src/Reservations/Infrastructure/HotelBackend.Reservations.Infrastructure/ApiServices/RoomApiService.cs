@@ -21,28 +21,26 @@ public class RoomApiService : IRoomApiService
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
-    public async Task<ReserveRoomResponse> PlaceOnHold(ReserveRoomRequestDto roomRequestDto)
+    public async Task<ReserveRoomApiResponse> PlaceOnHold(ReserveRoomApiRequest roomApiRequest)
     {
-        using var response = await _httpClient.PostAsJsonAsync("api/Room/hold", roomRequestDto);
+        var response = await _httpClient.PostAsJsonAsync("api/room/hold", roomApiRequest);
 
-        var success = response.IsSuccessStatusCode;
-
-        ReserveRoomResponse? reserveRoomResponse = new();
-
-        if (success)
+        if (!response.IsSuccessStatusCode)
         {
-            reserveRoomResponse = await JsonSerializer.DeserializeAsync<ReserveRoomResponse>(
-                await response.Content.ReadAsStreamAsync()
-            );
+            return new ReserveRoomApiResponse { Success = false };
         }
 
-        return new ReserveRoomResponse { Success = success, RoomId = reserveRoomResponse?.RoomId };
+        var reserveRoomResponse = await JsonSerializer.DeserializeAsync<ReserveRoomApiResponse>(
+            await response.Content.ReadAsStreamAsync()
+        );
+
+        return new ReserveRoomApiResponse { Success = true, RoomId = reserveRoomResponse?.RoomId };
     }
 
-    public async Task<bool> FreeUpRoom(FreeRoomRequestDto roomRequestDto)
+    public async Task<bool> FreeUpRoom(FreeRoomApiRequest roomApiRequest)
     {
-        // TODO: Implement new free room request
+        var response = await _httpClient.PostAsJsonAsync("api/room/free", roomApiRequest);
 
-        throw new NotImplementedException();
+        return response.IsSuccessStatusCode;
     }
 }

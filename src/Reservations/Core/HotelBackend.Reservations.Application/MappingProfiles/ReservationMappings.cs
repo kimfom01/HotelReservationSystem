@@ -9,11 +9,11 @@ public class ReservationMappings : Profile
 {
     public ReservationMappings()
     {
-        CreateMap<Reservation, GetReservationDetailsDto>()
+        CreateMap<Reservation, GetReservationDetailsResponse>()
             .ReverseMap();
-        CreateMap<Reservation, CreateReservationDto>()
+        CreateMap<Reservation, CreateReservationRequest>()
             .ReverseMap();
-        CreateMap<PaymentSavedMessage, UpdateReservationPaymentStatusDto>()
+        CreateMap<PaymentSavedMessage, UpdateReservationPaymentStatusRequest>()
             .ForMember(upd =>
                 upd.PaymentId, opt =>
                 opt.MapFrom(pay => pay.Id))

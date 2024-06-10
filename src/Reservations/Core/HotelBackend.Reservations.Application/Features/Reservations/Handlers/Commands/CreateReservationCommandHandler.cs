@@ -14,20 +14,20 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBackend.Reservations.Application.Features.Reservations.Handlers.Commands;
 
-public class CreateReservationRequestHandler : IRequestHandler<CreateReservationRequest, GetReservationDetailsDto>
+public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand, GetReservationDetailsResponse>
 {
-    private readonly ILogger<CreateReservationRequestHandler> _logger;
+    private readonly ILogger<CreateReservationCommandHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<CreateReservationDto> _validator;
+    private readonly IValidator<CreateReservationRequest> _validator;
     private readonly IRoomApiService _roomApiService;
     private readonly IPublishEndpoint _publishEndpoint;
 
-    public CreateReservationRequestHandler(
-        ILogger<CreateReservationRequestHandler> logger,
+    public CreateReservationCommandHandler(
+        ILogger<CreateReservationCommandHandler> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork,
-        IValidator<CreateReservationDto> validator,
+        IValidator<CreateReservationRequest> validator,
         IRoomApiService roomApiService,
         IPublishEndpoint publishEndpoint)
     {
@@ -39,24 +39,24 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<GetReservationDetailsDto> Handle(CreateReservationRequest request,
+    public async Task<GetReservationDetailsResponse> Handle(CreateReservationCommand command,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Creating new reservation");
 
-        if (request.CreateReservationDto is null)
+        if (command.CreateReservationDto is null)
         {
-            _logger.LogError("An error occured: {ReservationDto} is null", nameof(CreateReservationDto));
-            throw new ArgumentNullException(nameof(request), $"{nameof(CreateReservationDto)} is null");
+            _logger.LogError("An error occured: {ReservationDto} is null", nameof(CreateReservationRequest));
+            throw new ArgumentNullException(nameof(command), $"{nameof(CreateReservationRequest)} is null");
         }
 
-        await _validator.ValidateAndThrowAsync(request.CreateReservationDto, cancellationToken);
+        await _validator.ValidateAndThrowAsync(command.CreateReservationDto, cancellationToken);
 
-        var reservation = _mapper.Map<Reservation>(request.CreateReservationDto);
+        var reservation = _mapper.Map<Reservation>(command.CreateReservationDto);
 
-        var reserveRoomResponse = await _roomApiService.PlaceOnHold(new ReserveRoomRequestDto
+        var reserveRoomResponse = await _roomApiService.PlaceOnHold(new ReserveRoomApiRequest
         {
-            RoomTypeId = request.CreateReservationDto.RoomTypeId,
+            RoomTypeId = command.CreateReservationDto.RoomTypeId,
             HotelId = reservation.HotelId
         });
 
@@ -83,7 +83,7 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
         }
 
         var reservationMessage = _mapper.Map<ReservationDetails>(added);
-        var reservationDetailsDto = _mapper.Map<GetReservationDetailsDto>(added);
+        var reservationDetailsDto = _mapper.Map<GetReservationDetailsResponse>(added);
 
         await _publishEndpoint.Publish(new ReservationCreatedMessage
         {

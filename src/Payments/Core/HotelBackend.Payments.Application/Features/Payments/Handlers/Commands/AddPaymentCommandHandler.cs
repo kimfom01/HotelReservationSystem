@@ -8,22 +8,23 @@ using HotelBackend.Payments.Domain.Entities;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using AddPaymentRequest = HotelBackend.Payments.Application.Dtos.Payments.AddPaymentRequest;
 
 namespace HotelBackend.Payments.Application.Features.Payments.Handlers.Commands;
 
-public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPaymentDto>
+public class AddPaymentCommandHandler : IRequestHandler<AddPaymentCommand, GetPaymentResponse>
 {
     private readonly IMapper _mapper;
-    private readonly ILogger<AddPaymentRequestHandler> _logger;
+    private readonly ILogger<AddPaymentCommandHandler> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<AddPaymentDto> _validator;
+    private readonly IValidator<AddPaymentRequest> _validator;
     private readonly IPublishEndpoint _publishEndpoint;
 
-    public AddPaymentRequestHandler(
+    public AddPaymentCommandHandler(
         IMapper mapper,
-        ILogger<AddPaymentRequestHandler> logger,
+        ILogger<AddPaymentCommandHandler> logger,
         IUnitOfWork unitOfWork,
-        IValidator<AddPaymentDto> validator,
+        IValidator<AddPaymentRequest> validator,
         IPublishEndpoint publishEndpoint)
     {
         _mapper = mapper;
@@ -33,21 +34,21 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<GetPaymentDto> Handle(AddPaymentRequest request, CancellationToken cancellationToken)
+    public async Task<GetPaymentResponse> Handle(AddPaymentCommand command, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Adding payment info");
 
-        if (request.PaymentDto is null)
+        if (command.PaymentRequest is null)
         {
-            _logger.LogError("{PaymentDto} is required", nameof(request.PaymentDto));
-            throw new ArgumentNullException(nameof(request), $"{nameof(request.PaymentDto)} is required");
+            _logger.LogError("{PaymentDto} is required", nameof(command.PaymentRequest));
+            throw new ArgumentNullException(nameof(command), $"{nameof(command.PaymentRequest)} is required");
         }
 
-        await _validator.ValidateAndThrowAsync(request.PaymentDto, cancellationToken);
+        await _validator.ValidateAndThrowAsync(command.PaymentRequest, cancellationToken);
 
-        var payment = _mapper.Map<Payment>(request.PaymentDto);
+        var payment = _mapper.Map<Payment>(command.PaymentRequest);
 
-        payment.Status = request.PaymentDto.Status;
+        payment.Status = command.PaymentRequest.Status;
 
         var added = await _unitOfWork.Payments.AddItem(payment);
         await _unitOfWork.SaveChanges();
@@ -56,6 +57,6 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
 
         await _publishEndpoint.Publish(paymentMessage, cancellationToken);
 
-        return _mapper.Map<GetPaymentDto>(added);
+        return _mapper.Map<GetPaymentResponse>(added);
     }
 }

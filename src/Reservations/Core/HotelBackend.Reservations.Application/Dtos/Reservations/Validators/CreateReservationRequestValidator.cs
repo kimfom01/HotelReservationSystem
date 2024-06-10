@@ -3,9 +3,9 @@ using HotelBackend.Reservations.Application.Dtos.GuestProfiles.Validators;
 
 namespace HotelBackend.Reservations.Application.Dtos.Reservations.Validators;
 
-public class CreateReservationDtoValidator : AbstractValidator<CreateReservationDto>
+public class CreateReservationRequestValidator : AbstractValidator<CreateReservationRequest>
 {
-    public CreateReservationDtoValidator()
+    public CreateReservationRequestValidator()
     {
         RuleFor(dto => dto.CheckIn)
             .LessThan(dto => dto.CheckOut)
@@ -21,6 +21,6 @@ public class CreateReservationDtoValidator : AbstractValidator<CreateReservation
 
         RuleFor(dto => dto.GuestProfile)
             .NotNull()
-            .SetValidator(new GuestProfileValidator()!);
+            .SetValidator(new CreateGuestProfileRequestValidator()!);
     }
 }

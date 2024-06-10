@@ -3,6 +3,6 @@ using MediatR;
 
 namespace HotelBackend.Reservations.Application.Features.Reservations.Requests.Queries;
 
-public class GetAllReservationsRequest : IRequest<List<GetReservationDetailsDto>>
+public class GetAllReservationsQuery : IRequest<List<GetReservationDetailsResponse>>
 {
 }

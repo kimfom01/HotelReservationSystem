@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
 
-public class CreateReservationRequest : IRequest<GetReservationDetailsDto>
+public class UpdateReservationStatusCommand : IRequest<Unit>
 {
-    public CreateReservationDto? CreateReservationDto { get; set; }
+    public UpdateReservationPaymentStatusRequest? UpdateReservationPaymentStatusDto { get; set; }
 }

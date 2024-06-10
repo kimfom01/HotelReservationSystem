@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace HotelBackend.Payments.Application.Dtos.Payments.Validators;
 
-public class AddPaymentDtoValidator : AbstractValidator<AddPaymentDto>
+public class AddPaymentRequestValidator : AbstractValidator<AddPaymentRequest>
 {
-    public AddPaymentDtoValidator()
+    public AddPaymentRequestValidator()
     {
         RuleFor(dto => dto.Amount)
             .GreaterThan(0)

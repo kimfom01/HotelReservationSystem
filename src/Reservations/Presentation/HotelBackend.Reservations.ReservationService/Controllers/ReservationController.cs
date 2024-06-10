@@ -27,7 +27,7 @@ public class ReservationController : ControllerBase
     {
         try
         {
-            var reservation = await _mediator.Send(new GetReservationByIdRequest
+            var reservation = await _mediator.Send(new GetReservationByIdQuery
             {
                 ReservationId = id
             }, cancellationToken);
@@ -44,7 +44,7 @@ public class ReservationController : ControllerBase
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetReservations(CancellationToken cancellationToken)
     {
-        var reservations = await _mediator.Send(new GetAllReservationsRequest(), cancellationToken);
+        var reservations = await _mediator.Send(new GetAllReservationsQuery(), cancellationToken);
 
         return Ok(reservations);
     }
@@ -53,14 +53,14 @@ public class ReservationController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> PostReservation(CreateReservationDto createReservationDto,
+    public async Task<IActionResult> PostReservation(CreateReservationRequest createReservationRequest,
         CancellationToken cancellationToken)
     {
         try
         {
-            var added = await _mediator.Send(new CreateReservationRequest
+            var added = await _mediator.Send(new CreateReservationCommand
             {
-                CreateReservationDto = createReservationDto
+                CreateReservationDto = createReservationRequest
             }, cancellationToken);
 
             return CreatedAtAction(nameof(GetReservation), new { id = added.Id }, added);

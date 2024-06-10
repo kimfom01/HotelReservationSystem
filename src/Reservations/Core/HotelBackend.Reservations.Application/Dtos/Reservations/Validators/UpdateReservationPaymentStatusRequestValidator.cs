@@ -3,9 +3,9 @@ using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 
 namespace HotelBackend.Reservations.Application.Dtos.Reservations.Validators;
 
-public class UpdateReservationPaymentStatusDtoValidator : AbstractValidator<UpdateReservationPaymentStatusDto>
+public class UpdateReservationPaymentStatusRequestValidator : AbstractValidator<UpdateReservationPaymentStatusRequest>
 {
-    public UpdateReservationPaymentStatusDtoValidator(IUnitOfWork unitOfWork)
+    public UpdateReservationPaymentStatusRequestValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(dto => dto.Status)
             .IsInEnum()

@@ -8,7 +8,7 @@ public class GuestProfileMappings : Profile
 {
     public GuestProfileMappings()
     {
-        CreateMap<GuestProfile, CreateGuestProfileDto>().ReverseMap();
-        CreateMap<GuestProfile, GetGuestProfileDto>().ReverseMap();
+        CreateMap<GuestProfile, CreateGuestProfileRequest>().ReverseMap();
+        CreateMap<GuestProfile, GetGuestProfileResponse>().ReverseMap();
     }
 }

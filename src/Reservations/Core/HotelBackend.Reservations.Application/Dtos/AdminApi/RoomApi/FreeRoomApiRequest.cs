@@ -2,10 +2,10 @@ using System.Text.Json.Serialization;
 
 namespace HotelBackend.Reservations.Application.Dtos.AdminApi.RoomApi;
 
-public class FreeRoomRequestDto
+public record FreeRoomApiRequest
 {
     [JsonPropertyName("roomId")]
-    public Guid RoomId { get; set; }
+    public Guid RoomId { get; init; }
     [JsonPropertyName("hotelId")]
-    public Guid HotelId { get; set; }
+    public Guid HotelId { get; init; }
 }
