@@ -14,6 +14,7 @@ public class ReservationRepository : Repository<Reservation>, IReservationReposi
         CancellationToken cancellationToken)
     {
         var reservation = await DbSet.Where(res => res.Id == reservationId)
+            .AsNoTracking()
             .Include(res => res.GuestProfile)
             // .Include(res => res.Room)
             // .ThenInclude(room => room!.Hotel)

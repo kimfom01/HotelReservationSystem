@@ -24,7 +24,8 @@ public class RoomController : ControllerBase
 
     [HttpGet("available/{hotelId:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<ActionResult<GetRoomResponse>> GetAvailableRooms(Guid hotelId, CancellationToken cancellationToken)
+    public async Task<ActionResult<GetRoomResponse>> GetAvailableRooms(Guid hotelId,
+        CancellationToken cancellationToken)
     {
         var rooms = await _mediator.Send(new GetAvailableRoomsQuery
         {
@@ -38,7 +39,8 @@ public class RoomController : ControllerBase
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<GetRoomResponse>> CreateRoom(CreateRoomRequest roomRequest, CancellationToken cancellationToken)
+    public async Task<ActionResult<GetRoomResponse>> CreateRoom(CreateRoomRequest roomRequest,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -81,8 +83,7 @@ public class RoomController : ControllerBase
     }
 
     [HttpPost("hold")]
-    [AllowAnonymous]
-    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<ReserveRoomResponse>> ReserveRoom(ReserveRoomRequest roomRequest,
         CancellationToken cancellationToken)
@@ -95,6 +96,30 @@ public class RoomController : ControllerBase
             }, cancellationToken);
 
             return Ok(response);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (NotFoundException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("free")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> FreeRoom(FreeRoomRequest roomRequest, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _mediator.Send(new FreeRoomCommand
+            {
+                RoomRequest = roomRequest
+            }, cancellationToken);
+
+            return Ok();
         }
         catch (ValidationException ex)
         {

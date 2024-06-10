@@ -58,7 +58,7 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
         {
             RoomTypeId = command.CreateReservationDto.RoomTypeId,
             HotelId = reservation.HotelId
-        });
+        }, cancellationToken);
 
         if (!reserveRoomResponse.Success)
         {
@@ -79,6 +79,16 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
         if (added is null)
         {
             _logger.LogError("An error occured: unable to save reservation");
+
+            _logger.LogInformation("Freeing up room");
+
+            await _roomApiService.FreeUpRoom(
+                new FreeRoomApiRequest
+                {
+                    HotelId = command.CreateReservationDto.HotelId,
+                    RoomId = reservation.RoomId
+                }, cancellationToken);
+
             throw new ReservationException("An error occured: unable to save reservation");
         }
 

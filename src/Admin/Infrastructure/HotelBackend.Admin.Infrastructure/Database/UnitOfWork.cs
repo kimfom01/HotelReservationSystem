@@ -19,9 +19,9 @@ public class UnitOfWork : IUnitOfWork
     public IRoomRepository Rooms { get; }
     public IHotelRepository Hotels { get; }
     public IRoomTypeRepository RoomTypes { get; }
-    public IEmployeeRepository Employees { get; set; }
+    public IEmployeeRepository Employees { get; }
 
-    public async Task<int> SaveChanges(CancellationToken cancellationToken)
+    public async Task<int> SaveChanges(CancellationToken cancellationToken = default)
     {
         return await _adminDataContext.SaveChangesAsync(cancellationToken);
     }

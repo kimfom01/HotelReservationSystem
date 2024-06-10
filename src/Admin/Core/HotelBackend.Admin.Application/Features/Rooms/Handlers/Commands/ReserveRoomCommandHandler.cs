@@ -11,7 +11,7 @@ namespace HotelBackend.Admin.Application.Features.Rooms.Handlers.Commands;
 public class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomCommand, ReserveRoomResponse>
 {
     private readonly ILogger<ReserveRoomCommandHandler> _logger;
-    
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<ReserveRoomRequest> _validator;
 
@@ -27,25 +27,18 @@ public class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomCommand, Res
 
     public async Task<ReserveRoomResponse> Handle(ReserveRoomCommand command, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Placing a room on hold");
-
         if (command.RoomRequest is null)
         {
             _logger.LogError("{RoomDto} is required", nameof(command.RoomRequest));
             throw new ArgumentNullException(nameof(command), $"{nameof(command.RoomRequest)} is required");
         }
 
-        var validationResult = await _validator.ValidateAsync(command.RoomRequest, cancellationToken);
+        _logger.LogInformation("Placing a room on hold");
 
-        if (!validationResult.IsValid)
-        {
-            _logger.LogError("Error validating create room request: {Errors}", validationResult.Errors);
-            throw new ValidationException(validationResult.Errors);
-        }
+        await _validator.ValidateAndThrowAsync(command.RoomRequest, cancellationToken);
 
         var room = await _unitOfWork.Rooms
-            .GetRoomOfType(command.RoomRequest.HotelId,
-                command.RoomRequest.RoomTypeId);
+            .GetRoomOfType(command.RoomRequest.HotelId, command.RoomRequest.RoomTypeId);
 
         if (room is null)
         {

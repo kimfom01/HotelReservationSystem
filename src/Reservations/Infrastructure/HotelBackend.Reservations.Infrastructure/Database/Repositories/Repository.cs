@@ -1,10 +1,11 @@
 ﻿using System.Linq.Expressions;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
+using HotelBackend.Reservations.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.Reservations.Infrastructure.Database.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
     protected readonly DbSet<TEntity> DbSet;
 

@@ -45,8 +45,10 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
 
         if (command.UpdateReservationPaymentStatusDto is null)
         {
-            _logger.LogError("An error occured: {ReservationDto} is null", nameof(UpdateReservationPaymentStatusRequest));
-            throw new ArgumentNullException(nameof(command), $"{nameof(UpdateReservationPaymentStatusRequest)} is null");
+            _logger.LogError("An error occured: {ReservationDto} is null",
+                nameof(UpdateReservationPaymentStatusRequest));
+            throw new ArgumentNullException(nameof(command),
+                $"{nameof(UpdateReservationPaymentStatusRequest)} is null");
         }
 
         await _validator.ValidateAndThrowAsync(command.UpdateReservationPaymentStatusDto, cancellationToken);
@@ -84,7 +86,7 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
             {
                 RoomId = reservation.RoomId,
                 HotelId = reservation.HotelId,
-            });
+            }, cancellationToken);
 
             if (!roomIsFreed)
             {

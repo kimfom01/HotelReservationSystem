@@ -21,9 +21,10 @@ public class RoomApiService : IRoomApiService
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
-    public async Task<ReserveRoomApiResponse> PlaceOnHold(ReserveRoomApiRequest roomApiRequest)
+    public async Task<ReserveRoomApiResponse> PlaceOnHold(ReserveRoomApiRequest roomApiRequest,
+        CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/room/hold", roomApiRequest);
+        var response = await _httpClient.PostAsJsonAsync("api/room/hold", roomApiRequest, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -31,15 +32,15 @@ public class RoomApiService : IRoomApiService
         }
 
         var reserveRoomResponse = await JsonSerializer.DeserializeAsync<ReserveRoomApiResponse>(
-            await response.Content.ReadAsStreamAsync()
+            await response.Content.ReadAsStreamAsync(cancellationToken), cancellationToken: cancellationToken
         );
 
         return new ReserveRoomApiResponse { Success = true, RoomId = reserveRoomResponse?.RoomId };
     }
 
-    public async Task<bool> FreeUpRoom(FreeRoomApiRequest roomApiRequest)
+    public async Task<bool> FreeUpRoom(FreeRoomApiRequest roomApiRequest, CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/room/free", roomApiRequest);
+        var response = await _httpClient.PostAsJsonAsync("api/room/free", roomApiRequest, cancellationToken);
 
         return response.IsSuccessStatusCode;
     }
