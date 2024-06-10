@@ -7,6 +7,7 @@ using HotelBackend.Admin.Application.Features.Employees.Requests.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CreateEmployeeRequest = HotelBackend.Admin.Application.Dtos.Employees.CreateEmployeeRequest;
 
 namespace HotelBackend.Admin.AdminService.Controllers;
 
@@ -24,14 +25,14 @@ public class EmployeeController : ControllerBase
     [HttpPost("login")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<EmployeeLoginResponseDto>> LoginEmployee(EmployeeLoginDto employeeLogin,
+    public async Task<ActionResult<LoginEmployeeResponse>> LoginEmployee(LoginEmployeeRequest loginEmployee,
         CancellationToken cancellationToken)
     {
         try
         {
-            var loginResponse = await _mediator.Send(new LoginEmployeeRequest
+            var loginResponse = await _mediator.Send(new LoginEmployeeCommand
             {
-                LoginDto = employeeLogin
+                LoginEmployee = loginEmployee
             }, cancellationToken);
 
             return Ok(loginResponse);
@@ -49,14 +50,14 @@ public class EmployeeController : ControllerBase
     [HttpPost("register")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<GetEmployeeDto>> RegisterEmployee(CreateEmployeeDto employeeDto,
+    public async Task<ActionResult<GetEmployeeResponse>> RegisterEmployee(CreateEmployeeRequest employeeRequest,
         CancellationToken cancellationToken)
     {
         try
         {
-            var employee = await _mediator.Send(new CreateEmployeeRequest
+            var employee = await _mediator.Send(new CreateEmployeeCommand
             {
-                EmployeeDto = employeeDto
+                EmployeeRequest = employeeRequest
             }, cancellationToken);
 
             return CreatedAtAction(nameof(GetEmployee), new { employeeId = employee.Id, hotelId = employee.HotelId },
@@ -72,13 +73,13 @@ public class EmployeeController : ControllerBase
     [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult<GetEmployeeDto>> GetEmployee(CancellationToken cancellationToken)
+    public async Task<ActionResult<GetEmployeeResponse>> GetEmployee(CancellationToken cancellationToken)
     {
         try
         {
             var employeeId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ?? string.Empty);
 
-            var employee = await _mediator.Send(new GetEmployeeRequest
+            var employee = await _mediator.Send(new GetEmployeeQuery
             {
                 EmployeeId = employeeId,
             }, cancellationToken);

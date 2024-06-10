@@ -18,7 +18,7 @@ public class EmailQueueConsumer : IEmailQueueConsumer
         _logger = logger;
     }
 
-    public async Task Consume(ConsumeContext<ReservationDetailsEmailMessage> context)
+    public async Task Consume(ConsumeContext<ReservationCreatedMessage> context)
     {
         try
         {

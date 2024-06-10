@@ -11,6 +11,6 @@ public class PaymentMappingProfile : Profile
     {
         CreateMap<Payment, GetPaymentDto>().ReverseMap();
         CreateMap<Payment, AddPaymentDto>().ReverseMap();
-        CreateMap<Payment, PaymentStatusMessage>().ReverseMap();
+        CreateMap<Payment, PaymentSavedMessage>().ReverseMap();
     }
 }

@@ -52,7 +52,7 @@ public class AddPaymentRequestHandler : IRequestHandler<AddPaymentRequest, GetPa
         var added = await _unitOfWork.Payments.AddItem(payment);
         await _unitOfWork.SaveChanges();
 
-        var paymentMessage = _mapper.Map<PaymentStatusMessage>(added);
+        var paymentMessage = _mapper.Map<PaymentSavedMessage>(added);
 
         await _publishEndpoint.Publish(paymentMessage, cancellationToken);
 

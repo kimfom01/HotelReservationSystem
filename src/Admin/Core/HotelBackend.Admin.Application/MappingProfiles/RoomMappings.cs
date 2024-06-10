@@ -8,8 +8,8 @@ public class RoomMappings : Profile
 {
     public RoomMappings()
     {
-        CreateMap<Room, GetRoomDto>().ReverseMap();
-        CreateMap<Room, CreateRoomDto>().ReverseMap();
-        CreateMap<Room, ReserveRoomRequestDto>().ReverseMap();
+        CreateMap<Room, GetRoomResponse>().ReverseMap();
+        CreateMap<Room, CreateRoomRequest>().ReverseMap();
+        CreateMap<Room, ReserveRoomRequest>().ReverseMap();
     }
 }

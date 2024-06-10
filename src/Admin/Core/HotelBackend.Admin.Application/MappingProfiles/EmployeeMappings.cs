@@ -8,9 +8,9 @@ public class EmployeeMappings : Profile
 {
     public EmployeeMappings()
     {
-        CreateMap<Employee, GetEmployeeDto>()
+        CreateMap<Employee, GetEmployeeResponse>()
             .ReverseMap();
-        CreateMap<Employee, CreateEmployeeDto>()
+        CreateMap<Employee, CreateEmployeeRequest>()
             .ReverseMap();
     }
 }

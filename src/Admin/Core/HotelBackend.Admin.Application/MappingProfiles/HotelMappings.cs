@@ -8,7 +8,7 @@ public class HotelMappings : Profile
 {
     public HotelMappings()
     {
-        CreateMap<Hotel, GetHotelDto>().ReverseMap();
-        CreateMap<Hotel, CreateHotelDto>().ReverseMap();
+        CreateMap<Hotel, GetHotelResponse>().ReverseMap();
+        CreateMap<Hotel, CreateHotelRequest>().ReverseMap();
     }
 }

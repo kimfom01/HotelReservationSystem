@@ -54,7 +54,7 @@ export const Login = () => {
 
     const success = signInUser({
       auth: {
-        token: data!.token,
+        token: data.token,
         type: "Bearer",
       },
       userState: { email: loginForm.email },

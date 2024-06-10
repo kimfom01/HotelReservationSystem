@@ -128,7 +128,7 @@ export const Home = () => {
   return (
     <Base>
       <div className="grid lg:grid-rows-1 h-full grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="grid grid-cols-1 gap-8 w-full lg:w-3/5">
+        <div className="grid grid-cols-1 text-2xl gap-8 w-full lg:w-3/5">
           <div className="row-span-1">
             <HotelsDropDown setHotelId={setHotelId} />
           </div>
@@ -151,9 +151,9 @@ export const Home = () => {
           )}
         </div>
         <div className="grid grid-cols-1 shadow-lg gap-8">
-          <div className="dark:bg-slate-800 bg-white rounded-lg row-span-11 p-6 w-full h-full">
+          <div className="dark:bg-slate-800 text-2xl bg-white rounded-lg row-span-11 p-6 w-full h-full">
             <form onSubmit={mutateAsync}>
-              <h3 className="text-2xl font-bold text-center mb-8">
+              <h3 className="text-3xl font-bold text-center mb-8">
                 Reservation Form
               </h3>
               <div className="grid gap-8">
@@ -162,7 +162,7 @@ export const Home = () => {
                     value={dateValue}
                     showFooter={true}
                     separator={"to"}
-                    placeholder={"Select Check in and Checkout Dates"}
+                    placeholder={"Select Check in and Check out dates"}
                     minDate={new Date()}
                     onChange={(newValue: DateValueType) => {
                       setDateValue(newValue);

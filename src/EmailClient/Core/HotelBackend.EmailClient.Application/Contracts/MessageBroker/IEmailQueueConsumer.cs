@@ -3,6 +3,6 @@ using MassTransit;
 
 namespace HotelBackend.EmailClient.Application.Contracts.MessageBroker;
 
-public interface IEmailQueueConsumer : IConsumer<ReservationDetailsEmailMessage>
+public interface IEmailQueueConsumer : IConsumer<ReservationCreatedMessage>
 {
 }

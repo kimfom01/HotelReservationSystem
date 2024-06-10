@@ -8,9 +8,9 @@ public class RoomTypeMappings : Profile
 {
     public RoomTypeMappings()
     {
-        CreateMap<RoomType, CreateRoomTypeDto>()
+        CreateMap<RoomType, CreateRoomTypeRequest>()
             .ReverseMap();
-        CreateMap<RoomType, GetRoomTypeDto>()
+        CreateMap<RoomType, GetRoomTypeResponse>()
             .ReverseMap();
     }
 }

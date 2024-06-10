@@ -82,10 +82,10 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
             throw new ReservationException("An error occured: unable to save reservation");
         }
 
-        var reservationMessage = _mapper.Map<ReservationMessage>(added);
+        var reservationMessage = _mapper.Map<ReservationDetails>(added);
         var reservationDetailsDto = _mapper.Map<GetReservationDetailsDto>(added);
 
-        await _publishEndpoint.Publish(new ReservationDetailsEmailMessage
+        await _publishEndpoint.Publish(new ReservationCreatedMessage
         {
             ReservationMessage = reservationMessage,
             ReceiverEmail = reservationMessage.GuestContactEmail,

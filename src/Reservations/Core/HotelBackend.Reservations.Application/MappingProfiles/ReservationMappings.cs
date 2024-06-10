@@ -13,12 +13,12 @@ public class ReservationMappings : Profile
             .ReverseMap();
         CreateMap<Reservation, CreateReservationDto>()
             .ReverseMap();
-        CreateMap<PaymentStatusMessage, UpdateReservationPaymentStatusDto>()
+        CreateMap<PaymentSavedMessage, UpdateReservationPaymentStatusDto>()
             .ForMember(upd =>
                 upd.PaymentId, opt =>
                 opt.MapFrom(pay => pay.Id))
             .ReverseMap();
-        CreateMap<Reservation, ReservationMessage>()
+        CreateMap<Reservation, ReservationDetails>()
             .ForMember(resMsg =>
                     resMsg.GuestContactEmail, opt =>
                     opt.MapFrom(res => res.GuestProfile!.ContactEmail)

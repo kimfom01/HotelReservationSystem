@@ -98,9 +98,9 @@ public class UpdateReservationStatusRequestHandler : IRequestHandler<UpdateReser
         await _unitOfWork.SaveChanges(cancellationToken);
         _logger.LogInformation("Successfully updated reservation");
 
-        var reservationDetailsDto = _mapper.Map<ReservationMessage>(reservation);
+        var reservationDetailsDto = _mapper.Map<ReservationDetails>(reservation);
 
-        await _publishEndpoint.Publish(new ReservationDetailsEmailMessage
+        await _publishEndpoint.Publish(new ReservationCreatedMessage
         {
             ReservationMessage = reservationDetailsDto,
             ReceiverEmail = reservationDetailsDto.GuestContactEmail,

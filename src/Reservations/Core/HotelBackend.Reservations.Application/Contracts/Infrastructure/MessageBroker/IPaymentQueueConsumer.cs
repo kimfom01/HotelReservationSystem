@@ -3,7 +3,7 @@ using MassTransit;
 
 namespace HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 
-public interface IPaymentQueueConsumer: IConsumer<PaymentStatusMessage>
+public interface IPaymentQueueConsumer: IConsumer<PaymentSavedMessage>
 {
     // Task SubscribeToQueue(CancellationToken stoppingToken);
 }

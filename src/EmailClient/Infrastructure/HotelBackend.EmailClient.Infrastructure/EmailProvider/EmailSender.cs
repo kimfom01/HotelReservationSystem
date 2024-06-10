@@ -19,7 +19,7 @@ public class EmailSender : IEmailSender
         _fluentEmail = fluentEmail;
     }
 
-    public async Task SendEmailAsync(string email, string? subject, ReservationMessage? reservationMessage)
+    public async Task SendEmailAsync(string email, string? subject, ReservationDetails? reservationMessage)
     {
         var htmlMessageStringbuilder = new StringBuilder()
             .Append("<h3>Hello, @Model.GuestFirstName</h3>");

@@ -1,6 +1,6 @@
 namespace HotelBackend.Admin.Application.Dtos.Rooms;
 
-public class ReserveRoomResponse
+public record ReserveRoomResponse
 {
-    public Guid? RoomId { get; set; }
+    public Guid? RoomId { get; init; }
 }
