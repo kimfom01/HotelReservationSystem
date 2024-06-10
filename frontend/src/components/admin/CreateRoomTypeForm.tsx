@@ -3,7 +3,7 @@ import { useState } from "react";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { Button } from "../common/Button";
 import { InputField } from "../common/InputField";
-import { VITE_ADMIN_URL } from "../utils/ApiUtil";
+import { VITE_API_URL } from "../utils/ApiUtil";
 import { TextBox } from "../common/TextBox";
 import { HotelsDropDown } from "../hotel/HotelsDropDown";
 
@@ -41,7 +41,7 @@ export const CreateRoomTypeForm = () => {
       hotelId: hotelId,
     };
 
-    const res = await fetch(`${VITE_ADMIN_URL}/api/roomtype`, {
+    const res = await fetch(`${VITE_API_URL}/roomtype`, {
       method: "post",
       headers: requestHeaders,
       body: JSON.stringify(payload),

@@ -1,13 +1,26 @@
 services:
-  #  nginx:
-  #    image: nginx:stable-alpine3.17-slim
-  #    volumes:
-  #      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-  #    ports:
-  #      - 8080:8080
-  #    restart: always
-  #    networks:
-  #      - nginx-network
+  nginx:
+    image: nginx:stable-alpine3.17-slim
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8000:8000
+    restart: always
+    depends_on:
+      reservation:
+        condition: service_started
+      payment:
+        condition: service_started
+      admin:
+        condition: service_started
+      front:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - nginx-network
   postgres:
     image: postgres:alpine3.19
     restart: always
@@ -71,7 +84,7 @@ services:
       - ./.env
     networks:
       - nginx-network
-  payment-initiator:
+  payment:
     restart: always
     build:
       context: ./src
@@ -85,7 +98,7 @@ services:
       - ./.env
     networks:
       - nginx-network
-  email-service:
+  email:
     restart: always
     build:
       context: ./src
@@ -115,8 +128,7 @@ services:
       - ./.env
     networks:
       - nginx-network
-
-  hotel-front:
+  front:
     build:
       context: ./frontend
       dockerfile: Dockerfile.frontend
@@ -127,7 +139,7 @@ services:
     depends_on:
       reservation:
         condition: service_started
-      payment-initiator:
+      payment:
         condition: service_started
       admin:
         condition: service_started

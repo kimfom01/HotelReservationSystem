@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "../common/Button";
 import { InputField } from "../common/InputField";
 import { useMutation } from "@tanstack/react-query";
-import { VITE_ADMIN_URL } from "../utils/ApiUtil";
+import { VITE_API_URL } from "../utils/ApiUtil";
 import { useNavigate } from "react-router-dom";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import axios, { AxiosResponse } from "axios";
@@ -18,7 +18,7 @@ interface LoginResponse {
   expires_in: number;
   refresh_token: string;
   refresh_expires_in: number;
-  token_type: string;
+  tokenType: string;
   status: number;
 }
 
@@ -35,7 +35,7 @@ export const Login = () => {
 
     const res: AxiosResponse = await toast.promise(
       axios.post<LoginForm>(
-        `${VITE_ADMIN_URL}/api/employee/login`,
+        `${VITE_API_URL}/employee/login`,
         JSON.stringify(loginForm),
         {
           headers: {
@@ -55,7 +55,7 @@ export const Login = () => {
     const success = signInUser({
       auth: {
         token: data.token,
-        type: "Bearer",
+        type: data.tokenType,
       },
       userState: { email: loginForm.email },
     });

@@ -2,7 +2,7 @@ import { InputField } from "../common/InputField";
 import { Button } from "../common/Button";
 import { useState } from "react";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
-import { VITE_ADMIN_URL } from "../utils/ApiUtil";
+import { VITE_API_URL } from "../utils/ApiUtil";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Hotel } from "../../models/Hotel";
 
@@ -25,7 +25,7 @@ export const CreateHotelForm = () => {
     requestHeaders.set("Content-Type", "application/json");
     requestHeaders.set("Authorization", `${authHeader}`);
 
-    const res = await fetch(`${VITE_ADMIN_URL}/api/hotel`, {
+    const res = await fetch(`${VITE_API_URL}/hotel`, {
       method: "post",
       headers: requestHeaders,
       body: JSON.stringify(hotelForm),

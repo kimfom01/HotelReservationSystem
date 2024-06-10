@@ -61,7 +61,8 @@ public class LoginEmployeeCommandHandler : IRequestHandler<LoginEmployeeCommand,
 
         return new LoginEmployeeResponse
         {
-            Token = token
+            Token = token,
+            TokenType = "Bearer"
         };
     }
 }

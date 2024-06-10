@@ -6,7 +6,7 @@ import Datepicker, {
   DateValueType,
 } from "react-tailwindcss-datepicker";
 import { DropDownList } from "../common/DropDownList";
-import { VITE_RESERVATION_URL } from "../utils/ApiUtil";
+import { VITE_API_URL } from "../utils/ApiUtil";
 import { Button } from "../common/Button";
 import { InputField } from "../common/InputField";
 import { TextBox } from "../common/TextBox";
@@ -73,7 +73,7 @@ export const Home = () => {
       checkOut: dateValue?.endDate,
     };
 
-    const res = await fetch(`${VITE_RESERVATION_URL}/api/reservation`, {
+    const res = await fetch(`${VITE_API_URL}/reservation`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

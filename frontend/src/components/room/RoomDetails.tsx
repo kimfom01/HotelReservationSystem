@@ -1,4 +1,4 @@
-import { VITE_ADMIN_URL } from "../utils/ApiUtil";
+import { VITE_API_URL } from "../utils/ApiUtil";
 import { RoomType } from "./AvailableRoomsDropDown";
 import { useQuery } from "@tanstack/react-query";
 
@@ -33,7 +33,7 @@ export const RoomDetails = ({
 }: RoomDetailsProps) => {
   const getRoomDetails = async () => {
     const res = await fetch(
-      `${VITE_ADMIN_URL}/api/RoomType/s?roomTypeId=${roomTypeId}&hotelId=${hotelId}`
+      `${VITE_API_URL}/roomtype/s?roomTypeId=${roomTypeId}&hotelId=${hotelId}`
     );
 
     const data: RoomType = await res.json();

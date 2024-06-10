@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { VITE_ADMIN_URL } from "../utils/ApiUtil";
+import { VITE_API_URL } from "../utils/ApiUtil";
 import { DropDownList } from "../common/DropDownList";
 import { Room } from "../../models/Room";
 
@@ -24,7 +24,7 @@ export const AvailableRoomsDropDown = ({
   setRoomType,
 }: AvailableRoomsProps) => {
   const getAvailableRooms = async (hotelId: string) => {
-    const res = await fetch(`${VITE_ADMIN_URL}/api/room/available/${hotelId}`);
+    const res = await fetch(`${VITE_API_URL}/room/available/${hotelId}`);
 
     const data: Room[] = await res.json();
 
@@ -37,14 +37,14 @@ export const AvailableRoomsDropDown = ({
     event.preventDefault();
     // Get selected room
     const roomRes = await fetch(
-      `${VITE_ADMIN_URL}/api/Room?hotelId=${hotelId}&roomId=${event.target.value}`
+      `${VITE_API_URL}/room?hotelId=${hotelId}&roomId=${event.target.value}`
     );
     const room: Room = await roomRes.json();
     setRoom(room);
 
     // Get room type asssociated with selected room
     const roomTypeRes = await fetch(
-      `${VITE_ADMIN_URL}/api/RoomType/s?roomTypeId=${room.roomTypeId}&hotelId=${hotelId}`
+      `${VITE_API_URL}/roomtype/s?roomTypeId=${room.roomTypeId}&hotelId=${hotelId}`
     );
     const roomType: RoomType = await roomTypeRes.json();
     setRoomType(roomType);

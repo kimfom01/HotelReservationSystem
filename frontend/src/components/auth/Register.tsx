@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { InputField } from "../common/InputField";
 import { Button } from "../common/Button";
-import { VITE_ADMIN_URL } from "../utils/ApiUtil";
+import { VITE_API_URL } from "../utils/ApiUtil";
 import { toast } from "react-toastify";
 import axios, { AxiosResponse } from "axios";
 
@@ -38,7 +38,7 @@ export const Register = () => {
 
     const res: AxiosResponse = await toast.promise(
       axios.post<RegisterForm>(
-        `${VITE_ADMIN_URL}/api/employee/register`,
+        `${VITE_API_URL}/employee/register`,
         JSON.stringify(registerForm),
         {
           headers: {

@@ -363,7 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Rider
-.idea
+**/**/.idea
 
 **/**/data/
-.env
+**/**/.env

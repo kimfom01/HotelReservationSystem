@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { VITE_ADMIN_URL } from "../utils/ApiUtil";
+import { VITE_API_URL } from "../utils/ApiUtil";
 import { DropDownList } from "../common/DropDownList";
 import { Hotel } from "../../models/Hotel";
 
@@ -9,7 +9,7 @@ interface HotelsDropDownProps {
 
 export const HotelsDropDown = ({ setHotelId }: HotelsDropDownProps) => {
   const getHotels = async () => {
-    const res = await fetch(`${VITE_ADMIN_URL}/api/hotel`);
+    const res = await fetch(`${VITE_API_URL}/hotel`);
 
     const data: Hotel[] = await res.json();
 
