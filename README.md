@@ -91,7 +91,7 @@ The [ISO25010 standard](https://iso25000.com/index.php/en/iso-25000-standards/is
 - Reusability: Reusability is beneficial for future projects and efficiency, but it is not crucial for the initial operations of the system.
 - Analysability: Analysability is important for maintaining high quality and quick issue resolution, although it can be improved iteratively.
 - Modifiability: The platform must be able to evolve over time to meet changing needs and incorporate new technologies or feedback without significant downtime or risk of defects.
-- Testability: Must Have (MoSCoW): Must Have. To ensure continuous high quality, especially for a system handling personal data, the ability to test changes thoroughly is non-negotiable.
+- Testability: To ensure continuous high quality, especially for a system handling personal data, the ability to test changes thoroughly is non-negotiable.
 
 ## 🛠️ Architecture
 
