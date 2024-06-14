@@ -3,17 +3,20 @@ using System;
 using Hrs.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Hrs.Infrastructure.Migrations
+namespace Hrs.Infrastructure.Database.Migrations.Reservations
 {
     [DbContext(typeof(ReservationDataContext))]
-    partial class ReservationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240614194351_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,7 +26,7 @@ namespace Hrs.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Hrs.Domain.Entities.GuestProfile", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.GuestProfile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +62,7 @@ namespace Hrs.Infrastructure.Migrations
                     b.ToTable("GuestProfiles", "reservations");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Reservation", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.Reservation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,9 +117,9 @@ namespace Hrs.Infrastructure.Migrations
                     b.ToTable("Reservations", "reservations");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Reservation", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.Reservation", b =>
                 {
-                    b.HasOne("Hrs.Domain.Entities.GuestProfile", "GuestProfile")
+                    b.HasOne("Hrs.Domain.Entities.Reservation.GuestProfile", "GuestProfile")
                         .WithMany("Reservations")
                         .HasForeignKey("GuestProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -125,7 +128,7 @@ namespace Hrs.Infrastructure.Migrations
                     b.Navigation("GuestProfile");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.GuestProfile", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.GuestProfile", b =>
                 {
                     b.Navigation("Reservations");
                 });

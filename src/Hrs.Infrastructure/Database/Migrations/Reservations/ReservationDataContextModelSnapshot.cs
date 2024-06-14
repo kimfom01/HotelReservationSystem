@@ -3,20 +3,17 @@ using System;
 using Hrs.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Hrs.Infrastructure.Migrations
+namespace Hrs.Infrastructure.Database.Migrations.Reservations
 {
     [DbContext(typeof(ReservationDataContext))]
-    [Migration("20240526194913_InitialCreate")]
-    partial class InitialCreate
+    partial class ReservationDataContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,14 +23,11 @@ namespace Hrs.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Hrs.Domain.Entities.GuestProfile", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.GuestProfile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("Adult")
-                        .HasColumnType("boolean");
 
                     b.Property<int>("Age")
                         .HasColumnType("integer");
@@ -65,7 +59,7 @@ namespace Hrs.Infrastructure.Migrations
                     b.ToTable("GuestProfiles", "reservations");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Reservation", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.Reservation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,9 +114,9 @@ namespace Hrs.Infrastructure.Migrations
                     b.ToTable("Reservations", "reservations");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Reservation", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.Reservation", b =>
                 {
-                    b.HasOne("Hrs.Domain.Entities.GuestProfile", "GuestProfile")
+                    b.HasOne("Hrs.Domain.Entities.Reservation.GuestProfile", "GuestProfile")
                         .WithMany("Reservations")
                         .HasForeignKey("GuestProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -131,7 +125,7 @@ namespace Hrs.Infrastructure.Migrations
                     b.Navigation("GuestProfile");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.GuestProfile", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.GuestProfile", b =>
                 {
                     b.Navigation("Reservations");
                 });

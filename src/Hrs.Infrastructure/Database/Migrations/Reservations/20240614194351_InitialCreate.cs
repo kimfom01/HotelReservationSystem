@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Hrs.Infrastructure.Migrations
+namespace Hrs.Infrastructure.Database.Migrations.Reservations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -24,7 +25,6 @@ namespace Hrs.Infrastructure.Migrations
                     ContactEmail = table.Column<string>(type: "text", nullable: false),
                     Sex = table.Column<string>(type: "text", nullable: false),
                     Age = table.Column<int>(type: "integer", nullable: false),
-                    Adult = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
