@@ -12,6 +12,13 @@ builder
     .Services.AddControllers()
     .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; });
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddLogging(opt =>
+{
+    opt.AddSimpleConsole(options =>
+    {
+        options.TimestampFormat = "[HH:mm:ss] ";
+    });
+});
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

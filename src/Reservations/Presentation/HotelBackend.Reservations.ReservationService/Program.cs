@@ -12,6 +12,13 @@ builder
     .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddLogging(opt =>
+{
+    opt.AddSimpleConsole(options =>
+    {
+        options.TimestampFormat = "[HH:mm:ss] ";
+    });
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: corsPolicy,
