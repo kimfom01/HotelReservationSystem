@@ -104,7 +104,7 @@ public static class InfrastructureServicesRegistration
                             emailOptions.SenderEmail,
                             GetSecurePassword(emailOptions.Password)
                         ),
-                        EnableSsl = false,
+                        EnableSsl = !isDevelopment,
                         DeliveryMethod = SmtpDeliveryMethod.Network
                     }
                 );
