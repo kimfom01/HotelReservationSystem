@@ -1,0 +1,9 @@
+using HotelBackend.Reservations.Domain.Entities.Admin;
+
+namespace HotelBackend.Reservations.Application.Contracts.Infrastructure.Database.Repositories;
+
+public interface IRoomRepository : IRepository<Room>
+{
+    Task<List<Room>> GetAllAvailableRooms(Guid hotelId, CancellationToken cancellationToken);
+    Task<Room?> GetRoomOfType(Guid hotelId, Guid roomTypeId);
+}

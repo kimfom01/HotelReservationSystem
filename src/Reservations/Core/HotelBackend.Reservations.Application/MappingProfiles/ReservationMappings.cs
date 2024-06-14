@@ -1,7 +1,7 @@
 using AutoMapper;
 using HotelBackend.Common.Messages;
-using HotelBackend.Reservations.Domain.Entities;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
+using HotelBackend.Reservations.Domain.Entities.Reservation;
 
 namespace HotelBackend.Reservations.Application.MappingProfiles;
 

@@ -1,3 +1,5 @@
+using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database.Repositories;
+
 namespace HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 
 public interface IUnitOfWork : IDisposable

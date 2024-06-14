@@ -1,9 +1,13 @@
 using System.Reflection;
+using HotelBackend.Admin.Infrastructure.Authentication;
 using HotelBackend.Reservations.Application.Contracts.ApiServices;
+using HotelBackend.Reservations.Application.Contracts.Authentication;
 using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
 using HotelBackend.Reservations.Infrastructure.ApiServices;
+using HotelBackend.Reservations.Infrastructure.Authentication;
 using HotelBackend.Reservations.Infrastructure.Database;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +23,7 @@ public static class InfrastructureServicesRegistration
     )
     {
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUnitOfWork, ReservationUnitOfWork>();
         services.AddHttpClient<IRoomApiService, RoomApiService>();
         services.ConfigureOptions<RoomApiOptionsSetup>();
 
@@ -32,9 +36,9 @@ public static class InfrastructureServicesRegistration
         services.AddMassTransit(busConfigurator =>
         {
             busConfigurator.SetKebabCaseEndpointNameFormatter();
-            
+
             busConfigurator.AddConsumers(Assembly.GetExecutingAssembly());
-            
+
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
                 configurator.Host(new Uri(configuration["MessageBroker:Host"]!), h =>
@@ -42,10 +46,26 @@ public static class InfrastructureServicesRegistration
                     h.Username(configuration["MessageBroker:User"]!);
                     h.Password(configuration["MessageBroker:Password"]!);
                 });
-                
+
                 configurator.ConfigureEndpoints(context);
             });
         });
+        
+        services.AddScoped<IAdminUnitOfWork, AdminUnitOfWork>();
+
+        services.AddDbContext<AdminDataContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "admin"));
+        });
+
+        services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<IPasswordManager, PasswordManager>();
+        services.ConfigureOptions<JwtConfigOptionsSetup>();
+        services.ConfigureOptions<JwtBearerOptionsSetup>();
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer();
 
         return services;
     }

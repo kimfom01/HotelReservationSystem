@@ -1,5 +1,5 @@
-﻿using HotelBackend.Reservations.Domain.Entities;
-using HotelBackend.Reservations.Domain.Entities.Common;
+﻿using HotelBackend.Reservations.Domain.Entities.Common;
+using HotelBackend.Reservations.Domain.Entities.Reservation;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBackend.Reservations.Infrastructure.Database;
