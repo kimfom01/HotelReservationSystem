@@ -1,26 +1,4 @@
 services:
-  nginx:
-    image: nginx:stable-alpine3.17-slim
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - 8000:8000
-    restart: always
-    depends_on:
-      reservation:
-        condition: service_started
-      payment:
-        condition: service_started
-      admin:
-        condition: service_started
-      front:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-    networks:
-      - nginx-network
   postgres:
     image: postgres:alpine3.19
     restart: always
@@ -66,85 +44,22 @@ services:
       MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
-  reservation:
+  backend:
     restart: always
     build:
       context: ./src
-      dockerfile: Dockerfile.reservation
+      dockerfile: Dockerfile.backend
     ports:
-      - 8081:8080
+      - 8080:8080
     depends_on:
       rabbitmq:
         condition: service_healthy
       postgres:
         condition: service_healthy
-      admin:
-        condition: service_started
     env_file:
       - ./.env
     networks:
       - nginx-network
-  payment:
-    restart: always
-    build:
-      context: ./src
-      dockerfile: Dockerfile.payment
-    ports:
-      - 8082:8080
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    env_file:
-      - ./.env
-    networks:
-      - nginx-network
-  email:
-    restart: always
-    build:
-      context: ./src
-      dockerfile: Dockerfile.email
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mailpit:
-        condition: service_healthy
-    env_file:
-      - ./.env
-    networks:
-      - nginx-network
-  admin:
-    restart: always
-    build:
-      context: ./src
-      dockerfile: Dockerfile.admin
-    ports:
-      - 8083:8080
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mailpit:
-        condition: service_healthy
-    env_file:
-      - ./.env
-    networks:
-      - nginx-network
-  front:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.frontend
-    volumes:
-      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf
-    env_file:
-      - ./.env
-    depends_on:
-      reservation:
-        condition: service_started
-      payment:
-        condition: service_started
-      admin:
-        condition: service_started
-    ports:
-      - 3000:80
 networks:
   nginx-network:
     driver: bridge
