@@ -2,7 +2,7 @@ using HotelBackend.Common.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace HotelBackend.EmailClient.Infrastructure.EmailProvider;
+namespace HotelBackend.Reservations.Infrastructure.Email;
 
 public class EmailOptionsSetup : IConfigureOptions<EmailOptions>
 {

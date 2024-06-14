@@ -1,6 +1,6 @@
 using HotelBackend.Common.Messages;
 
-namespace HotelBackend.EmailClient.Application.Contracts.Infrastructure;
+namespace HotelBackend.Reservations.Application.Contracts.Email;
 
 public interface IEmailSender
 {

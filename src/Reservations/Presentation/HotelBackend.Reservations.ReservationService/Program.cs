@@ -13,13 +13,7 @@ builder
     .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddLogging(opt =>
-{
-    opt.AddSimpleConsole(options =>
-    {
-        options.TimestampFormat = "[HH:mm:ss] ";
-    });
-});
+builder.Services.AddLogging(opt => { opt.AddSimpleConsole(options => { options.TimestampFormat = "[HH:mm:ss] "; }); });
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: corsPolicy,
@@ -56,7 +50,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.ConfigureInfrastructureServices(builder.Configuration);
+builder.Services.ConfigureInfrastructureServices(builder.Environment.IsDevelopment(), builder.Configuration);
 builder.Services.ConfigureApplicationServices();
 
 var app = builder.Build();

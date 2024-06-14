@@ -1,12 +1,12 @@
 using System.Text;
 using FluentEmail.Core;
-using HotelBackend.EmailClient.Application.Contracts.Infrastructure;
-using HotelBackend.EmailClient.Application.Exceptions;
 using HotelBackend.Common.Enums;
 using HotelBackend.Common.Messages;
+using HotelBackend.EmailClient.Application.Exceptions;
+using HotelBackend.Reservations.Application.Contracts.Email;
 using Microsoft.Extensions.Logging;
 
-namespace HotelBackend.EmailClient.Infrastructure.EmailProvider;
+namespace HotelBackend.Reservations.Infrastructure.Email;
 
 public class EmailSender : IEmailSender
 {

@@ -1,11 +1,11 @@
 using HotelBackend.Common.Messages;
-using HotelBackend.EmailClient.Application.Contracts.Infrastructure;
-using HotelBackend.EmailClient.Application.Contracts.MessageBroker;
 using HotelBackend.EmailClient.Application.Exceptions;
+using HotelBackend.Reservations.Application.Contracts.Email;
+using HotelBackend.Reservations.Application.Contracts.MessageBroker;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace HotelBackend.EmailClient.Infrastructure.MessageBroker;
+namespace HotelBackend.Reservations.Infrastructure.MessageBroker;
 
 public class EmailQueueConsumer : IEmailQueueConsumer
 {

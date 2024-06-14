@@ -5,5 +5,4 @@ namespace HotelBackend.Reservations.Application.Contracts.MessageBroker;
 
 public interface IPaymentQueueConsumer: IConsumer<PaymentSavedMessage>
 {
-    // Task SubscribeToQueue(CancellationToken stoppingToken);
 }
