@@ -2,7 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using HotelBackend.Common.Messages;
 using HotelBackend.Reservations.Application.Contracts.ApiServices;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
+using HotelBackend.Reservations.Application.Contracts.Database;
 using HotelBackend.Reservations.Application.Dtos.AdminApi.RoomApi;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Exceptions;
@@ -18,7 +18,7 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
 {
     private readonly ILogger<CreateReservationCommandHandler> _logger;
     private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IReservationsUnitOfWork _reservationsUnitOfWork;
     private readonly IValidator<CreateReservationRequest> _validator;
     private readonly IRoomApiService _roomApiService;
     private readonly IPublishEndpoint _publishEndpoint;
@@ -26,14 +26,14 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
     public CreateReservationCommandHandler(
         ILogger<CreateReservationCommandHandler> logger,
         IMapper mapper,
-        IUnitOfWork unitOfWork,
+        IReservationsUnitOfWork reservationsUnitOfWork,
         IValidator<CreateReservationRequest> validator,
         IRoomApiService roomApiService,
         IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _mapper = mapper;
-        _unitOfWork = unitOfWork;
+        _reservationsUnitOfWork = reservationsUnitOfWork;
         _validator = validator;
         _roomApiService = roomApiService;
         _publishEndpoint = publishEndpoint;
@@ -67,13 +67,13 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
             throw new ReservationException("An error occured: check if room is available");
         }
 
-        var newGuest = await _unitOfWork.GuestProfiles.Add(reservation.GuestProfile!, cancellationToken);
+        var newGuest = await _reservationsUnitOfWork.GuestProfiles.Add(reservation.GuestProfile!, cancellationToken);
 
         reservation.GuestProfileId = newGuest!.Id;
 
         reservation.RoomId = reserveRoomResponse.RoomId!.Value;
-        var added = await _unitOfWork.Reservations.Add(reservation, cancellationToken);
-        await _unitOfWork.SaveChanges(cancellationToken);
+        var added = await _reservationsUnitOfWork.Reservations.Add(reservation, cancellationToken);
+        await _reservationsUnitOfWork.SaveChanges(cancellationToken);
         _logger.LogInformation("Successfully created a reservation");
 
         if (added is null)

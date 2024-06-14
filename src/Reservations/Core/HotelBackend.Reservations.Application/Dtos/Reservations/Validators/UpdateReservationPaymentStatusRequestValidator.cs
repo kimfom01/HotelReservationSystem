@@ -1,11 +1,11 @@
 using FluentValidation;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
+using HotelBackend.Reservations.Application.Contracts.Database;
 
 namespace HotelBackend.Reservations.Application.Dtos.Reservations.Validators;
 
 public class UpdateReservationPaymentStatusRequestValidator : AbstractValidator<UpdateReservationPaymentStatusRequest>
 {
-    public UpdateReservationPaymentStatusRequestValidator(IUnitOfWork unitOfWork)
+    public UpdateReservationPaymentStatusRequestValidator(IReservationsUnitOfWork reservationsUnitOfWork)
     {
         RuleFor(dto => dto.Status)
             .IsInEnum()
@@ -14,7 +14,7 @@ public class UpdateReservationPaymentStatusRequestValidator : AbstractValidator<
         RuleFor(dto => dto.ReservationId)
             .MustAsync(async (reservationId, token) =>
             {
-                var reservation = await unitOfWork.Reservations.GetEntity(res => res.Id == reservationId, token);
+                var reservation = await reservationsUnitOfWork.Reservations.GetEntity(res => res.Id == reservationId, token);
 
                 return reservation is not null;
             })

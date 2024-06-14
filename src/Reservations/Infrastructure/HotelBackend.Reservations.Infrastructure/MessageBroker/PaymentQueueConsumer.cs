@@ -1,9 +1,9 @@
 using AutoMapper;
 using FluentValidation;
 using HotelBackend.Common.Messages;
+using HotelBackend.Reservations.Application.Contracts.MessageBroker;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Commands;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.MessageBroker;
 using HotelBackend.Reservations.Application.Exceptions;
 using MassTransit;
 using MediatR;

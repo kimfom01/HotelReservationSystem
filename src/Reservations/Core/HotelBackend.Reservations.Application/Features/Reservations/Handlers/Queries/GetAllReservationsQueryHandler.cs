@@ -1,5 +1,5 @@
 using AutoMapper;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
+using HotelBackend.Reservations.Application.Contracts.Database;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Queries;
 using MediatR;
@@ -10,16 +10,16 @@ namespace HotelBackend.Reservations.Application.Features.Reservations.Handlers.Q
 public class GetAllReservationsQueryHandler : IRequestHandler<GetAllReservationsQuery, List<GetReservationDetailsResponse>>
 {
     private readonly ILogger<GetAllReservationsQueryHandler> _logger;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IReservationsUnitOfWork _reservationsUnitOfWork;
     private readonly IMapper _mapper;
 
     public GetAllReservationsQueryHandler(
         ILogger<GetAllReservationsQueryHandler> logger,
-        IUnitOfWork unitOfWork,
+        IReservationsUnitOfWork reservationsUnitOfWork,
         IMapper mapper)
     {
         _logger = logger;
-        _unitOfWork = unitOfWork;
+        _reservationsUnitOfWork = reservationsUnitOfWork;
         _mapper = mapper;
     }
 
@@ -27,7 +27,7 @@ public class GetAllReservationsQueryHandler : IRequestHandler<GetAllReservations
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting all reservations");
-        var reservations = await _unitOfWork.Reservations.GetEntities(re => true, cancellationToken);
+        var reservations = await _reservationsUnitOfWork.Reservations.GetEntities(re => true, cancellationToken);
 
         if (reservations.Count == 0)
         {

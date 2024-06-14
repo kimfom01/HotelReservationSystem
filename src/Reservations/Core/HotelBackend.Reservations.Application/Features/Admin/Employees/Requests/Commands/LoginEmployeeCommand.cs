@@ -1,4 +1,4 @@
-using HotelBackend.Reservations.Application.Dtos.Employees;
+using HotelBackend.Reservations.Application.Dtos.Admin.Employees;
 using MediatR;
 
 namespace HotelBackend.Reservations.Application.Features.Admin.Employees.Requests.Commands;

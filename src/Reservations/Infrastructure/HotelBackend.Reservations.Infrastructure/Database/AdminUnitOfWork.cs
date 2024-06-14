@@ -1,5 +1,5 @@
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database.Repositories;
+using HotelBackend.Reservations.Application.Contracts.Database;
+using HotelBackend.Reservations.Application.Contracts.Database.Repositories;
 using HotelBackend.Reservations.Infrastructure.Database.Repositories;
 
 namespace HotelBackend.Reservations.Infrastructure.Database;

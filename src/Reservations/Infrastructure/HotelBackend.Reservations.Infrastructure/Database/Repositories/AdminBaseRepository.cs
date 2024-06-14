@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database.Repositories;
+using HotelBackend.Reservations.Application.Contracts.Database.Repositories;
 using HotelBackend.Reservations.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,4 @@
-using HotelBackend.Reservations.Application.Dtos.RoomTypes;
+using HotelBackend.Reservations.Application.Dtos.Admin.RoomTypes;
 using MediatR;
 
 namespace HotelBackend.Reservations.Application.Features.Admin.RoomTypes.Requests.Command;

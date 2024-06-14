@@ -1,5 +1,5 @@
 using AutoMapper;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
+using HotelBackend.Reservations.Application.Contracts.Database;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Exceptions;
 using HotelBackend.Reservations.Application.Features.Reservations.Requests.Queries;
@@ -11,16 +11,16 @@ namespace HotelBackend.Reservations.Application.Features.Reservations.Handlers.Q
 public class GetReservationByIdQueryHandler : IRequestHandler<GetReservationByIdQuery, GetReservationDetailsResponse>
 {
     private readonly ILogger<GetReservationByIdQueryHandler> _logger;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IReservationsUnitOfWork _reservationsUnitOfWork;
     private readonly IMapper _mapper;
 
     public GetReservationByIdQueryHandler(
         ILogger<GetReservationByIdQueryHandler> logger,
-        IUnitOfWork unitOfWork,
+        IReservationsUnitOfWork reservationsUnitOfWork,
         IMapper mapper)
     {
         _logger = logger;
-        _unitOfWork = unitOfWork;
+        _reservationsUnitOfWork = reservationsUnitOfWork;
         _mapper = mapper;
     }
 
@@ -28,7 +28,7 @@ public class GetReservationByIdQueryHandler : IRequestHandler<GetReservationById
     {
         _logger.LogInformation("Getting reservation={ReservationId}", query.ReservationId);
         var reservation =
-            await _unitOfWork.Reservations.GetEntity(res => res.Id == query.ReservationId, cancellationToken);
+            await _reservationsUnitOfWork.Reservations.GetEntity(res => res.Id == query.ReservationId, cancellationToken);
 
         if (reservation is null)
         {

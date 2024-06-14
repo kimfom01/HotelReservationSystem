@@ -1,8 +1,9 @@
 using System.Reflection;
 using HotelBackend.Admin.Infrastructure.Authentication;
+using HotelBackend.Payments.Infrastructure.Database;
 using HotelBackend.Reservations.Application.Contracts.ApiServices;
 using HotelBackend.Reservations.Application.Contracts.Authentication;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
+using HotelBackend.Reservations.Application.Contracts.Database;
 using HotelBackend.Reservations.Infrastructure.ApiServices;
 using HotelBackend.Reservations.Infrastructure.Authentication;
 using HotelBackend.Reservations.Infrastructure.Database;
@@ -22,8 +23,7 @@ public static class InfrastructureServicesRegistration
         this IServiceCollection services, IConfiguration configuration
     )
     {
-        services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-        services.AddScoped<IUnitOfWork, ReservationUnitOfWork>();
+        services.AddScoped<IReservationsUnitOfWork, ReservationsUnitOfWork>();
         services.AddHttpClient<IRoomApiService, RoomApiService>();
         services.ConfigureOptions<RoomApiOptionsSetup>();
 
@@ -66,6 +66,13 @@ public static class InfrastructureServicesRegistration
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
+        
+        
+        services.AddScoped<IPaymentsUnitOfWork, PaymentsUnitOfWork>();
+
+        services.AddDbContext<PaymentDataContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments")));
 
         return services;
     }

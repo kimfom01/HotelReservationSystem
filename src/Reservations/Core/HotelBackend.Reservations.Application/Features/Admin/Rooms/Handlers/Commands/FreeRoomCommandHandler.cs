@@ -1,6 +1,6 @@
 using FluentValidation;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
-using HotelBackend.Reservations.Application.Dtos.Rooms;
+using HotelBackend.Reservations.Application.Contracts.Database;
+using HotelBackend.Reservations.Application.Dtos.Admin.Rooms;
 using HotelBackend.Reservations.Application.Exceptions;
 using HotelBackend.Reservations.Application.Features.Admin.Rooms.Requests.Commands;
 using MediatR;

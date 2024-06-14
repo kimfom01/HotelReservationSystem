@@ -10,8 +10,4 @@
       <ProjectReference Include="..\..\..\Common\HotelBackend.Common\HotelBackend.Common.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Entities\Payment\" />
-    </ItemGroup>
-
 </Project>

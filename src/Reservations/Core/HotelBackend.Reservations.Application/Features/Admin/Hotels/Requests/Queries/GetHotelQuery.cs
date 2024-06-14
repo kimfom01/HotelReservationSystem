@@ -1,4 +1,4 @@
-using HotelBackend.Reservations.Application.Dtos.Hotels;
+using HotelBackend.Reservations.Application.Dtos.Admin.Hotels;
 using MediatR;
 
 namespace HotelBackend.Reservations.Application.Features.Admin.Hotels.Requests.Queries;

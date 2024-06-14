@@ -3,7 +3,7 @@ using FluentValidation;
 using HotelBackend.Common.Enums;
 using HotelBackend.Common.Messages;
 using HotelBackend.Reservations.Application.Contracts.ApiServices;
-using HotelBackend.Reservations.Application.Contracts.Infrastructure.Database;
+using HotelBackend.Reservations.Application.Contracts.Database;
 using HotelBackend.Reservations.Application.Dtos.AdminApi.RoomApi;
 using HotelBackend.Reservations.Application.Dtos.Reservations;
 using HotelBackend.Reservations.Application.Exceptions;
@@ -17,7 +17,7 @@ namespace HotelBackend.Reservations.Application.Features.Reservations.Handlers.C
 public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReservationStatusCommand, Unit>
 {
     private readonly ILogger<UpdateReservationStatusCommandHandler> _logger;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IReservationsUnitOfWork _reservationsUnitOfWork;
     private readonly IValidator<UpdateReservationPaymentStatusRequest> _validator;
     private readonly IMapper _mapper;
     private readonly IRoomApiService _roomApiService;
@@ -25,14 +25,14 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
 
     public UpdateReservationStatusCommandHandler(
         ILogger<UpdateReservationStatusCommandHandler> logger,
-        IUnitOfWork unitOfWork,
+        IReservationsUnitOfWork reservationsUnitOfWork,
         IValidator<UpdateReservationPaymentStatusRequest> validator,
         IMapper mapper,
         IRoomApiService roomApiService,
         IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
-        _unitOfWork = unitOfWork;
+        _reservationsUnitOfWork = reservationsUnitOfWork;
         _validator = validator;
         _mapper = mapper;
         _roomApiService = roomApiService;
@@ -54,7 +54,7 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
         await _validator.ValidateAndThrowAsync(command.UpdateReservationPaymentStatusDto, cancellationToken);
 
         var reservation =
-            await _unitOfWork.Reservations.GetReservationDetails(
+            await _reservationsUnitOfWork.Reservations.GetReservationDetails(
                 command.UpdateReservationPaymentStatusDto.ReservationId,
                 cancellationToken);
 
@@ -97,7 +97,7 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
             reservation.ReservationStatus = ReservationStatus.Cancelled;
         }
 
-        await _unitOfWork.SaveChanges(cancellationToken);
+        await _reservationsUnitOfWork.SaveChanges(cancellationToken);
         _logger.LogInformation("Successfully updated reservation");
 
         var reservationDetailsDto = _mapper.Map<ReservationDetails>(reservation);

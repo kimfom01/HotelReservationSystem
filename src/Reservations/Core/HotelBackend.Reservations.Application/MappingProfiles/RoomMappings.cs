@@ -1,5 +1,5 @@
 using AutoMapper;
-using HotelBackend.Reservations.Application.Dtos.Rooms;
+using HotelBackend.Reservations.Application.Dtos.Admin.Rooms;
 using HotelBackend.Reservations.Domain.Entities.Admin;
 
 namespace HotelBackend.Reservations.Application.MappingProfiles;

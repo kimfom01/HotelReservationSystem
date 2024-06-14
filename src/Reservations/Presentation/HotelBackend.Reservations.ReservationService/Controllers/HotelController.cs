@@ -1,6 +1,6 @@
 using System.Net;
 using FluentValidation;
-using HotelBackend.Reservations.Application.Dtos.Hotels;
+using HotelBackend.Reservations.Application.Dtos.Admin.Hotels;
 using HotelBackend.Reservations.Application.Exceptions;
 using HotelBackend.Reservations.Application.Features.Admin.Hotels.Requests.Commands;
 using HotelBackend.Reservations.Application.Features.Admin.Hotels.Requests.Queries;

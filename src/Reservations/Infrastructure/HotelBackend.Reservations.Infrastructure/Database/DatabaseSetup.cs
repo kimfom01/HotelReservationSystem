@@ -1,3 +1,4 @@
+using HotelBackend.Payments.Infrastructure.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,15 @@ public static class DatabaseSetup
         if (adminMigrations.Any())
         {
             adminDataContext.Database.Migrate();
+        }
+
+        var paymentDataContext = scope.ServiceProvider.GetRequiredService<PaymentDataContext>();
+
+        var paymentsMigrations = paymentDataContext.Database.GetPendingMigrations();
+
+        if (paymentsMigrations.Any())
+        {
+            paymentDataContext.Database.Migrate();
         }
 
         return app;
