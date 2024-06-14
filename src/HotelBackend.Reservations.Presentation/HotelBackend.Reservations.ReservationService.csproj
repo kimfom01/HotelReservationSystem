@@ -22,8 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\HotelBackend.Reservations.Application\HotelBackend.Reservations.Application.csproj" />
-      <ProjectReference Include="..\..\Infrastructure\HotelBackend.Reservations.Infrastructure\HotelBackend.Reservations.Infrastructure.csproj" />
+      <ProjectReference Include="..\HotelBackend.Reservations.Application\HotelBackend.Reservations.Application.csproj" />
+      <ProjectReference Include="..\HotelBackend.Reservations.Infrastructure\HotelBackend.Reservations.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
