@@ -5,15 +5,15 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EF191C9-1B1E-4F73-9547-E7626E177D6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Common", "src\HotelBackend.Common\HotelBackend.Common.csproj", "{DAE83D8F-D079-4B28-87EF-1C348FA0C243}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hrs.Common", "src\Hrs.Common\Hrs.Common.csproj", "{DAE83D8F-D079-4B28-87EF-1C348FA0C243}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Reservations.Application", "src\HotelBackend.Reservations.Application\HotelBackend.Reservations.Application.csproj", "{C179351A-6A59-4534-AF5D-58F56B55A095}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hrs.Application", "src\Hrs.Application\Hrs.Application.csproj", "{C179351A-6A59-4534-AF5D-58F56B55A095}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Reservations.Domain", "src\HotelBackend.Reservations.Domain\HotelBackend.Reservations.Domain.csproj", "{19F1488E-7D0D-438E-A328-8C3064699E20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hrs.Domain", "src\Hrs.Domain\Hrs.Domain.csproj", "{19F1488E-7D0D-438E-A328-8C3064699E20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Reservations.Infrastructure", "src\HotelBackend.Reservations.Infrastructure\HotelBackend.Reservations.Infrastructure.csproj", "{6C4D77AE-A126-49B7-B897-4F90A500AF52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hrs.Infrastructure", "src\Hrs.Infrastructure\Hrs.Infrastructure.csproj", "{6C4D77AE-A126-49B7-B897-4F90A500AF52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBackend.Reservations.ReservationService", "src\HotelBackend.Reservations.Presentation\HotelBackend.Reservations.ReservationService.csproj", "{907D2860-4C6B-4F3B-A289-1B58F0F9E2E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hrs.Presentation", "src\Hrs.Presentation\Hrs.Presentation.csproj", "{907D2860-4C6B-4F3B-A289-1B58F0F9E2E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
