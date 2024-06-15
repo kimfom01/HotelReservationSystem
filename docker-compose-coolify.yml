@@ -8,6 +8,8 @@ services:
       - 5432:5432
     networks:
       - nginx-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready"]
       interval: 10s
