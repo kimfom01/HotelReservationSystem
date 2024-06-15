@@ -42,18 +42,18 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - "ConnectionStrings__DefaultConnection"=""
-      - "MessageBroker__Host"=""
-      - "MessageBroker__User"=""
-      - "MessageBroker__Password"=""
-      - "JwtConfigOptions__Key"=""
-      - "JwtConfigOptions__Issuer"=""
-      - "JwtConfigOptions__Audience"=""
-      - "JwtConfigOptions__ExpiresIn"=""
-      - "EmailOptions__SenderEmail"=""
-      - "EmailOptions__Password"=""
-      - "EmailOptions__Host"=""
-      - "EmailOptions__Port"=""
+      - ConnectionStrings__DefaultConnection=
+      - MessageBroker__Host=
+      - MessageBroker__User=
+      - MessageBroker__Password=
+      - JwtConfigOptions__Key=
+      - JwtConfigOptions__Issuer=
+      - JwtConfigOptions__Audience=
+      - JwtConfigOptions__ExpiresIn=
+      - EmailOptions__SenderEmail=
+      - EmailOptions__Password=
+      - EmailOptions__Host=
+      - EmailOptions__Port=
     networks:
       - nginx-network
 networks:
