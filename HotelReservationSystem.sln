@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EF191C9-1B1E-4F73-9547-E7626E177D6E}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		docker-compose-coolify.yml = docker-compose-coolify.yml
+		src\Dockerfile.backend = src\Dockerfile.backend
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hrs.Common", "src\Hrs.Common\Hrs.Common.csproj", "{DAE83D8F-D079-4B28-87EF-1C348FA0C243}"
 EndProject

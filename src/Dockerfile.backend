@@ -4,23 +4,23 @@ WORKDIR /src
 
 COPY ./Hrs.Common/ ./Hrs.Common/
 
-RUN dotnet restore ./Hrs.Common/Hrs.Common.csproj
+RUN dotnet build ./Hrs.Common/Hrs.Common.csproj
 
 COPY ./Hrs.Domain/ ./Hrs.Domain/
 
-RUN dotnet restore ./Hrs.Domain/Hrs.Domain.csproj
+RUN dotnet build ./Hrs.Domain/Hrs.Domain.csproj
 
 COPY ./Hrs.Application/ ./Hrs.Application/
 
-RUN dotnet restore ./Hrs.Application/Hrs.Application.csproj
+RUN dotnet build ./Hrs.Application/Hrs.Application.csproj
 
 COPY ./Hrs.Infrastructure/ ./Hrs.Infrastructure/
 
-RUN dotnet restore ./Hrs.Infrastructure/Hrs.Infrastructure.csproj
+RUN dotnet build ./Hrs.Infrastructure/Hrs.Infrastructure.csproj
 
 COPY ./Hrs.Presentation/ ./Hrs.Presentation/
 
-RUN dotnet restore ./Hrs.Presentation/Hrs.Presentation.csproj
+# RUN dotnet restore ./Hrs.Presentation/Hrs.Presentation.csproj
 
 RUN dotnet publish ./Hrs.Presentation/Hrs.Presentation.csproj -c Release -o /app/publish
 
