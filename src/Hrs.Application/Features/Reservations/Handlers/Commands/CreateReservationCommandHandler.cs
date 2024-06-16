@@ -2,9 +2,9 @@ using AutoMapper;
 using FluentValidation;
 using Hrs.Common.Messages;
 using Hrs.Domain.Entities.Reservation;
-using Hrs.Application.Contracts.ApiServices;
 using Hrs.Application.Contracts.Database;
-using Hrs.Application.Dtos.AdminApi.RoomApi;
+using Hrs.Application.Contracts.Services;
+using Hrs.Application.Dtos.Admin.Rooms;
 using Hrs.Application.Dtos.Reservations;
 using Hrs.Application.Exceptions;
 using Hrs.Application.Features.Reservations.Requests.Commands;
@@ -20,7 +20,7 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
     private readonly IMapper _mapper;
     private readonly IReservationsUnitOfWork _reservationsUnitOfWork;
     private readonly IValidator<CreateReservationRequest> _validator;
-    private readonly IRoomApiService _roomApiService;
+    private readonly IRoomService _roomService;
     private readonly IPublishEndpoint _publishEndpoint;
 
     public CreateReservationCommandHandler(
@@ -28,14 +28,14 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
         IMapper mapper,
         IReservationsUnitOfWork reservationsUnitOfWork,
         IValidator<CreateReservationRequest> validator,
-        IRoomApiService roomApiService,
+        IRoomService roomService,
         IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _mapper = mapper;
         _reservationsUnitOfWork = reservationsUnitOfWork;
         _validator = validator;
-        _roomApiService = roomApiService;
+        _roomService = roomService;
         _publishEndpoint = publishEndpoint;
     }
 
@@ -54,7 +54,7 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
 
         var reservation = _mapper.Map<Reservation>(command.CreateReservationDto);
 
-        var reserveRoomResponse = await _roomApiService.PlaceOnHold(new ReserveRoomApiRequest
+        var reserveRoomResponse = await _roomService.PlaceOnHold(new ReserveRoomRequest
         {
             RoomTypeId = command.CreateReservationDto.RoomTypeId,
             HotelId = reservation.HotelId
@@ -82,8 +82,8 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
 
             _logger.LogInformation("Freeing up room");
 
-            await _roomApiService.FreeUpRoom(
-                new FreeRoomApiRequest
+            await _roomService.FreeUpRoom(
+                new FreeRoomRequest
                 {
                     HotelId = command.CreateReservationDto.HotelId,
                     RoomId = reservation.RoomId

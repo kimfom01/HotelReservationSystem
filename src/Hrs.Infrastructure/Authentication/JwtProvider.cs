@@ -7,7 +7,7 @@ using Hrs.Domain.Entities.Admin;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace HotelBackend.Admin.Infrastructure.Authentication;
+namespace Hrs.Infrastructure.Authentication;
 
 public class JwtProvider : IJwtProvider
 {

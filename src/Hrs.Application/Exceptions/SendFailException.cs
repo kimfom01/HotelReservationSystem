@@ -1,4 +1,4 @@
-namespace HotelBackend.EmailClient.Application.Exceptions;
+namespace Hrs.Application.Exceptions;
 
 public class SendFailException : Exception
 {

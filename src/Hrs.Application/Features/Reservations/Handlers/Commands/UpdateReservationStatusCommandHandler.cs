@@ -2,9 +2,9 @@ using AutoMapper;
 using FluentValidation;
 using Hrs.Common.Enums;
 using Hrs.Common.Messages;
-using Hrs.Application.Contracts.ApiServices;
 using Hrs.Application.Contracts.Database;
-using Hrs.Application.Dtos.AdminApi.RoomApi;
+using Hrs.Application.Contracts.Services;
+using Hrs.Application.Dtos.Admin.Rooms;
 using Hrs.Application.Dtos.Reservations;
 using Hrs.Application.Exceptions;
 using Hrs.Application.Features.Reservations.Requests.Commands;
@@ -20,7 +20,7 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
     private readonly IReservationsUnitOfWork _reservationsUnitOfWork;
     private readonly IValidator<UpdateReservationPaymentStatusRequest> _validator;
     private readonly IMapper _mapper;
-    private readonly IRoomApiService _roomApiService;
+    private readonly IRoomService _roomService;
     private readonly IPublishEndpoint _publishEndpoint;
 
     public UpdateReservationStatusCommandHandler(
@@ -28,14 +28,14 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
         IReservationsUnitOfWork reservationsUnitOfWork,
         IValidator<UpdateReservationPaymentStatusRequest> validator,
         IMapper mapper,
-        IRoomApiService roomApiService,
+        IRoomService roomService,
         IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _reservationsUnitOfWork = reservationsUnitOfWork;
         _validator = validator;
         _mapper = mapper;
-        _roomApiService = roomApiService;
+        _roomService = roomService;
         _publishEndpoint = publishEndpoint;
     }
 
@@ -82,7 +82,7 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
 
         if (command.UpdateReservationPaymentStatusDto.Status is PaymentStatus.Canceled or PaymentStatus.Refunded)
         {
-            var roomIsFreed = await _roomApiService.FreeUpRoom(new FreeRoomApiRequest
+            var roomIsFreed = await _roomService.FreeUpRoom(new FreeRoomRequest
             {
                 RoomId = reservation.RoomId,
                 HotelId = reservation.HotelId,

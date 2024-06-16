@@ -1,10 +1,9 @@
-using Hrs.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 
-namespace HotelBackend.Payments.Infrastructure.Database;
+namespace Hrs.Infrastructure.Database;
 
 public class PaymentDataContextFactory : IDesignTimeDbContextFactory<PaymentDataContext>
 {

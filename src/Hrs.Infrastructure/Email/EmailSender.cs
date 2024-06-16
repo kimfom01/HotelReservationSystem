@@ -1,7 +1,7 @@
 using System.Text;
 using FluentEmail.Core;
-using HotelBackend.EmailClient.Application.Exceptions;
 using Hrs.Application.Contracts.Email;
+using Hrs.Application.Exceptions;
 using Hrs.Common.Enums;
 using Hrs.Common.Messages;
 using Microsoft.Extensions.Logging;

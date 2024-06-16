@@ -1,6 +1,6 @@
-using HotelBackend.EmailClient.Application.Exceptions;
 using Hrs.Application.Contracts.Email;
 using Hrs.Application.Contracts.MessageBroker;
+using Hrs.Application.Exceptions;
 using Hrs.Common.Messages;
 using MassTransit;
 using Microsoft.Extensions.Logging;

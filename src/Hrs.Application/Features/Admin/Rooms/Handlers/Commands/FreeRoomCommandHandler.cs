@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Hrs.Application.Features.Admin.Rooms.Handlers.Commands;
 
-public class FreeRoomCommandHandler : IRequestHandler<FreeRoomCommand, Unit>
+public class FreeRoomCommandHandler : IRequestHandler<FreeRoomCommand, bool>
 {
     private readonly IAdminUnitOfWork _unitOfWork;
     private readonly ILogger<FreeRoomCommandHandler> _logger;
@@ -25,7 +25,7 @@ public class FreeRoomCommandHandler : IRequestHandler<FreeRoomCommand, Unit>
         _validator = validator;
     }
 
-    public async Task<Unit> Handle(FreeRoomCommand command, CancellationToken cancellationToken)
+    public async Task<bool> Handle(FreeRoomCommand command, CancellationToken cancellationToken)
     {
         if (command.RoomRequest is null)
         {
@@ -53,6 +53,6 @@ public class FreeRoomCommandHandler : IRequestHandler<FreeRoomCommand, Unit>
 
         await _unitOfWork.SaveChanges(cancellationToken);
 
-        return Unit.Value;
+        return true;
     }
 }

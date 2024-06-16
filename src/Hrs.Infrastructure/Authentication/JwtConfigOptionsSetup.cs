@@ -2,7 +2,7 @@ using Hrs.Common.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace HotelBackend.Admin.Infrastructure.Authentication;
+namespace Hrs.Infrastructure.Authentication;
 
 public class JwtConfigOptionsSetup : IConfigureOptions<JwtConfigOptions>
 {

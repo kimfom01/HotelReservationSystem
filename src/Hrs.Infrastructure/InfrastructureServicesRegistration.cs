@@ -2,22 +2,23 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Security;
-using HotelBackend.Admin.Infrastructure.Authentication;
-using Hrs.Application.Contracts.ApiServices;
 using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Contracts.Email;
+using Hrs.Application.Contracts.Services;
 using Hrs.Common.Options;
-using Hrs.Infrastructure.ApiServices;
 using Hrs.Infrastructure.Authentication;
 using Hrs.Infrastructure.Database;
 using Hrs.Infrastructure.Email;
+using Hrs.Infrastructure.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace Hrs.Infrastructure;
@@ -25,12 +26,11 @@ namespace Hrs.Infrastructure;
 public static class InfrastructureServicesRegistration
 {
     public static IServiceCollection ConfigureInfrastructureServices(
-        this IServiceCollection services, bool isDevelopment, IConfiguration configuration
+        this IServiceCollection services,  IWebHostEnvironment environment, IConfiguration configuration
     )
     {
         services.AddScoped<IReservationsUnitOfWork, ReservationsUnitOfWork>();
-        services.AddHttpClient<IRoomApiService, RoomApiService>();
-        services.ConfigureOptions<RoomApiOptionsSetup>();
+        services.AddScoped<IRoomService, RoomService>();
 
         services.AddDbContext<ReservationDataContext>(options =>
         {
@@ -85,7 +85,7 @@ public static class InfrastructureServicesRegistration
         var emailOptions = services.BuildServiceProvider()
             .GetRequiredService<IOptions<EmailOptions>>().Value;
 
-        if (isDevelopment)
+        if (environment.IsDevelopment())
         {
             services
                 .AddFluentEmail(emailOptions.SenderEmail)
@@ -104,7 +104,7 @@ public static class InfrastructureServicesRegistration
                             emailOptions.SenderEmail,
                             GetSecurePassword(emailOptions.Password)
                         ),
-                        EnableSsl = !isDevelopment,
+                        EnableSsl = !environment.IsDevelopment(),
                         DeliveryMethod = SmtpDeliveryMethod.Network
                     }
                 );

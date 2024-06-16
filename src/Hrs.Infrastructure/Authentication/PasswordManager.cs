@@ -1,6 +1,6 @@
 using Hrs.Application.Contracts.Authentication;
 
-namespace HotelBackend.Admin.Infrastructure.Authentication;
+namespace Hrs.Infrastructure.Authentication;
 
 public class PasswordManager : IPasswordManager
 {

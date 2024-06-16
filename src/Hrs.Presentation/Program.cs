@@ -50,7 +50,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.ConfigureInfrastructureServices(builder.Environment.IsDevelopment(), builder.Configuration);
+builder.Services.ConfigureInfrastructureServices(builder.Environment, builder.Configuration);
 builder.Services.ConfigureApplicationServices();
 
 var app = builder.Build();
