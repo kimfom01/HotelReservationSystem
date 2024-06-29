@@ -21,6 +21,11 @@ public class AdminBaseRepository<TEntity> : IRepository<TEntity> where TEntity :
         return added.Entity;
     }
 
+    public Task AddMany(List<TEntity> entities, CancellationToken cancellationToken)
+    {
+        return DbSet.AddRangeAsync(entities, cancellationToken);
+    }
+
     public virtual async Task<List<TEntity>> GetEntities(Expression<Func<TEntity, bool>> expression,
         CancellationToken cancellationToken)
     {

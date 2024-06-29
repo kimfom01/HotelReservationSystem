@@ -2,11 +2,28 @@ using System.Text.Json.Serialization;
 using Hrs.Application;
 using Hrs.Infrastructure;
 using Hrs.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 const string corsPolicy = "any origin";
+
+builder.AddServiceDefaults();
+builder.AddNpgsqlDbContext<AdminDataContext>("hoteldb",
+    configureDbContextOptions: o => o.UseNpgsql(y =>
+        y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "admin")));
+
+builder.AddNpgsqlDbContext<ReservationDataContext>("hoteldb",
+    configureDbContextOptions: o => o.UseNpgsql(y =>
+        y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations")));
+
+builder.AddNpgsqlDbContext<PaymentDataContext>("hoteldb", null,
+    configureDbContextOptions: o => o.UseNpgsql(y =>
+        y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments")));
+
+builder.AddRabbitMQClient("rabbitmq");
 
 builder
     .Services.AddControllers()
@@ -70,5 +87,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapDefaultEndpoints();
 
 app.Run();

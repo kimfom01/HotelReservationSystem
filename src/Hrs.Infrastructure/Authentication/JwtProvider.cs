@@ -2,20 +2,19 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Hrs.Application.Contracts.Authentication;
-using Hrs.Common.Options;
 using Hrs.Domain.Entities.Admin;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Hrs.Infrastructure.Authentication;
 
 public class JwtProvider : IJwtProvider
 {
-    private readonly JwtConfigOptions _jwtConfig;
+    private readonly IConfiguration _configuration;
 
-    public JwtProvider(IOptions<JwtConfigOptions> configOptions)
+    public JwtProvider(IConfiguration configuration)
     {
-        _jwtConfig = configOptions.Value;
+        _configuration = configuration;
     }
 
     public string Generate(Employee employee)
@@ -29,14 +28,15 @@ public class JwtProvider : IJwtProvider
             new Claim("Role", employee.Role)
         ];
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
-        var issuer = _jwtConfig.Issuer;
-        var audience = _jwtConfig.Audience;
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Key")!));
+        var issuer = _configuration.GetValue<string>("Issuer");
+        var audience = _configuration.GetValue<string>("Audience");
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
         var token = new JwtSecurityToken(issuer, audience, claims,
-            expires: DateTime.Now.Add(TimeSpan.FromMinutes(_jwtConfig.ExpiresIn)), signingCredentials: credentials);
+            expires: DateTime.Now.Add(TimeSpan.FromMinutes(_configuration.GetValue<double>("ExpiresIn"))),
+            signingCredentials: credentials);
 
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 

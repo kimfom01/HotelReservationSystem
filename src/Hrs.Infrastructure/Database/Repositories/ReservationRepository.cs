@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hrs.Infrastructure.Database.Repositories;
 
-public class ReservationRepository : Repository<Reservation>, IReservationRepository
+public class ReservationRepository : ReservationsBaseRepository<Reservation>, IReservationRepository
 {
     public ReservationRepository(ReservationDataContext reservationDataContext) : base(reservationDataContext)
     {

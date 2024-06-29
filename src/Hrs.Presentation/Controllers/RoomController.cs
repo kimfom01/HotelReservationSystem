@@ -59,6 +59,28 @@ public class RoomController : ControllerBase
         }
     }
 
+    [Authorize]
+    [HttpPost("m")]
+    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<ActionResult<GetRoomResponse>> CreateManyRooms(CreateManyRoomsRequest roomsRequest,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var count = await _mediator.Send(new CreateManyRoomsCommand
+            {
+                RoomsRequest = roomsRequest
+            }, cancellationToken);
+
+            return Ok($"{count} rooms created");
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
     [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]

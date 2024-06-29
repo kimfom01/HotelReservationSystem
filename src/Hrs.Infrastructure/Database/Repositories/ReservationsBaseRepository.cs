@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hrs.Infrastructure.Database.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+public class ReservationsBaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
     protected readonly DbSet<TEntity> DbSet;
 
-    protected Repository(ReservationDataContext reservationDataContext)
+    protected ReservationsBaseRepository(ReservationDataContext reservationDataContext)
     {
         DbSet = reservationDataContext.Set<TEntity>();
     }
@@ -21,12 +21,19 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return added.Entity;
     }
 
-    public virtual async Task<List<TEntity>> GetEntities(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken)
+    public Task AddMany(List<TEntity> entities, CancellationToken cancellationToken)
+    {
+        return DbSet.AddRangeAsync(entities, cancellationToken);
+    }
+
+    public virtual async Task<List<TEntity>> GetEntities(Expression<Func<TEntity, bool>> expression,
+        CancellationToken cancellationToken)
     {
         return await DbSet.Where(expression).AsNoTracking().ToListAsync(cancellationToken);
     }
 
-    public virtual async Task<TEntity?> GetEntity(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken)
+    public virtual async Task<TEntity?> GetEntity(Expression<Func<TEntity, bool>> expression,
+        CancellationToken cancellationToken)
     {
         var entity = await DbSet.FirstOrDefaultAsync(expression, cancellationToken);
 

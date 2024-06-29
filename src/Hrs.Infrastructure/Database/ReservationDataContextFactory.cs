@@ -22,7 +22,7 @@ public class ReservationDataContextFactory : IDesignTimeDbContextFactory<Reserva
     {
         var builder = new DbContextOptionsBuilder<ReservationDataContext>();
 
-        builder.UseNpgsql(_configuration?.GetConnectionString("DefaultConnection"),
+        builder.UseNpgsql(_configuration?.GetConnectionString("hoteldb"),
             options => options.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations"));
 
         return new ReservationDataContext(builder.Options);

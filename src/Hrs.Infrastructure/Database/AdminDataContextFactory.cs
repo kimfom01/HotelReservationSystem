@@ -22,7 +22,7 @@ public class AdminDataContextFactory : IDesignTimeDbContextFactory<AdminDataCont
     {
         var builder = new DbContextOptionsBuilder<AdminDataContext>();
 
-        builder.UseNpgsql(_configuration?.GetConnectionString("DefaultConnection"),
+        builder.UseNpgsql(_configuration?.GetConnectionString("hoteldb"),
             options => options.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "admin"));
 
         return new AdminDataContext(builder.Options);

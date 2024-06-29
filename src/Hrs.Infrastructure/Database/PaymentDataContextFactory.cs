@@ -22,7 +22,7 @@ public class PaymentDataContextFactory : IDesignTimeDbContextFactory<PaymentData
     {
         var builder = new DbContextOptionsBuilder<PaymentDataContext>();
 
-        builder.UseNpgsql(_configuration?.GetConnectionString("DefaultConnection"),
+        builder.UseNpgsql(_configuration?.GetConnectionString("hoteldb"),
             options => options.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments"));
 
         return new PaymentDataContext(builder.Options);

@@ -6,7 +6,6 @@ using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Contracts.Email;
 using Hrs.Application.Contracts.Services;
-using Hrs.Common.Options;
 using Hrs.Infrastructure.Authentication;
 using Hrs.Infrastructure.Database;
 using Hrs.Infrastructure.Email;
@@ -14,29 +13,23 @@ using Hrs.Infrastructure.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Hrs.Infrastructure;
 
 public static class InfrastructureServicesRegistration
 {
     public static IServiceCollection ConfigureInfrastructureServices(
-        this IServiceCollection services,  IWebHostEnvironment environment, IConfiguration configuration
+        this IServiceCollection services, IWebHostEnvironment environment, IConfiguration configuration
     )
     {
         services.AddScoped<IReservationsUnitOfWork, ReservationsUnitOfWork>();
         services.AddScoped<IRoomService, RoomService>();
 
-        services.AddDbContext<ReservationDataContext>(options =>
-        {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
-                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations"));
-        });
+        services.Configure<MassTransitHostOptions>(options => { options.WaitUntilStarted = true; });
 
         services.AddMassTransit(busConfigurator =>
         {
@@ -46,23 +39,15 @@ public static class InfrastructureServicesRegistration
 
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
-                configurator.Host(new Uri(configuration["MessageBroker:Host"]!), h =>
-                {
-                    h.Username(configuration["MessageBroker:User"]!);
-                    h.Password(configuration["MessageBroker:Password"]!);
-                });
+                var config = context.GetRequiredService<IConfiguration>();
+                
+                configurator.Host(config.GetConnectionString("rabbitmq"));
 
                 configurator.ConfigureEndpoints(context);
             });
         });
 
         services.AddScoped<IAdminUnitOfWork, AdminUnitOfWork>();
-
-        services.AddDbContext<AdminDataContext>(options =>
-        {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
-                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "admin"));
-        });
 
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IPasswordManager, PasswordManager>();
@@ -75,34 +60,27 @@ public static class InfrastructureServicesRegistration
 
         services.AddScoped<IPaymentsUnitOfWork, PaymentsUnitOfWork>();
 
-        services.AddDbContext<PaymentDataContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
-                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments")));
-
         services.AddScoped<IEmailSender, EmailSender>();
         services.ConfigureOptions<EmailOptionsSetup>();
-
-        var emailOptions = services.BuildServiceProvider()
-            .GetRequiredService<IOptions<EmailOptions>>().Value;
 
         if (environment.IsDevelopment())
         {
             services
-                .AddFluentEmail(emailOptions.SenderEmail)
+                .AddFluentEmail(configuration.GetValue<string>("SenderEmail"))
                 .AddRazorRenderer()
                 .AddSmtpSender("localhost", 1025);
         }
         else
         {
             services
-                .AddFluentEmail(emailOptions.SenderEmail)
+                .AddFluentEmail(configuration.GetValue<string>("SenderEmail"))
                 .AddRazorRenderer()
                 .AddSmtpSender(
-                    new SmtpClient(emailOptions.Host, emailOptions.Port)
+                    new SmtpClient(configuration.GetValue<string>("Host"), configuration.GetValue<int>("Port"))
                     {
                         Credentials = new NetworkCredential(
-                            emailOptions.SenderEmail,
-                            GetSecurePassword(emailOptions.Password)
+                            configuration.GetValue<string>("SenderEmail"),
+                            GetSecurePassword(configuration.GetValue<string>("Password")!)
                         ),
                         EnableSsl = !environment.IsDevelopment(),
                         DeliveryMethod = SmtpDeliveryMethod.Network
