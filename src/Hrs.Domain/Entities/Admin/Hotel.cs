@@ -4,11 +4,23 @@ namespace Hrs.Domain.Entities.Admin;
 
 public class Hotel : BaseEntity
 {
-    public string Name { get; set; } = string.Empty;
-    public string Location { get; set; } = string.Empty;
-    public Guid AdminId { get; set; }
+    internal Hotel(string name, string location, Guid adminId)
+    {
+        Name = name;
+        Location = location;
+        AdminId = adminId;
+    }
 
-    public IEnumerable<Room>? Rooms { get; set; }
-    public IEnumerable<RoomType>? RoomTypes { get; set; }
-    public IEnumerable<Employee>? Employees { get; set; }
+    public string Name { get; private set; }
+    public string Location { get; private set; }
+    public Guid AdminId { get; private set; }
+
+    public IReadOnlyCollection<Room>? Rooms { get; private set; }
+    public IReadOnlyCollection<RoomType>? RoomTypes { get; private set; }
+    public IReadOnlyCollection<Employee>? Employees { get; private set; }
+
+    public static Hotel CreateHotel(string name, string location, Guid adminId)
+    {
+        return new Hotel(name, location, adminId);
+    }
 }

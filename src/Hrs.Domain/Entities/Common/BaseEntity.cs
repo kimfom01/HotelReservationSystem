@@ -2,7 +2,7 @@ namespace Hrs.Domain.Entities.Common;
 
 public abstract class BaseEntity
 {
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public Guid Id { get; internal init; }
+    public DateTime CreatedAt { get; private set; } = DateTime.Now;
     public DateTime? LastModifiedAt { get; set; }
 }
