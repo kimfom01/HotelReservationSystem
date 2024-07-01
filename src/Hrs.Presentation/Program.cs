@@ -35,7 +35,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: corsPolicy,
         policy =>
-            policy.WithOrigins("http://localhost:3000", "https://hotelreservationsystem-j16p.onrender.com")
+            policy.WithOrigins("http://localhost:3000", "https://hotelreservationsystem-j16p.onrender.com", "https://hotelfront.dodonedid.site")
                 .AllowAnyHeader()
                 .AllowAnyMethod());
 });

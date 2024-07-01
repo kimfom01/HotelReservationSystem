@@ -2,13 +2,15 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var rabbitmqUser = builder.AddParameter("rabbitmq-user", secret: true);
 var rabbitmqPassword = builder.AddParameter("rabbitmq-password", secret: true);
-var rabbitmq = builder.AddRabbitMQ("rabbitmq", rabbitmqUser, rabbitmqPassword, port: 5672)
+var rabbitmq = builder.AddRabbitMQ("rabbitmq", rabbitmqUser, rabbitmqPassword)
+    .WithHealthCheck()
     .WithEndpoint(15672, 15672, scheme:"http", name: "rmqManagement")
     .WithImage("masstransit/rabbitmq");
 
 var postgresUser = builder.AddParameter("postgres-user", secret: true);
 var postgresPassword = builder.AddParameter("postgres-password", secret: true);
-var postgres = builder.AddPostgres("postgres", postgresUser, postgresPassword, 5432)
+var postgres = builder.AddPostgres("postgres", postgresUser, postgresPassword)
+    .WithHealthCheck()
     .WithEnvironment("POSTGRES_DB", "hoteldb")
     .AddDatabase("hoteldb");
 
@@ -27,7 +29,6 @@ var jwtIssuer = builder.AddParameter("Issuer", secret: true);
 var jwtAudience = builder.AddParameter("Audience", secret: true);
 var jwtExpiresIn = builder.AddParameter("ExpiresIn", secret: true);
 
-
 builder.AddProject<Projects.Hrs_Presentation>("api")
     .WithReference(rabbitmq)
     .WithReference(postgres)
@@ -40,9 +41,8 @@ builder.AddProject<Projects.Hrs_Presentation>("api")
     .WithEnvironment("Issuer", jwtIssuer)
     .WithEnvironment("Audience", jwtAudience)
     .WithEnvironment("ExpiresIn", jwtExpiresIn)
-    .WithReplicas(4)
-    .WithExternalHttpEndpoints();
+    .WithExternalHttpEndpoints()
+    .WaitFor(postgres)
+    .WaitFor(rabbitmq);
 
-var app = builder.Build();
-
-app.Run();
+builder.Build().Run();

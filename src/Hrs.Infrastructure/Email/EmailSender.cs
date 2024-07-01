@@ -21,6 +21,8 @@ public class EmailSender : IEmailSender
 
     public async Task SendEmailAsync(string email, string? subject, ReservationDetails? reservationMessage)
     {
+        // TODO: Use a razor template to build this message
+        
         var htmlMessageStringbuilder = new StringBuilder()
             .Append("<h3>Hello, @Model.GuestFirstName</h3>");
 
@@ -42,6 +44,12 @@ public class EmailSender : IEmailSender
                     .Append(
                         "<div>Your reservation on @Model.HotelName, @Model.HotelLocation was cancelled</div>");
                 break;
+            case PaymentStatus.Pending:
+                break;
+            case PaymentStatus.Refunded:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         htmlMessageStringbuilder

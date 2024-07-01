@@ -18,6 +18,10 @@ COPY ./Hrs.Infrastructure/ ./Hrs.Infrastructure/
 
 RUN dotnet build ./Hrs.Infrastructure/Hrs.Infrastructure.csproj
 
+COPY ./ServiceDefaults/ ./ServiceDefaults/
+
+RUN dotnet build ./ServiceDefaults/ServiceDefaults.csproj
+
 COPY ./Hrs.Presentation/ ./Hrs.Presentation/
 
 # RUN dotnet restore ./Hrs.Presentation/Hrs.Presentation.csproj
