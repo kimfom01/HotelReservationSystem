@@ -6,6 +6,7 @@ using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Contracts.Email;
 using Hrs.Application.Contracts.Services;
+using Hrs.Common.Options;
 using Hrs.Infrastructure.Authentication;
 using Hrs.Infrastructure.Database;
 using Hrs.Infrastructure.Email;
@@ -16,14 +17,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Hrs.Infrastructure;
 
 public static class InfrastructureServicesRegistration
 {
     public static IServiceCollection ConfigureInfrastructureServices(
-        this IServiceCollection services, IWebHostEnvironment environment, IConfiguration configuration
+        this IServiceCollection services, IWebHostEnvironment environment
     )
     {
         services.AddScoped<IReservationsUnitOfWork, ReservationsUnitOfWork>();
@@ -57,30 +58,32 @@ public static class InfrastructureServicesRegistration
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
 
-
         services.AddScoped<IPaymentsUnitOfWork, PaymentsUnitOfWork>();
 
         services.AddScoped<IEmailSender, EmailSender>();
         services.ConfigureOptions<EmailOptionsSetup>();
+        
+        var emailOptions = services.BuildServiceProvider()
+            .GetRequiredService<IOptions<EmailOptions>>().Value;
 
         if (environment.IsDevelopment())
         {
             services
-                .AddFluentEmail(configuration.GetValue<string>("SenderEmail"))
+                .AddFluentEmail(emailOptions.SenderEmail)
                 .AddRazorRenderer()
                 .AddSmtpSender("localhost", 1025);
         }
         else
         {
             services
-                .AddFluentEmail(configuration.GetValue<string>("SenderEmail"))
+                .AddFluentEmail(emailOptions.SenderEmail)
                 .AddRazorRenderer()
                 .AddSmtpSender(
-                    new SmtpClient(configuration.GetValue<string>("Host"), configuration.GetValue<int>("Port"))
+                    new SmtpClient(emailOptions.Host, emailOptions.Port)
                     {
                         Credentials = new NetworkCredential(
-                            configuration.GetValue<string>("SenderEmail"),
-                            GetSecurePassword(configuration.GetValue<string>("Password")!)
+                            emailOptions.SenderEmail,
+                            GetSecurePassword(emailOptions.Password)
                         ),
                         EnableSsl = !environment.IsDevelopment(),
                         DeliveryMethod = SmtpDeliveryMethod.Network

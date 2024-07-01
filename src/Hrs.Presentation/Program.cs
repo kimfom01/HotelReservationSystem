@@ -11,15 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 const string corsPolicy = "any origin";
 
 builder.AddServiceDefaults();
-builder.AddNpgsqlDbContext<AdminDataContext>("hoteldb",
+builder.AddNpgsqlDbContext<AdminDataContext>("hrs-db",
     configureDbContextOptions: o => o.UseNpgsql(y =>
         y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "admin")));
 
-builder.AddNpgsqlDbContext<ReservationDataContext>("hoteldb",
+builder.AddNpgsqlDbContext<ReservationDataContext>("hrs-db",
     configureDbContextOptions: o => o.UseNpgsql(y =>
         y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations")));
 
-builder.AddNpgsqlDbContext<PaymentDataContext>("hoteldb", null,
+builder.AddNpgsqlDbContext<PaymentDataContext>("hrs-db", null,
     configureDbContextOptions: o => o.UseNpgsql(y =>
         y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments")));
 
@@ -67,7 +67,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.ConfigureInfrastructureServices(builder.Environment, builder.Configuration);
+builder.Services.ConfigureInfrastructureServices(builder.Environment);
 builder.Services.ConfigureApplicationServices();
 
 var app = builder.Build();

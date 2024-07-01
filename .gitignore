@@ -367,5 +367,3 @@ FodyWeavers.xsd
 
 **/**/data/
 **/**/.env*
-
-**/**/aspirate-state.json

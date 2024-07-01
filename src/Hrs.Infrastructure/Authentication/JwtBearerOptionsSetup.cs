@@ -1,4 +1,5 @@
 using System.Text;
+using Hrs.Common.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,11 +10,11 @@ namespace Hrs.Infrastructure.Authentication;
 
 public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly IConfiguration _configuration;
+    private readonly JwtConfigOptions _configOptions;
 
-    public JwtBearerOptionsSetup(IConfiguration configuration)
+    public JwtBearerOptionsSetup(IOptions<JwtConfigOptions> configOptions)
     {
-        _configuration = configuration;
+        _configOptions = configOptions.Value;
     }
 
     public void Configure(JwtBearerOptions options)
@@ -24,9 +25,9 @@ public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
             ValidateIssuer = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidAudience = _configuration.GetValue<string>("Audience"),
-            ValidIssuer = _configuration.GetValue<string>("Issuer"),
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Key")!)),
+            ValidAudience = _configOptions.Audience,
+            ValidIssuer = _configOptions.Issuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configOptions.Key)),
             ClockSkew = TimeSpan.Zero
         };
     }
