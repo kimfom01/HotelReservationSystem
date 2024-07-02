@@ -2,11 +2,10 @@ using AutoMapper;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Reservations;
 using Hrs.Application.Exceptions;
-using Hrs.Application.Features.Reservations.Requests.Queries;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Hrs.Application.Features.Reservations.Handlers.Queries;
+namespace Hrs.Application.Features.Reservations.Queries;
 
 public class GetReservationByIdQueryHandler : IRequestHandler<GetReservationByIdQuery, GetReservationDetailsResponse>
 {

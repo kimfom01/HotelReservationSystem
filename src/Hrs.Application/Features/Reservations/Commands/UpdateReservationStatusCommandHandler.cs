@@ -1,18 +1,17 @@
 using AutoMapper;
 using FluentValidation;
-using Hrs.Common.Enums;
-using Hrs.Common.Messages;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Contracts.Services;
 using Hrs.Application.Dtos.Admin.Rooms;
 using Hrs.Application.Dtos.Reservations;
 using Hrs.Application.Exceptions;
-using Hrs.Application.Features.Reservations.Requests.Commands;
+using Hrs.Common.Enums;
+using Hrs.Common.Messages;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Hrs.Application.Features.Reservations.Handlers.Commands;
+namespace Hrs.Application.Features.Reservations.Commands;
 
 public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReservationStatusCommand, Unit>
 {
@@ -72,15 +71,11 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
             throw new ReservationException("Reservation is already cancelled");
         }
 
-        reservation.PaymentStatus = command.UpdateReservationPaymentStatusDto.Status;
-        reservation.PaymentId = command.UpdateReservationPaymentStatusDto.PaymentId;
+        reservation.UpdateStatuses(
+            command.UpdateReservationPaymentStatusDto.Status,
+            command.UpdateReservationPaymentStatusDto.PaymentId);
 
-        if (command.UpdateReservationPaymentStatusDto.Status == PaymentStatus.Paid)
-        {
-            reservation.ReservationStatus = ReservationStatus.Confirmed;
-        }
-
-        if (command.UpdateReservationPaymentStatusDto.Status is PaymentStatus.Canceled or PaymentStatus.Refunded)
+        if (command.UpdateReservationPaymentStatusDto.Status == PaymentStatus.Canceled)
         {
             var roomIsFreed = await _roomService.FreeUpRoom(new FreeRoomRequest
             {
@@ -94,7 +89,7 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
                 throw new ReservationException("An error occured: unable to free up room");
             }
 
-            reservation.ReservationStatus = ReservationStatus.Cancelled;
+            reservation.CancelReservation();
         }
 
         await _reservationsUnitOfWork.SaveChanges(cancellationToken);

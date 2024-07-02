@@ -1,18 +1,17 @@
 using AutoMapper;
 using FluentValidation;
-using Hrs.Common.Messages;
-using Hrs.Domain.Entities.Reservation;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Contracts.Services;
 using Hrs.Application.Dtos.Admin.Rooms;
 using Hrs.Application.Dtos.Reservations;
 using Hrs.Application.Exceptions;
-using Hrs.Application.Features.Reservations.Requests.Commands;
+using Hrs.Common.Messages;
+using Hrs.Domain.Entities.Reservation;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Hrs.Application.Features.Reservations.Handlers.Commands;
+namespace Hrs.Application.Features.Reservations.Commands;
 
 public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand, GetReservationDetailsResponse>
 {
@@ -52,27 +51,39 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
 
         await _validator.ValidateAndThrowAsync(command.CreateReservationDto, cancellationToken);
 
-        var reservation = _mapper.Map<Reservation>(command.CreateReservationDto);
-
         var reserveRoomResponse = await _roomService.PlaceOnHold(new ReserveRoomRequest
         {
             RoomTypeId = command.CreateReservationDto.RoomTypeId,
-            HotelId = reservation.HotelId
+            HotelId = command.CreateReservationDto.HotelId
         }, cancellationToken);
 
         if (!reserveRoomResponse.Success)
         {
-            _logger.LogError("An error occured while marking room as unavailable for reservation={ReservationId}",
-                reservation.Id);
-            throw new ReservationException("An error occured: check if room is available");
+            _logger.LogError("Unable to place room on hold");
+            throw new ReservationException("Unable to place room on hold");
         }
 
-        var newGuest = await _reservationsUnitOfWork.GuestProfiles.Add(reservation.GuestProfile!, cancellationToken);
+        var guestProfile = GuestProfile.CreateGuestProfile(
+            command.CreateReservationDto.GuestProfile.FirstName,
+            command.CreateReservationDto.GuestProfile.LastName,
+            command.CreateReservationDto.GuestProfile.ContactEmail,
+            command.CreateReservationDto.GuestProfile.Sex,
+            command.CreateReservationDto.GuestProfile.Age);
 
-        reservation.GuestProfileId = newGuest!.Id;
+        await _reservationsUnitOfWork.GuestProfiles.Add(guestProfile, cancellationToken);
 
-        reservation.RoomId = reserveRoomResponse.RoomId!.Value;
+        var reservation = Reservation.CreateReservation(
+            command.CreateReservationDto.CheckIn,
+            command.CreateReservationDto.CheckOut,
+            command.CreateReservationDto.SpecialRequests,
+            command.CreateReservationDto.RoomPreferences,
+            command.CreateReservationDto.NumberOfGuests,
+            guestProfile.Id,
+            reserveRoomResponse.RoomId!.Value,
+            command.CreateReservationDto.HotelId);
+
         var added = await _reservationsUnitOfWork.Reservations.Add(reservation, cancellationToken);
+        
         await _reservationsUnitOfWork.SaveChanges(cancellationToken);
         _logger.LogInformation("Successfully created a reservation");
 
