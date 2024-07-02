@@ -21,7 +21,7 @@ public class ReservationsBaseRepository<TEntity> : IRepository<TEntity> where TE
         return added.Entity;
     }
 
-    public Task AddMany(List<TEntity> entities, CancellationToken cancellationToken)
+    public Task AddMany(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
         return DbSet.AddRangeAsync(entities, cancellationToken);
     }

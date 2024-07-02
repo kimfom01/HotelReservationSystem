@@ -21,7 +21,7 @@ public class PaymentsBaseRepository<TEntity> : IRepository<TEntity> where TEntit
         return entityEntry.Entity;
     }
 
-    public Task AddMany(List<TEntity> entities, CancellationToken cancellationToken)
+    public Task AddMany(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
         return DbSet.AddRangeAsync(entities, cancellationToken);
     }

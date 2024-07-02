@@ -1,6 +1,6 @@
 using Hrs.Application.Contracts.Services;
 using Hrs.Application.Dtos.Admin.Rooms;
-using Hrs.Application.Features.Admin.Rooms.Requests.Commands;
+using Hrs.Application.Features.Admin.Rooms.Commands;
 using MediatR;
 
 namespace Hrs.Infrastructure.Services;
