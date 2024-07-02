@@ -1,15 +1,14 @@
 using AutoMapper;
 using FluentValidation;
-using Hrs.Common.Messages;
-using Hrs.Domain.Entities.Payment;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Payments;
-using Hrs.Application.Features.Payments.Requests.Commands;
+using Hrs.Common.Messages;
+using Hrs.Domain.Entities.Payment;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Hrs.Application.Features.Payments.Handlers.Commands;
+namespace Hrs.Application.Features.Payments.Commands;
 
 public class AddPaymentCommandHandler : IRequestHandler<AddPaymentCommand, GetPaymentResponse>
 {
@@ -45,9 +44,10 @@ public class AddPaymentCommandHandler : IRequestHandler<AddPaymentCommand, GetPa
 
         await _validator.ValidateAndThrowAsync(command.PaymentRequest, cancellationToken);
 
-        var payment = _mapper.Map<Payment>(command.PaymentRequest);
-
-        payment.Status = command.PaymentRequest.Status;
+        var payment = Payment.CreatePayment(
+            command.PaymentRequest.Amount,
+            command.PaymentRequest.ReservationId,
+            command.PaymentRequest.Status);
 
         var added = await _paymentsUnitOfWork.Payments.Add(payment, cancellationToken);
         await _paymentsUnitOfWork.SaveChanges();

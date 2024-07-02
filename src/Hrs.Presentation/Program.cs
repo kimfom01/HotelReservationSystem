@@ -5,6 +5,7 @@ using Hrs.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
+using ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 

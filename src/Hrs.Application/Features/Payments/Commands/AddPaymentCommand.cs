@@ -1,7 +1,7 @@
 using Hrs.Application.Dtos.Payments;
 using MediatR;
 
-namespace Hrs.Application.Features.Payments.Requests.Commands;
+namespace Hrs.Application.Features.Payments.Commands;
 
 public record AddPaymentCommand : IRequest<GetPaymentResponse>
 {
