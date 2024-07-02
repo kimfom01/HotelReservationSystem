@@ -2,11 +2,10 @@ using AutoMapper;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Admin.Employees;
 using Hrs.Application.Exceptions;
-using Hrs.Application.Features.Admin.Employees.Requests.Queries;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Hrs.Application.Features.Admin.Employees.Handlers.Queries;
+namespace Hrs.Application.Features.Admin.Employees.Queries;
 
 public class GetEmployeeQueryHandler : IRequestHandler<GetEmployeeQuery, GetEmployeeResponse>
 {

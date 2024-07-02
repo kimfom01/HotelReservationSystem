@@ -1,17 +1,17 @@
 using AutoMapper;
 using FluentValidation;
-using Hrs.Common;
-using Hrs.Domain.Entities.Admin;
 using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Admin.Employees;
+using Hrs.Common;
+using Hrs.Domain.Entities.Admin;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Hrs.Application.Features.Admin.Employees.Handlers.Commands;
+namespace Hrs.Application.Features.Admin.Employees.Commands;
 
 public class
-    CreateEmployeeCommandHandler : IRequestHandler<Requests.Commands.CreateEmployeeCommand, GetEmployeeResponse>
+    CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, GetEmployeeResponse>
 {
     private readonly IAdminUnitOfWork _unitOfWork;
     private readonly ILogger<CreateEmployeeCommandHandler> _logger;
@@ -33,7 +33,7 @@ public class
         _passwordManager = passwordManager;
     }
 
-    public async Task<GetEmployeeResponse> Handle(Requests.Commands.CreateEmployeeCommand command,
+    public async Task<GetEmployeeResponse> Handle(CreateEmployeeCommand command,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Registering employee");
@@ -47,14 +47,12 @@ public class
 
         var hash = _passwordManager.HashPassword(command.EmployeeRequest.Password);
 
-        var employee = _mapper.Map<Employee>(command.EmployeeRequest);
-
-        employee.Password = hash;
-
-        if (command.EmployeeRequest.Role is null)
-        {
-            employee.Role = Roles.Admin;
-        }
+        var employee = Employee.CreateEmployee(
+            command.EmployeeRequest.FirstName,
+            command.EmployeeRequest.LastName,
+            command.EmployeeRequest.Email,
+            command.EmployeeRequest.Role,
+            hash);
 
         var added = await _unitOfWork.Employees.Add(employee, cancellationToken);
         await _unitOfWork.SaveChanges(cancellationToken);

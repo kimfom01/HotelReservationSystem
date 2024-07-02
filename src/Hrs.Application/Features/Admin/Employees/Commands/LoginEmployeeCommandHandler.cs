@@ -3,11 +3,10 @@ using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Admin.Employees;
 using Hrs.Application.Exceptions;
-using Hrs.Application.Features.Admin.Employees.Requests.Commands;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Hrs.Application.Features.Admin.Employees.Handlers.Commands;
+namespace Hrs.Application.Features.Admin.Employees.Commands;
 
 public class LoginEmployeeCommandHandler : IRequestHandler<LoginEmployeeCommand, LoginEmployeeResponse>
 {
