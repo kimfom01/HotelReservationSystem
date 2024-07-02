@@ -26,4 +26,12 @@ public class RoomRepository : AdminBaseRepository<Room>, IRoomRepository
                 && room.RoomTypeId == roomTypeId
                 && room.Availability);
     }
+
+    public async Task<Room?> GetRoom(Guid roomId, Guid hotelId, CancellationToken cancellationToken)
+    {
+        return await DbSet.FirstOrDefaultAsync(rom
+                => rom.Id == roomId
+                   && rom.HotelId == hotelId,
+            cancellationToken);
+    }
 }

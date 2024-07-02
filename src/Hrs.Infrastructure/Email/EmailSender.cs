@@ -46,8 +46,6 @@ public class EmailSender : IEmailSender
                 break;
             case PaymentStatus.Pending:
                 break;
-            case PaymentStatus.Refunded:
-                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }

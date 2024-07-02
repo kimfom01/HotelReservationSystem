@@ -1,6 +1,6 @@
 using FluentValidation;
 using Hrs.Application.Dtos.Payments;
-using Hrs.Application.Features.Payments.Requests.Commands;
+using Hrs.Application.Features.Payments.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

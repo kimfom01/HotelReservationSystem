@@ -2,8 +2,8 @@ using System.Net;
 using FluentValidation;
 using Hrs.Application.Dtos.Reservations;
 using Hrs.Application.Exceptions;
-using Hrs.Application.Features.Reservations.Requests.Commands;
-using Hrs.Application.Features.Reservations.Requests.Queries;
+using Hrs.Application.Features.Reservations.Commands;
+using Hrs.Application.Features.Reservations.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -4,10 +4,35 @@ namespace Hrs.Domain.Entities.Admin;
 
 public class Room : BaseEntity
 {
-    public string RoomNumber { get; set; } = string.Empty;
-    public bool Availability { get; set; } = true;
-    public Guid HotelId { get; set; }
-    public Hotel? Hotel { get; set; }
-    public Guid RoomTypeId { get; set; }
-    public RoomType? RoomType { get; set; }
+    internal Room(string roomNumber, Guid hotelId, Guid roomTypeId)
+    {
+        Id = Guid.NewGuid();
+        RoomNumber = $"{roomNumber}";
+        HotelId = hotelId;
+        RoomTypeId = roomTypeId;
+    }
+
+    public string RoomNumber { get; private set; }
+    public bool Availability { get; private set; } = true;
+    public Guid HotelId { get; private set; }
+    public Hotel? Hotel { get; private set; }
+    public Guid RoomTypeId { get; private set; }
+    public RoomType? RoomType { get; private set; }
+
+    public static Room CreateRoom(string roomNumber, Guid hotelId, Guid roomTypeId)
+    {
+        var room = new Room(roomNumber, hotelId, roomTypeId);
+
+        return room;
+    }
+
+    public void SetFree()
+    {
+        Availability = true;
+    }
+    
+    public void SetReserved()
+    {
+        Availability = false;
+    }
 }

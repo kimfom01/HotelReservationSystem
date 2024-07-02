@@ -2,8 +2,8 @@ using System.Net;
 using FluentValidation;
 using Hrs.Application.Dtos.Admin.RoomTypes;
 using Hrs.Application.Exceptions;
-using Hrs.Application.Features.Admin.RoomTypes.Requests.Command;
-using Hrs.Application.Features.Admin.RoomTypes.Requests.Queries;
+using Hrs.Application.Features.Admin.RoomTypes.Command;
+using Hrs.Application.Features.Admin.RoomTypes.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,11 +52,7 @@ public class RoomTypeController : ControllerBase
     {
         try
         {
-            var roomType = await _mediator.Send(
-                new CreateRoomTypeCommand
-                {
-                    RoomTypeRequest = roomTypeRequest
-                }, cancellationToken);
+            var roomType = await _mediator.Send(new CreateRoomTypeCommand(roomTypeRequest), cancellationToken);
 
             return CreatedAtAction(nameof(GetRoomType), new
                 {
