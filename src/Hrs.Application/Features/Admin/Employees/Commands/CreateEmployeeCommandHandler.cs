@@ -3,6 +3,7 @@ using FluentValidation;
 using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Admin.Employees;
+using Hrs.Application.Exceptions;
 using Hrs.Common;
 using Hrs.Domain.Entities.Admin;
 using MediatR;
@@ -44,6 +45,14 @@ public class
         }
 
         await _validator.ValidateAndThrowAsync(command.EmployeeRequest, cancellationToken);
+
+        var employeeExists = await _unitOfWork.Employees.CheckIfEmployeeExists(command.EmployeeRequest.Email);
+
+        if (employeeExists)
+        {
+            _logger.LogError("Employee with email={EmailAddress} already exists", command.EmployeeRequest.Email);
+            throw new EmployeeExistsException($"Employee with email={command.EmployeeRequest.Email} already exists");
+        }
 
         var hash = _passwordManager.HashPassword(command.EmployeeRequest.Password);
 

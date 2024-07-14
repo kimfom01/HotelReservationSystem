@@ -10,6 +10,7 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq", rabbitmqUser, rabbitmqPassword)
 var postgresUser = builder.AddParameter("postgres-user", secret: true);
 var postgresPassword = builder.AddParameter("postgres-password", secret: true);
 var postgres = builder.AddPostgres("postgres", postgresUser, postgresPassword)
+    .WithDataVolume("hrs-db-volume")
     .WithHealthCheck()
     .WithEnvironment("POSTGRES_DB", "hrs-db")
     .AddDatabase("hrs-db");

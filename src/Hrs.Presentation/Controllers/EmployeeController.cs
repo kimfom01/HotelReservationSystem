@@ -66,6 +66,36 @@ public class EmployeeController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+        catch (EmployeeExistsException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("admin/register")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<ActionResult<GetEmployeeResponse>> RegisterAdmin(CreateEmployeeRequest employeeRequest,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var employee = await _mediator.Send(new CreateEmployeeCommand
+            {
+                EmployeeRequest = employeeRequest
+            }, cancellationToken);
+
+            return CreatedAtAction(nameof(GetEmployee), new { employeeId = employee.Id, hotelId = employee.HotelId },
+                employee);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (EmployeeExistsException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [Authorize]
