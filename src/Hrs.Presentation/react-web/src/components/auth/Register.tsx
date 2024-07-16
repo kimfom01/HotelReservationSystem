@@ -38,7 +38,7 @@ export const Register = () => {
 
     const res: AxiosResponse = await toast.promise(
       axios.post<RegisterForm>(
-        `${VITE_API_URL}/employee/register`,
+        `${VITE_API_URL}/user/register`,
         JSON.stringify(registerForm),
         {
           headers: {

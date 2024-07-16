@@ -20,6 +20,6 @@ var admin = new Admin(
 
 var httpClient = new HttpClient();
 
-var response = await httpClient.PostAsJsonAsync("http://localhost:5230/api/employee/admin/register", admin);
+var response = await httpClient.PostAsJsonAsync("http://localhost:5230/api/user/admin/register", admin);
 
 Console.WriteLine(await response.Content.ReadAsStringAsync());

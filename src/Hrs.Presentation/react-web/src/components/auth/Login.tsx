@@ -35,7 +35,7 @@ export const Login = () => {
 
     const res: AxiosResponse = await toast.promise(
       axios.post<LoginForm>(
-        `${VITE_API_URL}/employee/login`,
+        `${VITE_API_URL}/user/login`,
         JSON.stringify(loginForm),
         {
           headers: {

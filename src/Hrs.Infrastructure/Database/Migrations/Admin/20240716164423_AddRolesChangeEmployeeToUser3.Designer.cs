@@ -3,6 +3,7 @@ using System;
 using Hrs.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hrs.Infrastructure.Database.Migrations.Admin
 {
     [DbContext(typeof(AdminDataContext))]
-    partial class AdminDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240716164423_AddRolesChangeEmployeeToUser3")]
+    partial class AddRolesChangeEmployeeToUser3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
