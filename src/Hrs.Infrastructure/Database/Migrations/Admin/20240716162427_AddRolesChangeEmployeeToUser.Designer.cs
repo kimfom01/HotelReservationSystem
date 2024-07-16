@@ -3,6 +3,7 @@ using System;
 using Hrs.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hrs.Infrastructure.Database.Migrations.Admin
 {
     [DbContext(typeof(AdminDataContext))]
-    partial class AdminDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240716162427_AddRolesChangeEmployeeToUser")]
+    partial class AddRolesChangeEmployeeToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,30 +188,6 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
                     b.ToTable("Role", "admin");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Common.UserRole", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRole", "admin");
-                });
-
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.Room", b =>
                 {
                     b.HasOne("Hrs.Domain.Entities.Admin.Hotel", "Hotel")
@@ -253,25 +232,6 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Common.UserRole", b =>
-                {
-                    b.HasOne("Hrs.Domain.Entities.Common.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hrs.Domain.Entities.Admin.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.Hotel", b =>
                 {
                     b.Navigation("RoomTypes");
@@ -289,13 +249,6 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.User", b =>
                 {
                     b.Navigation("Roles");
-
-                    b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("Hrs.Domain.Entities.Common.Role", b =>
-                {
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

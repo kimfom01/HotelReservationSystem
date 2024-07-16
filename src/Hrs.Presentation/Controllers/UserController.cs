@@ -1,9 +1,9 @@
 using System.Net;
 using FluentValidation;
-using Hrs.Application.Dtos.Admin.Employees;
+using Hrs.Application.Dtos.Admin.Users;
 using Hrs.Application.Exceptions;
-using Hrs.Application.Features.Admin.Employees.Commands;
-using Hrs.Application.Features.Admin.Employees.Queries;
+using Hrs.Application.Features.Admin.Users.Commands;
+using Hrs.Application.Features.Admin.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +12,11 @@ namespace Hrs.Presentation.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
-public class EmployeeController : ControllerBase
+public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public EmployeeController(IMediator mediator)
+    public UserController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -24,14 +24,14 @@ public class EmployeeController : ControllerBase
     [HttpPost("login")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<LoginEmployeeResponse>> LoginEmployee(LoginEmployeeRequest loginEmployee,
+    public async Task<ActionResult<LoginUserResponse>> LoginUser(LoginUserRequest loginUser,
         CancellationToken cancellationToken)
     {
         try
         {
-            var loginResponse = await _mediator.Send(new LoginEmployeeCommand
+            var loginResponse = await _mediator.Send(new LoginUserCommand
             {
-                LoginEmployee = loginEmployee
+                LoginUser = loginUser
             }, cancellationToken);
 
             return Ok(loginResponse);
@@ -49,24 +49,24 @@ public class EmployeeController : ControllerBase
     [HttpPost("register")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<GetEmployeeResponse>> RegisterEmployee(CreateEmployeeRequest employeeRequest,
+    public async Task<ActionResult<GetUserResponse>> RegisterUser(CreateUserRequest userRequest,
         CancellationToken cancellationToken)
     {
         try
         {
-            var employee = await _mediator.Send(new CreateEmployeeCommand
+            var user = await _mediator.Send(new CreateUserCommand
             {
-                EmployeeRequest = employeeRequest
+                UserRequest = userRequest
             }, cancellationToken);
 
-            return CreatedAtAction(nameof(GetEmployee), new { employeeId = employee.Id, hotelId = employee.HotelId },
-                employee);
+            return CreatedAtAction(nameof(GetUser), new { userId = user.Id, hotelId = user.HotelId },
+                user);
         }
         catch (ValidationException ex)
         {
             return BadRequest(ex.Message);
         }
-        catch (EmployeeExistsException ex)
+        catch (UserExistsException ex)
         {
             return BadRequest(ex.Message);
         }
@@ -75,24 +75,23 @@ public class EmployeeController : ControllerBase
     [HttpPost("admin/register")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<GetEmployeeResponse>> RegisterAdmin(CreateEmployeeRequest employeeRequest,
+    public async Task<ActionResult<GetUserResponse>> RegisterAdmin(CreateUserRequest userRequest,
         CancellationToken cancellationToken)
     {
         try
         {
-            var employee = await _mediator.Send(new CreateEmployeeCommand
+            var user = await _mediator.Send(new CreateUserCommand
             {
-                EmployeeRequest = employeeRequest
+                UserRequest = userRequest
             }, cancellationToken);
 
-            return CreatedAtAction(nameof(GetEmployee), new { employeeId = employee.Id, hotelId = employee.HotelId },
-                employee);
+            return CreatedAtAction(nameof(GetUser), user);
         }
         catch (ValidationException ex)
         {
             return BadRequest(ex.Message);
         }
-        catch (EmployeeExistsException ex)
+        catch (UserExistsException ex)
         {
             return BadRequest(ex.Message);
         }
@@ -102,18 +101,19 @@ public class EmployeeController : ControllerBase
     [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult<GetEmployeeResponse>> GetEmployee(CancellationToken cancellationToken)
+    public async Task<ActionResult<GetUserResponse>> GetUser(CancellationToken cancellationToken)
     {
         try
         {
-            var employeeId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ?? string.Empty);
+            var userId = new Guid(User.Claims.FirstOrDefault(cl => cl.Type == "Id")?.Value ??
+                                  throw new NotFoundException("Invalid credentials"));
 
-            var employee = await _mediator.Send(new GetEmployeeQuery
+            var user = await _mediator.Send(new GetUserQuery
             {
-                EmployeeId = employeeId,
+                UserId = userId,
             }, cancellationToken);
 
-            return Ok(employee);
+            return Ok(user);
         }
         catch (NotFoundException ex)
         {

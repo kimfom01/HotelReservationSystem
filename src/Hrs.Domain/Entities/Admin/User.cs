@@ -1,11 +1,14 @@
-using Hrs.Common;
 using Hrs.Domain.Entities.Common;
 
 namespace Hrs.Domain.Entities.Admin;
 
-public class Employee : BaseEntity
+public class User : BaseEntity
 {
-    internal Employee(string firstName, string lastName, string email, string password)
+    internal User(
+        string firstName,
+        string lastName,
+        string email,
+        string password)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -16,23 +19,22 @@ public class Employee : BaseEntity
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string Email { get; private set; }
-    public string? Role { get; private set; }
+    public IReadOnlyCollection<Role> Roles { get; private set; }
+    public IReadOnlyCollection<UserRole> UserRoles { get; private set; }
     public string Password { get; private set; }
 
-    public static Employee CreateEmployee(string firstName, string lastName, string email, string? role,
+    public static User CreateUser(
+        string firstName,
+        string lastName,
+        string email,
         string passwordHash)
     {
-        var employee = new Employee(
+        var user = new User(
             firstName,
             lastName,
             email,
             passwordHash);
 
-        if (role is null)
-        {
-            employee.Role = Roles.Admin;
-        }
-
-        return employee;
+        return user;
     }
 }

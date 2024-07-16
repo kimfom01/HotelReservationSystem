@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace Hrs.Application.Dtos.Admin.Employees.Validators;
+namespace Hrs.Application.Dtos.Admin.Users.Validators;
 
-public class EmployeeLoginRequestValidator : AbstractValidator<LoginEmployeeRequest>
+public class UserLoginRequestValidator : AbstractValidator<LoginUserRequest>
 {
-    public EmployeeLoginRequestValidator()
+    public UserLoginRequestValidator()
     {
         RuleFor(emp => emp.Email)
             .NotEmpty()

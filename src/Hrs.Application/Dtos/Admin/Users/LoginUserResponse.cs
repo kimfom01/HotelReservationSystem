@@ -1,6 +1,6 @@
-namespace Hrs.Application.Dtos.Admin.Employees;
+namespace Hrs.Application.Dtos.Admin.Users;
 
-public record LoginEmployeeResponse
+public record LoginUserResponse
 {
     public string Token { get; init; } = string.Empty;
 
