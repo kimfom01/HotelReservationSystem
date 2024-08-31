@@ -1,6 +1,5 @@
 using AutoMapper;
 using FluentValidation;
-using Hrs.Application.Contracts.MessageBroker;
 using Hrs.Application.Dtos.Reservations;
 using Hrs.Application.Exceptions;
 using Hrs.Application.Features.Reservations.Commands;
@@ -11,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Hrs.Infrastructure.MessageBroker;
 
-public class PaymentQueueConsumer : IPaymentQueueConsumer
+public class PaymentQueueConsumer : IConsumer<PaymentSavedMessage>
 {
     private readonly ILogger<PaymentQueueConsumer> _logger;
     private readonly IMapper _mapper;

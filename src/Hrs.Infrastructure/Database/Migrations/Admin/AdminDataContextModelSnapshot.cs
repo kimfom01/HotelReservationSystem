@@ -182,7 +182,27 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Role", "admin");
+                    b.ToTable("Roles", "admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("305d0f18-7b06-4ff4-963a-e5480f67d4c8"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8617),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("0732be6e-3b7b-4046-83f0-781fb2586e7f"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8711),
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("bd49d739-e238-42a3-a55d-22c1ae23092c"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8735),
+                            Name = "Receptionist"
+                        });
                 });
 
             modelBuilder.Entity("Hrs.Domain.Entities.Common.UserRole", b =>
@@ -206,7 +226,7 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRole", "admin");
+                    b.ToTable("UsersRoles", "admin");
                 });
 
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.Room", b =>

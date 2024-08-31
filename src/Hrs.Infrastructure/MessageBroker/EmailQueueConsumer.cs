@@ -1,5 +1,4 @@
 using Hrs.Application.Contracts.Email;
-using Hrs.Application.Contracts.MessageBroker;
 using Hrs.Application.Exceptions;
 using Hrs.Common.Messages;
 using MassTransit;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Hrs.Infrastructure.MessageBroker;
 
-public class EmailQueueConsumer : IEmailQueueConsumer
+public class EmailQueueConsumer : IConsumer<ReservationCreatedMessage>
 {
     private readonly IEmailSender _emailSender;
     private readonly ILogger<EmailQueueConsumer> _logger;

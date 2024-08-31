@@ -46,32 +46,6 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("register")]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<GetUserResponse>> RegisterUser(CreateUserRequest userRequest,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            var user = await _mediator.Send(new CreateUserCommand
-            {
-                UserRequest = userRequest
-            }, cancellationToken);
-
-            return CreatedAtAction(nameof(GetUser), new { userId = user.Id, hotelId = user.HotelId },
-                user);
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (UserExistsException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
     [HttpPost("admin/register")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -80,7 +54,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var user = await _mediator.Send(new CreateUserCommand
+            var user = await _mediator.Send(new CreateAdminCommand
             {
                 UserRequest = userRequest
             }, cancellationToken);

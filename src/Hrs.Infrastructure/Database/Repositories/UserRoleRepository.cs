@@ -5,7 +5,7 @@ namespace Hrs.Infrastructure.Database.Repositories;
 
 public class UserRoleRepository : AdminBaseRepository<UserRole>, IUserRoleRepository
 {
-    public UserRoleRepository(AdminDataContext adminDataContext) : base(adminDataContext)
+    public UserRoleRepository(AdminDataContext context) : base(context)
     {
     }
 }

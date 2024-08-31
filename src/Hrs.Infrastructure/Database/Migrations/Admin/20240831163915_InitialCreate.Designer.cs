@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hrs.Infrastructure.Database.Migrations.Admin
 {
     [DbContext(typeof(AdminDataContext))]
-    [Migration("20240716162427_AddRolesChangeEmployeeToUser")]
-    partial class AddRolesChangeEmployeeToUser
+    [Migration("20240831163915_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -185,7 +185,51 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Role", "admin");
+                    b.ToTable("Roles", "admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("305d0f18-7b06-4ff4-963a-e5480f67d4c8"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8617),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("0732be6e-3b7b-4046-83f0-781fb2586e7f"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8711),
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("bd49d739-e238-42a3-a55d-22c1ae23092c"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8735),
+                            Name = "Receptionist"
+                        });
+                });
+
+            modelBuilder.Entity("Hrs.Domain.Entities.Common.UserRole", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UsersRoles", "admin");
                 });
 
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.Room", b =>
@@ -232,6 +276,25 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Hrs.Domain.Entities.Common.UserRole", b =>
+                {
+                    b.HasOne("Hrs.Domain.Entities.Common.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hrs.Domain.Entities.Admin.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.Hotel", b =>
                 {
                     b.Navigation("RoomTypes");
@@ -249,6 +312,13 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.User", b =>
                 {
                     b.Navigation("Roles");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Hrs.Domain.Entities.Common.Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

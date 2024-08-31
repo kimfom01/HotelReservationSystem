@@ -6,15 +6,22 @@ namespace Hrs.Infrastructure.Database.Repositories;
 
 public class RoleRepository : IRoleRepository
 {
-    private readonly AdminDataContext _adminDataContext;
+    private readonly AdminDataContext _context;
 
-    public RoleRepository(AdminDataContext adminDataContext)
+    public RoleRepository(AdminDataContext context)
     {
-        _adminDataContext = adminDataContext;
+        _context = context;
     }
     
-    public async Task<Role?> GetRole(Guid roleId, CancellationToken ctx)
+    public async Task<Role?> GetRole(Guid roleId, CancellationToken token)
     {
-        return await _adminDataContext.Roles.FirstOrDefaultAsync(rol => rol.Id == roleId, ctx);
+        return await _context.Roles.FirstOrDefaultAsync(rol => rol.Id == roleId, token);
+    }
+
+    public async Task<Role?> GetAdminRole(CancellationToken token)
+    {
+        const string adminRole = "Admin";
+        
+        return await _context.Roles.FirstOrDefaultAsync(rol => rol.Name == adminRole, token);
     }
 }

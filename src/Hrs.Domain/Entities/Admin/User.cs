@@ -5,11 +5,13 @@ namespace Hrs.Domain.Entities.Admin;
 public class User : BaseEntity
 {
     internal User(
+        Guid id,
         string firstName,
         string lastName,
         string email,
         string password)
     {
+        Id = id;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
@@ -30,6 +32,7 @@ public class User : BaseEntity
         string passwordHash)
     {
         var user = new User(
+            Guid.NewGuid(),
             firstName,
             lastName,
             email,

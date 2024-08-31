@@ -9,7 +9,8 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq", rabbitmqUser, rabbitmqPassword)
 
 var postgresUser = builder.AddParameter("postgres-user", secret: true);
 var postgresPassword = builder.AddParameter("postgres-password", secret: true);
-var postgres = builder.AddPostgres("postgres", postgresUser, postgresPassword)
+var postgres = builder.AddPostgres("postgres", postgresUser, postgresPassword, port: 5432)
+    .WithPgAdmin()
     .WithDataVolume("hrs-db-volume")
     .WithHealthCheck()
     .WithEnvironment("POSTGRES_DB", "hrs-db")

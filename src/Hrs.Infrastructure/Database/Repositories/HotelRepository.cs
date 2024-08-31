@@ -5,7 +5,7 @@ namespace Hrs.Infrastructure.Database.Repositories;
 
 public class HotelRepository : AdminBaseRepository<Hotel>, IHotelRepository
 {
-    public HotelRepository(AdminDataContext adminDataContext) : base(adminDataContext)
+    public HotelRepository(AdminDataContext context) : base(context)
     {
     }
 }

@@ -22,10 +22,10 @@ public class JwtProvider : IJwtProvider
     {
         List<Claim> claims =
         [
-            new Claim(ClaimTypes.NameIdentifier, user.Email),
-            new Claim("Id", user.Id.ToString()),
-            new Claim("FirstName", user.FirstName),
-            new Claim("LastName", user.LastName)
+            new(ClaimTypes.NameIdentifier, user.Email),
+            new("Id", user.Id.ToString()),
+            new("FirstName", user.FirstName),
+            new("LastName", user.LastName)
         ];
         claims.AddRange(
             user.Roles.Select(rol 

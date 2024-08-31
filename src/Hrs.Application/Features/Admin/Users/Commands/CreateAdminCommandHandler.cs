@@ -11,17 +11,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Hrs.Application.Features.Admin.Users.Commands;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUserResponse>
+public class CreateAdminCommandHandler : IRequestHandler<CreateAdminCommand, GetUserResponse>
 {
     private readonly IAdminUnitOfWork _unitOfWork;
-    private readonly ILogger<CreateUserCommandHandler> _logger;
+    private readonly ILogger<CreateAdminCommandHandler> _logger;
     private readonly IMapper _mapper;
     private readonly IValidator<CreateUserRequest> _validator;
     private readonly IPasswordManager _passwordManager;
 
-    public CreateUserCommandHandler(
+    public CreateAdminCommandHandler(
         IAdminUnitOfWork unitOfWork,
-        ILogger<CreateUserCommandHandler> logger,
+        ILogger<CreateAdminCommandHandler> logger,
         IMapper mapper,
         IValidator<CreateUserRequest> validator,
         IPasswordManager passwordManager)
@@ -33,7 +33,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUs
         _passwordManager = passwordManager;
     }
 
-    public async Task<GetUserResponse> Handle(CreateUserCommand command,
+    public async Task<GetUserResponse> Handle(
+        CreateAdminCommand command,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation("Registering user");
@@ -53,7 +54,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUs
             throw new UserExistsException($"User with email={command.UserRequest.Email} already exists");
         }
 
-        var role = await _unitOfWork.Roles.GetRole(command.UserRequest.RoleId, cancellationToken);
+        var role = await _unitOfWork.Roles.GetAdminRole(cancellationToken);
 
         var hash = _passwordManager.HashPassword(command.UserRequest.Password);
 
@@ -63,11 +64,12 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, GetUs
             command.UserRequest.Email,
             hash);
 
-        var userRole = new UserRole(user, role);
+        var userRole = new UserRole(user.Id, role!.Id);
 
-        var added = await _unitOfWork.UserRoles.Add(userRole, cancellationToken);
+        var added = await _unitOfWork.Users.Add(user, cancellationToken);
+        await _unitOfWork.UserRoles.Add(userRole, cancellationToken);
         await _unitOfWork.SaveChanges(cancellationToken);
 
-        return _mapper.Map<GetUserResponse>(added?.User);
+        return _mapper.Map<GetUserResponse>(added);
     }
 }

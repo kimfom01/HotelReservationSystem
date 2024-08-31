@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hrs.Infrastructure.Database.Migrations.Reservations
 {
     [DbContext(typeof(ReservationDataContext))]
-    [Migration("20240614194351_InitialCreate")]
+    [Migration("20240831164019_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

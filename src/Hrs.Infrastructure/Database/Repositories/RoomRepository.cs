@@ -6,7 +6,7 @@ namespace Hrs.Infrastructure.Database.Repositories;
 
 public class RoomRepository : AdminBaseRepository<Room>, IRoomRepository
 {
-    public RoomRepository(AdminDataContext adminDataContext) : base(adminDataContext)
+    public RoomRepository(AdminDataContext context) : base(context)
     {
     }
 

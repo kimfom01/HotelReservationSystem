@@ -5,7 +5,7 @@ namespace Hrs.Domain.Entities.Common;
 public class UserRole : BaseEntity
 {
     public Guid UserId { get; private set; }
-    public User User { get; private set; }
+    public User? User { get; private set; }
     public Guid RoleId { get; private set; }
     public Role? Role { get; private set; }
 
@@ -14,12 +14,10 @@ public class UserRole : BaseEntity
         
     }
 
-    public UserRole(User user, Role? role)
+    public UserRole(Guid userId, Guid roleId)
     {
         Id = Guid.NewGuid();
-        UserId = user.Id;
-        User = user;
-        RoleId = role.Id;
-        Role = role;
+        UserId = userId;
+        RoleId = roleId;
     }
 }
