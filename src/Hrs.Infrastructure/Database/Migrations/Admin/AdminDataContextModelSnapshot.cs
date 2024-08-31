@@ -23,48 +23,6 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Admin.Employee", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("HotelId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HotelId");
-
-                    b.ToTable("Employees", "admin");
-                });
-
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.Hotel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -163,11 +121,112 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
                     b.ToTable("RoomTypes", "admin");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Admin.Employee", b =>
+            modelBuilder.Entity("Hrs.Domain.Entities.Admin.User", b =>
                 {
-                    b.HasOne("Hrs.Domain.Entities.Admin.Hotel", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("HotelId");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("HotelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("Users", "admin");
+                });
+
+            modelBuilder.Entity("Hrs.Domain.Entities.Common.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Roles", "admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("305d0f18-7b06-4ff4-963a-e5480f67d4c8"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8617),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("0732be6e-3b7b-4046-83f0-781fb2586e7f"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8711),
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("bd49d739-e238-42a3-a55d-22c1ae23092c"),
+                            CreatedAt = new DateTime(2024, 8, 31, 19, 39, 14, 799, DateTimeKind.Local).AddTicks(8735),
+                            Name = "Receptionist"
+                        });
+                });
+
+            modelBuilder.Entity("Hrs.Domain.Entities.Common.UserRole", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UsersRoles", "admin");
                 });
 
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.Room", b =>
@@ -200,18 +259,63 @@ namespace Hrs.Infrastructure.Database.Migrations.Admin
                     b.Navigation("Hotel");
                 });
 
+            modelBuilder.Entity("Hrs.Domain.Entities.Admin.User", b =>
+                {
+                    b.HasOne("Hrs.Domain.Entities.Admin.Hotel", null)
+                        .WithMany("Users")
+                        .HasForeignKey("HotelId");
+                });
+
+            modelBuilder.Entity("Hrs.Domain.Entities.Common.Role", b =>
+                {
+                    b.HasOne("Hrs.Domain.Entities.Admin.User", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Hrs.Domain.Entities.Common.UserRole", b =>
+                {
+                    b.HasOne("Hrs.Domain.Entities.Common.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hrs.Domain.Entities.Admin.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.Hotel", b =>
                 {
-                    b.Navigation("Employees");
-
                     b.Navigation("RoomTypes");
 
                     b.Navigation("Rooms");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Hrs.Domain.Entities.Admin.RoomType", b =>
                 {
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("Hrs.Domain.Entities.Admin.User", b =>
+                {
+                    b.Navigation("Roles");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Hrs.Domain.Entities.Common.Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,7 +17,7 @@ public class Hotel : BaseEntity
 
     public IReadOnlyCollection<Room>? Rooms { get; private set; }
     public IReadOnlyCollection<RoomType>? RoomTypes { get; private set; }
-    public IReadOnlyCollection<Employee>? Employees { get; private set; }
+    public IReadOnlyCollection<User>? Users { get; private set; }
 
     public static Hotel CreateHotel(string name, string location, Guid adminId)
     {

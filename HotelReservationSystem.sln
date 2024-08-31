@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EF191C9-1B1
 		docker-compose.yml = docker-compose.yml
 		docker-compose-coolify.yml = docker-compose-coolify.yml
 		src\Dockerfile.backend = src\Dockerfile.backend
+		README.md = README.md
+		MigrationsCommands.md = MigrationsCommands.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hrs.Common", "src\Hrs.Common\Hrs.Common.csproj", "{DAE83D8F-D079-4B28-87EF-1C348FA0C243}"

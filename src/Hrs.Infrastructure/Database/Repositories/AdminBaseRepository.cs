@@ -9,9 +9,9 @@ public class AdminBaseRepository<TEntity> : IRepository<TEntity> where TEntity :
 {
     protected readonly DbSet<TEntity> DbSet;
 
-    protected AdminBaseRepository(AdminDataContext adminDataContext)
+    protected AdminBaseRepository(AdminDataContext context)
     {
-        DbSet = adminDataContext.Set<TEntity>();
+        DbSet = context.Set<TEntity>();
     }
 
     public async Task<TEntity?> Add(TEntity entity, CancellationToken cancellationToken)

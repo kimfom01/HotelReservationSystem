@@ -4,7 +4,6 @@ using System.Text;
 using Hrs.Application.Contracts.Authentication;
 using Hrs.Common.Options;
 using Hrs.Domain.Entities.Admin;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,16 +18,18 @@ public class JwtProvider : IJwtProvider
         _jwtConfig = configOptions.Value;
     }
 
-    public string Generate(Employee employee)
+    public string Generate(User user)
     {
         List<Claim> claims =
         [
-            new Claim(ClaimTypes.NameIdentifier, employee.Email),
-            new Claim("Id", employee.Id.ToString()),
-            new Claim("FirstName", employee.FirstName),
-            new Claim("LastName", employee.LastName),
-            new Claim("Role", employee.Role)
+            new(ClaimTypes.NameIdentifier, user.Email),
+            new("Id", user.Id.ToString()),
+            new("FirstName", user.FirstName),
+            new("LastName", user.LastName)
         ];
+        claims.AddRange(
+            user.Roles.Select(rol 
+                => new Claim("Roles", rol.Name)));
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
         var issuer = _jwtConfig.Issuer;
