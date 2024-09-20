@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentValidation;
 using Hrs.Application.Contracts.Database;
+using Hrs.Application.Contracts.MessageBroker;
 using Hrs.Application.Contracts.Services;
 using Hrs.Application.Dtos.Admin.Rooms;
 using Hrs.Application.Dtos.Reservations;
@@ -106,13 +107,12 @@ public class CreateReservationCommandHandler : IRequestHandler<CreateReservation
         var reservationMessage = _mapper.Map<ReservationDetails>(added);
         var reservationDetailsDto = _mapper.Map<GetReservationDetailsResponse>(added);
 
-        await _publishEndpoint.Publish(new ReservationCreatedMessage
+        await _publishEndpoint.Publish(new ReservationCreatedEvent
         {
-            ReservationMessage = reservationMessage,
             ReceiverEmail = reservationMessage.GuestContactEmail,
-            Subject = "Reservation created successfully"
+            Subject = "Reservation created successfully",
+            ReceiverName = added.GuestProfile?.FirstName
         }, cancellationToken);
-        _logger.LogInformation("Successfully pushed message to email queue");
 
         return reservationDetailsDto;
     }

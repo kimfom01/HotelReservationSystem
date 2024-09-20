@@ -19,12 +19,21 @@ public class AdminDataContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
-        var entries = ChangeTracker.Entries<BaseEntity>()
-            .Where(e => e.State == EntityState.Modified);
+        var entityEntries = ChangeTracker.Entries<BaseEntity>()
+            .Where(entry => entry.State == EntityState.Modified)
+            .Where(entry => entry.State == EntityState.Added);
 
-        foreach (var entry in entries)
+        foreach (var entry in entityEntries)
         {
-            entry.Entity.LastModifiedAt = DateTime.Now;
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                    break;
+                case EntityState.Modified:
+                    entry.Entity.LastModifiedAt = DateTime.Now;
+                    break;
+            }
         }
 
         return base.SaveChangesAsync(cancellationToken);

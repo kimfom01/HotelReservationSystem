@@ -1,6 +1,6 @@
-namespace Hrs.AdminCli;
+namespace Hrs.AdminCli.Models;
 
-record Admin(
+internal record Admin(
     string FirstName,
     string LastName,
     string Email,

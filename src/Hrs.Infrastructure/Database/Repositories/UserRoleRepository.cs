@@ -1,5 +1,5 @@
 using Hrs.Application.Contracts.Database.Repositories;
-using Hrs.Domain.Entities.Common;
+using Hrs.Domain.Entities.Admin;
 
 namespace Hrs.Infrastructure.Database.Repositories;
 

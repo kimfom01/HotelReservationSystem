@@ -28,8 +28,8 @@ public class JwtProvider : IJwtProvider
             new("LastName", user.LastName)
         ];
         claims.AddRange(
-            user.Roles.Select(rol 
-                => new Claim("Roles", rol.Name)));
+            user.UserRoles.Select(rol 
+                => new Claim(ClaimTypes.Role, rol.Role!.Name)));
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
         var issuer = _jwtConfig.Issuer;

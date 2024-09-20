@@ -1,6 +1,5 @@
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Contracts.Database.Repositories;
-using Hrs.Domain.Entities.Common;
 using Hrs.Infrastructure.Database.Repositories;
 
 namespace Hrs.Infrastructure.Database;
@@ -19,16 +18,16 @@ public class AdminUnitOfWork : IAdminUnitOfWork
         Users = new UserRepository(_adminDataContext);
         Roles = new RoleRepository(_adminDataContext);
     }
-    
+
     public IRoomRepository Rooms { get; }
     public IHotelRepository Hotels { get; }
     public IRoomTypeRepository RoomTypes { get; }
-    public IUserRepository Users { get; set; }
+    public IUserRepository Users { get; }
     public IUserRoleRepository UserRoles { get; }
-    public IRoleRepository Roles { get; set; }
+    public IRoleRepository Roles { get; }
 
 
-    public async Task<int> SaveChanges(CancellationToken cancellationToken = default)
+    public async Task<int> SaveChanges(CancellationToken cancellationToken)
     {
         return await _adminDataContext.SaveChangesAsync(cancellationToken);
     }

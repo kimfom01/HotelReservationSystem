@@ -1,8 +1,8 @@
 using Hrs.Common.Enums;
 
-namespace Hrs.Common.Messages;
+namespace Hrs.Application.Contracts.MessageBroker;
 
-public record PaymentSavedMessage(
+public record PaymentSavedEvent(
     Guid Id,
     DateTime PaidAt,
     decimal Amount,

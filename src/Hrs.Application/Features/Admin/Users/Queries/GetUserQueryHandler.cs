@@ -27,7 +27,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GetUserResponse
     {
         _logger.LogInformation("Getting user with id={UserId}", query.UserId);
 
-        var user = await _unitOfWork.UserRoles.GetEntity(usr => usr.Id == query.UserId, cancellationToken);
+        var user = await _unitOfWork.Users.GetEntity(usr => usr.Id == query.UserId, cancellationToken);
 
         if (user is null)
         {

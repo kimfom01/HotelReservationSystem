@@ -4,6 +4,7 @@ using Hrs.Application.Dtos.Admin.Users;
 using Hrs.Application.Exceptions;
 using Hrs.Application.Features.Admin.Users.Commands;
 using Hrs.Application.Features.Admin.Users.Queries;
+using Hrs.Domain.Entities.Admin;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +48,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("admin/register")]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<GetUserResponse>> RegisterAdmin(CreateUserRequest userRequest,
         CancellationToken cancellationToken)
@@ -73,7 +74,7 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpGet]
-    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<ActionResult<GetUserResponse>> GetUser(CancellationToken cancellationToken)
     {
@@ -92,6 +93,37 @@ public class UserController : ControllerBase
         catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
+        }
+    }
+    
+    [Authorize(Roles = "Admin")]
+    [HttpPost("employee/register")]
+    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<ActionResult<GetUserResponse>> CreateEmployee(CreateEmployeeRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var user = await _mediator.Send(new CreateEmployeeCommand
+            {
+                ConfirmPassword = request.ConfirmPassword,
+                Email = request.Email,
+                FirstName = request.FirstName,
+                HotelId = request.HotelId,
+                LastName = request.LastName,
+                Password = request.Password
+            }, cancellationToken);
+
+            return CreatedAtAction($"{nameof(GetUser)}", user);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (UserExistsException ex)
+        {
+            return BadRequest(ex.Message);
         }
     }
 }

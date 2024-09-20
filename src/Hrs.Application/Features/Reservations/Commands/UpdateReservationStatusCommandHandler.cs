@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentValidation;
 using Hrs.Application.Contracts.Database;
+using Hrs.Application.Contracts.MessageBroker;
 using Hrs.Application.Contracts.Services;
 using Hrs.Application.Dtos.Admin.Rooms;
 using Hrs.Application.Dtos.Reservations;
@@ -97,13 +98,13 @@ public class UpdateReservationStatusCommandHandler : IRequestHandler<UpdateReser
 
         var reservationDetailsDto = _mapper.Map<ReservationDetails>(reservation);
 
-        await _publishEndpoint.Publish(new ReservationCreatedMessage
+        await _publishEndpoint.Publish(new ReservationPaymentStatusUpdatedEvent
         {
-            ReservationMessage = reservationDetailsDto,
             ReceiverEmail = reservationDetailsDto.GuestContactEmail,
-            Subject = "Payment for reservation"
+            Subject = "Payment for reservation",
+            ReservationStatus = reservation.ReservationStatus,
+            PaymentStatus = reservation.PaymentStatus
         }, cancellationToken);
-        _logger.LogInformation("Successfully pushed message to email queue");
 
         return Unit.Value;
     }

@@ -1,5 +1,5 @@
 using Hrs.Application.Contracts.Database.Repositories;
-using Hrs.Domain.Entities.Common;
+using Hrs.Domain.Entities.Admin;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hrs.Infrastructure.Database.Repositories;
@@ -12,16 +12,20 @@ public class RoleRepository : IRoleRepository
     {
         _context = context;
     }
-    
+
     public async Task<Role?> GetRole(Guid roleId, CancellationToken token)
     {
         return await _context.Roles.FirstOrDefaultAsync(rol => rol.Id == roleId, token);
     }
 
-    public async Task<Role?> GetAdminRole(CancellationToken token)
+    public IEnumerable<Role> GetAdminRoles()
     {
-        const string adminRole = "Admin";
-        
-        return await _context.Roles.FirstOrDefaultAsync(rol => rol.Name == adminRole, token);
+        return _context.Roles.AsNoTracking();
+    }
+
+    public IEnumerable<Role> GetEmployeeRoles(CancellationToken cancellationToken)
+    {
+        return _context.Roles
+            .Where(role => role.Name == "Employee");
     }
 }

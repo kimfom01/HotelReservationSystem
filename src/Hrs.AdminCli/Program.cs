@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Json;
-using Hrs.AdminCli;
+using Hrs.AdminCli.Models;
 using Hrs.AdminCli.Utilities;
 
 var validator = new Validator();
@@ -20,6 +20,10 @@ var admin = new Admin(
 
 var httpClient = new HttpClient();
 
-var response = await httpClient.PostAsJsonAsync("http://localhost:5230/api/user/admin/register", admin);
+const string url = "http://localhost:5230/api/user/admin/register";
 
-Console.WriteLine(await response.Content.ReadAsStringAsync());
+var response = await httpClient.PostAsJsonAsync(url, admin);
+
+response.EnsureSuccessStatusCode();
+
+Console.WriteLine($"Successfully created admin account: {await response.Content.ReadAsStringAsync()}");

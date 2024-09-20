@@ -50,8 +50,8 @@ public class HotelController : ControllerBase
         }
     }
 
-    [Authorize]
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<GetHotelResponse>> CreateHotel(CreateHotelRequest hotelRequest,

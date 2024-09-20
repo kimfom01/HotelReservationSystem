@@ -1,9 +1,10 @@
-using Hrs.Domain.Entities.Common;
+using Hrs.Domain.Entities.Admin;
 
 namespace Hrs.Application.Contracts.Database.Repositories;
 
 public interface IRoleRepository
 {
-    public Task<Role?> GetRole(Guid roleId, CancellationToken token);
-    public Task<Role?> GetAdminRole(CancellationToken token);
+    Task<Role?> GetRole(Guid roleId, CancellationToken token);
+    IEnumerable<Role> GetAdminRoles();
+    IEnumerable<Role> GetEmployeeRoles(CancellationToken cancellationToken);
 }

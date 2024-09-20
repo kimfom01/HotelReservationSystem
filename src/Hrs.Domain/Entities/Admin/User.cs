@@ -16,16 +16,18 @@ public class User : BaseEntity
         LastName = lastName;
         Email = email;
         Password = password;
+        UserRoles = new List<UserRole>();
     }
 
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string Email { get; private set; }
-    public IReadOnlyCollection<Role> Roles { get; private set; }
     public IReadOnlyCollection<UserRole> UserRoles { get; private set; }
     public string Password { get; private set; }
+    public Guid? HotelId { get; private set; }
+    public Hotel? Hotel { get; private set; }
 
-    public static User CreateUser(
+    public static User Create(
         string firstName,
         string lastName,
         string email,
@@ -39,5 +41,10 @@ public class User : BaseEntity
             passwordHash);
 
         return user;
+    }
+
+    public void AssignToHotel(Guid hotelId)
+    {
+        HotelId = hotelId;
     }
 }
