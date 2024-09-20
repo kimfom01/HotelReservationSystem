@@ -1,6 +1,6 @@
-using Hrs.Domain.Entities.Admin;
+using Hrs.Domain.Entities.Common;
 
-namespace Hrs.Domain.Entities.Common;
+namespace Hrs.Domain.Entities.Admin;
 
 public class UserRole : BaseEntity
 {

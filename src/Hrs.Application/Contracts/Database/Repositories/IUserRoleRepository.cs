@@ -1,4 +1,4 @@
-using Hrs.Domain.Entities.Common;
+using Hrs.Domain.Entities.Admin;
 
 namespace Hrs.Application.Contracts.Database.Repositories;
 

@@ -13,17 +13,19 @@ public class UserRepository : AdminBaseRepository<User>, IUserRepository
         _context = context;
     }
 
-    public async Task<bool> CheckIfUserExists(string email, CancellationToken ctx)
+    public async Task<bool> CheckIfUserExists(string email, CancellationToken cancellationToken)
     {
         return await _context.Users
-            .FirstOrDefaultAsync(emp
-                => emp.Email == email, ctx) is not null;
+            .Where(user => user.Email == email)
+            .FirstOrDefaultAsync(cancellationToken) is not null;
     }
 
-    public async Task<User?> GetUser(string email, CancellationToken ctx)
+    public async Task<User?> GetUser(string email, CancellationToken cancellationToken)
     {
         return await _context.Users
-            .FirstOrDefaultAsync(usr
-                => usr.Email == email, ctx);
+            .Where(user => user.Email == email)
+            .Include(user => user.UserRoles)
+            .ThenInclude(userRole => userRole.Role)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

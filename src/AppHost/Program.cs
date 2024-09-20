@@ -4,13 +4,12 @@ var rabbitmqUser = builder.AddParameter("rabbitmq-user", secret: true);
 var rabbitmqPassword = builder.AddParameter("rabbitmq-password", secret: true);
 var rabbitmq = builder.AddRabbitMQ("rabbitmq", rabbitmqUser, rabbitmqPassword)
     .WithHealthCheck()
-    .WithEndpoint(15672, 15672, scheme:"http", name: "rmqManagement")
+    .WithEndpoint(15673, 15672, scheme: "http", name: "rmqManagement")
     .WithImage("masstransit/rabbitmq");
 
 var postgresUser = builder.AddParameter("postgres-user", secret: true);
 var postgresPassword = builder.AddParameter("postgres-password", secret: true);
-var postgres = builder.AddPostgres("postgres", postgresUser, postgresPassword, port: 5432)
-    .WithPgAdmin()
+var postgres = builder.AddPostgres("postgres", postgresUser, postgresPassword)
     .WithDataVolume("hrs-db-volume")
     .WithHealthCheck()
     .WithEnvironment("POSTGRES_DB", "hrs-db")
@@ -47,4 +46,6 @@ builder.AddProject<Projects.Hrs_Presentation>("hrs-backend")
     .WaitFor(postgres)
     .WaitFor(rabbitmq);
 
-builder.Build().Run();
+await builder
+    .Build()
+    .RunAsync();

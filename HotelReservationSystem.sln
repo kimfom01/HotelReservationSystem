@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EF191C9-1B1E-4F73-9547-E7626E177D6E}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
-		docker-compose-coolify.yml = docker-compose-coolify.yml
 		src\Dockerfile.backend = src\Dockerfile.backend
 		README.md = README.md
 		MigrationsCommands.md = MigrationsCommands.md

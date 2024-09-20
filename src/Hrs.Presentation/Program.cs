@@ -26,8 +26,7 @@ builder.AddNpgsqlDbContext<PaymentDataContext>("hrs-db", null,
 
 builder.AddRabbitMQClient("rabbitmq");
 
-builder
-    .Services.AddControllers()
+builder.Services.AddControllers()
     .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -36,9 +35,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: corsPolicy,
         policy =>
-            policy.WithOrigins("http://localhost:3000")
+        {
+            List<string> allowedOrigins = [];
+
+            builder.Configuration.GetSection("AllowedOrigins").Bind(allowedOrigins);
+
+            policy
+                .WithOrigins(allowedOrigins.ToArray())
                 .AllowAnyHeader()
-                .AllowAnyMethod());
+                .AllowAnyMethod();
+        }
+    );
 });
 builder.Services.AddSwaggerGen(options =>
 {
@@ -91,4 +98,4 @@ app.MapControllers();
 
 app.MapDefaultEndpoints();
 
-app.Run();
+await app.RunAsync();

@@ -1,4 +1,6 @@
-namespace Hrs.Domain.Entities.Common;
+using Hrs.Domain.Entities.Common;
+
+namespace Hrs.Domain.Entities.Admin;
 
 public class Role : BaseEntity
 {
@@ -9,5 +11,6 @@ public class Role : BaseEntity
     {
         Id = Guid.NewGuid();
         Name = name;
+        UserRoles = new List<UserRole>();
     }
 }

@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_PASSWORD: password
     ports:
-      - 5432:5432
+      - "5432:5432"
     networks:
       - nginx-network
     healthcheck:
@@ -16,8 +16,7 @@ services:
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "15672:15672"
     networks:
       - nginx-network
     restart: always
@@ -35,8 +34,7 @@ services:
     volumes:
       - ./data:/data
     ports:
-      - 8025:8025
-      - 1025:1025
+      - "8025:8025"
     networks:
       - nginx-network
     environment:
@@ -50,14 +48,14 @@ services:
       context: ./src
       dockerfile: Dockerfile.backend
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       rabbitmq:
         condition: service_healthy
       postgres:
         condition: service_healthy
     env_file:
-      - ./.env
+      - .env
     networks:
       - nginx-network
 networks:

@@ -5,7 +5,6 @@ using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Admin.Users;
 using Hrs.Application.Exceptions;
 using Hrs.Domain.Entities.Admin;
-using Hrs.Domain.Entities.Common;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -33,9 +32,7 @@ public class CreateAdminCommandHandler : IRequestHandler<CreateAdminCommand, Get
         _passwordManager = passwordManager;
     }
 
-    public async Task<GetUserResponse> Handle(
-        CreateAdminCommand command,
-        CancellationToken cancellationToken)
+    public async Task<GetUserResponse> Handle(CreateAdminCommand command, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Registering user");
         if (command.UserRequest is null)
@@ -54,7 +51,7 @@ public class CreateAdminCommandHandler : IRequestHandler<CreateAdminCommand, Get
             throw new UserExistsException($"User with email={command.UserRequest.Email} already exists");
         }
 
-        var role = await _unitOfWork.Roles.GetAdminRole(cancellationToken);
+        var roles = _unitOfWork.Roles.GetAdminRoles();
 
         var hash = _passwordManager.HashPassword(command.UserRequest.Password);
 
@@ -64,10 +61,10 @@ public class CreateAdminCommandHandler : IRequestHandler<CreateAdminCommand, Get
             command.UserRequest.Email,
             hash);
 
-        var userRole = new UserRole(user.Id, role!.Id);
+        var adminRoles = roles.Select(role => new UserRole(user.Id, role.Id));
 
         var added = await _unitOfWork.Users.Add(user, cancellationToken);
-        await _unitOfWork.UserRoles.Add(userRole, cancellationToken);
+        await _unitOfWork.UserRoles.AddMany(adminRoles, cancellationToken);
         await _unitOfWork.SaveChanges(cancellationToken);
 
         return _mapper.Map<GetUserResponse>(added);
