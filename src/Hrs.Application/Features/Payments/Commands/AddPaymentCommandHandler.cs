@@ -1,8 +1,8 @@
 using AutoMapper;
 using FluentValidation;
 using Hrs.Application.Contracts.Database;
+using Hrs.Application.Contracts.MessageBroker;
 using Hrs.Application.Dtos.Payments;
-using Hrs.Common.Messages;
 using Hrs.Domain.Entities.Payment;
 using MassTransit;
 using MediatR;
@@ -52,7 +52,7 @@ public class AddPaymentCommandHandler : IRequestHandler<AddPaymentCommand, GetPa
         var added = await _paymentsUnitOfWork.Payments.Add(payment, cancellationToken);
         await _paymentsUnitOfWork.SaveChanges();
 
-        var paymentMessage = _mapper.Map<PaymentSavedMessage>(added);
+        var paymentMessage = _mapper.Map<PaymentSavedEvent>(added);
 
         await _publishEndpoint.Publish(paymentMessage, cancellationToken);
 

@@ -9,6 +9,9 @@ public class Hotel : BaseEntity
         Name = name;
         Location = location;
         AdminId = adminId;
+        Rooms = new List<Room>();
+        RoomTypes = new List<RoomType>();
+        Users = new List<User>();
     }
 
     public string Name { get; private set; }

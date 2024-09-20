@@ -22,4 +22,10 @@ public class RoleRepository : IRoleRepository
     {
         return _context.Roles.AsNoTracking();
     }
+
+    public IEnumerable<Role> GetEmployeeRoles(CancellationToken cancellationToken)
+    {
+        return _context.Roles
+            .Where(role => role.Name == "Employee");
+    }
 }

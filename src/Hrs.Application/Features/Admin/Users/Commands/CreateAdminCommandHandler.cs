@@ -34,7 +34,7 @@ public class CreateAdminCommandHandler : IRequestHandler<CreateAdminCommand, Get
 
     public async Task<GetUserResponse> Handle(CreateAdminCommand command, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Registering user");
+        _logger.LogInformation("Registering admin");
         if (command.UserRequest is null)
         {
             _logger.LogError("{UserDto} is null", nameof(command.UserRequest));
@@ -51,16 +51,15 @@ public class CreateAdminCommandHandler : IRequestHandler<CreateAdminCommand, Get
             throw new UserExistsException($"User with email={command.UserRequest.Email} already exists");
         }
 
-        var roles = _unitOfWork.Roles.GetAdminRoles();
-
         var hash = _passwordManager.HashPassword(command.UserRequest.Password);
 
-        var user = User.CreateUser(
+        var user = User.Create(
             command.UserRequest.FirstName,
             command.UserRequest.LastName,
             command.UserRequest.Email,
             hash);
 
+        var roles = _unitOfWork.Roles.GetAdminRoles();
         var adminRoles = roles.Select(role => new UserRole(user.Id, role.Id));
 
         var added = await _unitOfWork.Users.Add(user, cancellationToken);

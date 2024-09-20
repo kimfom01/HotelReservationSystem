@@ -1,5 +1,5 @@
 using AutoMapper;
-using Hrs.Common.Messages;
+using Hrs.Application.Contracts.MessageBroker;
 using Hrs.Domain.Entities.Payment;
 using Hrs.Application.Dtos.Payments;
 
@@ -11,6 +11,6 @@ public class PaymentMappingProfile : Profile
     {
         CreateMap<Payment, GetPaymentResponse>().ReverseMap();
         CreateMap<Payment, AddPaymentRequest>().ReverseMap();
-        CreateMap<Payment, PaymentSavedMessage>().ReverseMap();
+        CreateMap<Payment, PaymentSavedEvent>().ReverseMap();
     }
 }

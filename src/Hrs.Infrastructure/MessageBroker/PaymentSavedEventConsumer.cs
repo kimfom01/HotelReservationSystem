@@ -1,30 +1,32 @@
 using AutoMapper;
 using FluentValidation;
+using Hrs.Application.Contracts.MessageBroker;
 using Hrs.Application.Dtos.Reservations;
 using Hrs.Application.Exceptions;
 using Hrs.Application.Features.Reservations.Commands;
-using Hrs.Common.Messages;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Hrs.Infrastructure.MessageBroker;
 
-public class PaymentQueueConsumer : IConsumer<PaymentSavedMessage>
+public class PaymentSavedEventConsumer : IConsumer<PaymentSavedEvent>
 {
-    private readonly ILogger<PaymentQueueConsumer> _logger;
+    private readonly ILogger<PaymentSavedEventConsumer> _logger;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public PaymentQueueConsumer(ILogger<PaymentQueueConsumer> logger, IMapper mapper, IMediator mediator)
+    public PaymentSavedEventConsumer(ILogger<PaymentSavedEventConsumer> logger, IMapper mapper, IMediator mediator)
     {
         _logger = logger;
         _mapper = mapper;
         _mediator = mediator;
     }
 
-    public async Task Consume(ConsumeContext<PaymentSavedMessage> context)
+    public async Task Consume(ConsumeContext<PaymentSavedEvent> context)
     {
+        _logger.LogInformation("Consuming {EventName} event", nameof(PaymentSavedEvent));
+        
         var updateReservationPaymentStatusDto =
             _mapper.Map<UpdateReservationPaymentStatusRequest>(context.Message);
 

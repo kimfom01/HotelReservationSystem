@@ -4,6 +4,7 @@ namespace Hrs.Application.Contracts.Database.Repositories;
 
 public interface IRoleRepository
 {
-    public Task<Role?> GetRole(Guid roleId, CancellationToken token);
-    public IEnumerable<Role> GetAdminRoles();
+    Task<Role?> GetRole(Guid roleId, CancellationToken token);
+    IEnumerable<Role> GetAdminRoles();
+    IEnumerable<Role> GetEmployeeRoles(CancellationToken cancellationToken);
 }
