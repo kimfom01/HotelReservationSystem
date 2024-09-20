@@ -1,4 +1,3 @@
-using Hrs.Common.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 

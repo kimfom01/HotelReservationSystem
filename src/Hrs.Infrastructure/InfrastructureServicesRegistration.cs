@@ -6,7 +6,6 @@ using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Contracts.Email;
 using Hrs.Application.Contracts.Services;
-using Hrs.Common.Options;
 using Hrs.Infrastructure.Authentication;
 using Hrs.Infrastructure.Database;
 using Hrs.Infrastructure.Email;
@@ -53,7 +52,7 @@ public static class InfrastructureServicesRegistration
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IPasswordManager, PasswordManager>();
         services.ConfigureOptions<JwtConfigOptionsSetup>();
-        services.ConfigureOptions<JwtBearerOptionsSetup>();
+        services.ConfigureOptions<JwtBearerSetup>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();

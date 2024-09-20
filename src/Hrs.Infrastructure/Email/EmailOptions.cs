@@ -1,4 +1,4 @@
-namespace Hrs.Common.Options;
+namespace Hrs.Infrastructure.Email;
 
 public class EmailOptions
 {

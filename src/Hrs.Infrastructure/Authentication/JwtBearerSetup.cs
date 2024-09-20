@@ -1,23 +1,22 @@
 using System.Text;
-using Hrs.Common.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Hrs.Infrastructure.Authentication;
 
-public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
+public class JwtBearerSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly JwtConfigOptions _configOptions;
 
-    public JwtBearerOptionsSetup(IOptions<JwtConfigOptions> configOptions)
+    public JwtBearerSetup(IOptions<JwtConfigOptions> configOptions)
     {
         _configOptions = configOptions.Value;
     }
 
     public void Configure(JwtBearerOptions options)
     {
-        options.TokenValidationParameters = new()
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = true,
             ValidateIssuer = true,

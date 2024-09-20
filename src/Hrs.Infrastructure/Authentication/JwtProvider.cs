@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Hrs.Application.Contracts.Authentication;
-using Hrs.Common.Options;
 using Hrs.Domain.Entities.Admin;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
