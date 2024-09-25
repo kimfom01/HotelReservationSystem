@@ -1,7 +1,7 @@
 using System.Text;
 using Hrs.Application.Contracts.Email;
 using Hrs.Application.Contracts.MessageBroker;
-using Hrs.Application.Exceptions;
+using Hrs.Common.Exceptions;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 

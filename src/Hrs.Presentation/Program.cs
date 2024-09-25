@@ -16,10 +16,6 @@ builder.AddNpgsqlDbContext<AdminDataContext>("hrs-db",
     configureDbContextOptions: o => o.UseNpgsql(y =>
         y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "admin")));
 
-builder.AddNpgsqlDbContext<ReservationDataContext>("hrs-db",
-    configureDbContextOptions: o => o.UseNpgsql(y =>
-        y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations")));
-
 builder.AddNpgsqlDbContext<PaymentDataContext>("hrs-db", null,
     configureDbContextOptions: o => o.UseNpgsql(y =>
         y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments")));

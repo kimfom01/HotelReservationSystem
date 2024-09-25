@@ -1,9 +1,9 @@
 using System.Net;
 using FluentValidation;
 using Hrs.Application.Dtos.Admin.RoomTypes;
-using Hrs.Application.Exceptions;
 using Hrs.Application.Features.Admin.RoomTypes.Command;
 using Hrs.Application.Features.Admin.RoomTypes.Queries;
+using Hrs.Common.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

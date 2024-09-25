@@ -1,5 +1,5 @@
 ﻿using Hrs.Application.Dtos.Admin.RoomTypes;
-using Hrs.Application.Dtos.Common;
+using Hrs.Common.Dtos;
 
 namespace Hrs.Application.Dtos.Admin.Rooms;
 

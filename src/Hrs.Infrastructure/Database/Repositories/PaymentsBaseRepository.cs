@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
-using Hrs.Application.Contracts.Database.Repositories;
-using Hrs.Domain.Entities.Common;
+using Hrs.Common.Entities;
+using Hrs.Common.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hrs.Infrastructure.Database.Repositories;
@@ -14,9 +14,9 @@ public class PaymentsBaseRepository<TEntity> : IRepository<TEntity> where TEntit
         DbSet = dataContext.Set<TEntity>();
     }
 
-    public async Task<TEntity?> Add(TEntity item, CancellationToken cancellationToken)
+    public async Task<TEntity?> Add(TEntity entity, CancellationToken cancellationToken)
     {
-        var entityEntry = await DbSet.AddAsync(item, cancellationToken);
+        var entityEntry = await DbSet.AddAsync(entity, cancellationToken);
 
         return entityEntry.Entity;
     }

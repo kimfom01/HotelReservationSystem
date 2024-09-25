@@ -30,6 +30,12 @@ var jwtIssuer = builder.AddParameter("JwtConfigOptionsIssuer", secret: true);
 var jwtAudience = builder.AddParameter("JwtConfigOptionsAudience", secret: true);
 var jwtExpiresIn = builder.AddParameter("JwtConfigOptionsExpiresIn", secret: true);
 
+builder.AddProject<Projects.ReservationService_Presentation>("presentation-service")
+    .WithReference(rabbitmq)
+    .WithReference(postgres)
+    .WaitFor(rabbitmq)
+    .WaitFor(postgres);
+
 builder.AddProject<Projects.Hrs_Presentation>("hrs-backend")
     .WithReference(rabbitmq)
     .WithReference(postgres)

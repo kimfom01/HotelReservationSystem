@@ -1,4 +1,4 @@
-﻿using Hrs.Domain.Entities.Common;
+﻿using Hrs.Common.Entities;
 
 namespace Hrs.Domain.Entities.Admin;
 

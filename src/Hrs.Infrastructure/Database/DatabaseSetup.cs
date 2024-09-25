@@ -10,15 +10,6 @@ public static class DatabaseSetup
     {
         var scope = app.Services.CreateScope();
 
-        var reservationDataContext = scope.ServiceProvider.GetRequiredService<ReservationDataContext>();
-
-        var reservationsMigrations = reservationDataContext.Database.GetPendingMigrations();
-
-        if (reservationsMigrations.Any())
-        {
-            reservationDataContext.Database.Migrate();
-        }
-
         var adminDataContext = scope.ServiceProvider.GetRequiredService<AdminDataContext>();
 
         var adminMigrations = adminDataContext.Database.GetPendingMigrations();

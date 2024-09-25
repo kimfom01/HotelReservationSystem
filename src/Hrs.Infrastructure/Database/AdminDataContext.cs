@@ -1,5 +1,5 @@
-﻿using Hrs.Domain.Entities.Admin;
-using Hrs.Domain.Entities.Common;
+﻿using Hrs.Common.Entities;
+using Hrs.Domain.Entities.Admin;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hrs.Infrastructure.Database;

@@ -1,10 +1,9 @@
 using System.Net;
 using FluentValidation;
 using Hrs.Application.Dtos.Admin.Users;
-using Hrs.Application.Exceptions;
 using Hrs.Application.Features.Admin.Users.Commands;
 using Hrs.Application.Features.Admin.Users.Queries;
-using Hrs.Domain.Entities.Admin;
+using Hrs.Common.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

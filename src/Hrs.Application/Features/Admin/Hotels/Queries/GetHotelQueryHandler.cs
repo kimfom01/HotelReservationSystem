@@ -1,7 +1,7 @@
 using AutoMapper;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Admin.Hotels;
-using Hrs.Application.Exceptions;
+using Hrs.Common.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

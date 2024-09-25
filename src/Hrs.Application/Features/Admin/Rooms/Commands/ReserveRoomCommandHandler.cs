@@ -1,7 +1,7 @@
 using FluentValidation;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Admin.Rooms;
-using Hrs.Application.Exceptions;
+using Hrs.Common.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

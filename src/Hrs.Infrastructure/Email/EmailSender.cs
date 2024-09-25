@@ -1,6 +1,6 @@
 using FluentEmail.Core;
 using Hrs.Application.Contracts.Email;
-using Hrs.Application.Exceptions;
+using Hrs.Common.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace Hrs.Infrastructure.Email;

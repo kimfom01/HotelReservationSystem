@@ -1,5 +1,5 @@
+using Hrs.Common.Entities;
 using Hrs.Common.Enums;
-using Hrs.Domain.Entities.Common;
 
 namespace Hrs.Domain.Entities.Payment;
 

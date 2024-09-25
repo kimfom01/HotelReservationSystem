@@ -1,4 +1,4 @@
-using Hrs.Domain.Entities.Common;
+using Hrs.Common.Entities;
 using Hrs.Domain.Entities.Payment;
 using Microsoft.EntityFrameworkCore;
 

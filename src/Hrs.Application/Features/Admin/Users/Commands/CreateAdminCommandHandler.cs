@@ -3,7 +3,7 @@ using FluentValidation;
 using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Dtos.Admin.Users;
-using Hrs.Application.Exceptions;
+using Hrs.Common.Exceptions;
 using Hrs.Domain.Entities.Admin;
 using MediatR;
 using Microsoft.Extensions.Logging;

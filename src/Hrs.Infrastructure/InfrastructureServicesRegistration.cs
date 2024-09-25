@@ -5,11 +5,9 @@ using System.Security;
 using Hrs.Application.Contracts.Authentication;
 using Hrs.Application.Contracts.Database;
 using Hrs.Application.Contracts.Email;
-using Hrs.Application.Contracts.Services;
 using Hrs.Infrastructure.Authentication;
 using Hrs.Infrastructure.Database;
 using Hrs.Infrastructure.Email;
-using Hrs.Infrastructure.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -26,9 +24,6 @@ public static class InfrastructureServicesRegistration
         this IServiceCollection services, IWebHostEnvironment environment
     )
     {
-        services.AddScoped<IReservationsUnitOfWork, ReservationsUnitOfWork>();
-        services.AddScoped<IRoomService, RoomService>();
-
         services.Configure<MassTransitHostOptions>(options => { options.WaitUntilStarted = true; });
 
         services.AddMassTransit(busConfigurator =>

@@ -1,9 +1,9 @@
 using System.Net;
 using FluentValidation;
 using Hrs.Application.Dtos.Admin.Hotels;
-using Hrs.Application.Exceptions;
 using Hrs.Application.Features.Admin.Hotels.Commands;
 using Hrs.Application.Features.Admin.Hotels.Queries;
+using Hrs.Common.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
