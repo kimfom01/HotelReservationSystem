@@ -75,6 +75,7 @@ public class UserController : ControllerBase
     [HttpGet]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     public async Task<ActionResult<GetUserResponse>> GetUser(CancellationToken cancellationToken)
     {
         try

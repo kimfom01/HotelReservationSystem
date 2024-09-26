@@ -1,6 +1,6 @@
-using ReservationService.Application;
-using ReservationService.Infrastructure;
-using ReservationService.Infrastructure.Database;
+using PaymentService.Application;
+using PaymentService.Infrastructure;
+using PaymentService.Infrastructure.Database;
 using ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);

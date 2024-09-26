@@ -51,9 +51,7 @@ public static class InfrastructureServicesRegistration
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
-
-        services.AddScoped<IPaymentsUnitOfWork, PaymentsUnitOfWork>();
-
+        
         services.AddScoped<IEmailSender, EmailSender>();
         services.ConfigureOptions<EmailOptionsSetup>();
         

@@ -12,6 +12,7 @@ COPY ["src/ReservationService.Application/ReservationService.Application.csproj"
 COPY ["src/Hrs.Common/Hrs.Common.csproj", "src/Hrs.Common/"]
 COPY ["src/ReservationService.Domain/ReservationService.Domain.csproj", "src/ReservationService.Domain/"]
 COPY ["src/ReservationService.Infrastructure/ReservationService.Infrastructure.csproj", "src/ReservationService.Infrastructure/"]
+COPY ["src/ServiceDefaults/ServiceDefaults.csproj", "src/ServiceDefaults/"]
 RUN dotnet restore "src/ReservationService.Presentation/ReservationService.Presentation.csproj"
 COPY . .
 WORKDIR "/src/src/ReservationService.Presentation"

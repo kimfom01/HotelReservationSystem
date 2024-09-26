@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Hrs.Infrastructure.Database;
+namespace PaymentService.Infrastructure.Database;
 
 public static class DatabaseSetup
 {
@@ -10,13 +10,13 @@ public static class DatabaseSetup
     {
         var scope = app.Services.CreateScope();
 
-        var adminDataContext = scope.ServiceProvider.GetRequiredService<AdminDataContext>();
+        var paymentDataContext = scope.ServiceProvider.GetRequiredService<PaymentDataContext>();
 
-        var adminMigrations = adminDataContext.Database.GetPendingMigrations();
+        var paymentsMigrations = paymentDataContext.Database.GetPendingMigrations();
 
-        if (adminMigrations.Any())
+        if (paymentsMigrations.Any())
         {
-            adminDataContext.Database.Migrate();
+            paymentDataContext.Database.Migrate();
         }
 
         return app;

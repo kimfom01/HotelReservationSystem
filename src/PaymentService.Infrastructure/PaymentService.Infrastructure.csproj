@@ -7,13 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Database\Migrations\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.0" />
       <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
-      <PackageReference Include="FluentEmail.Smtp" Version="3.0.2" />
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.5" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
         <PrivateAssets>all</PrivateAssets>
@@ -24,8 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ReservationService.Application\ReservationService.Application.csproj" />
-      <ProjectReference Include="..\ReservationService.Domain\ReservationService.Domain.csproj" />
+      <ProjectReference Include="..\PaymentService.Application\PaymentService.Application.csproj" />
+      <ProjectReference Include="..\PaymentService.Domain\PaymentService.Domain.csproj" />
     </ItemGroup>
 
 </Project>
