@@ -30,7 +30,7 @@ var jwtIssuer = builder.AddParameter("JwtConfigOptionsIssuer", secret: true);
 var jwtAudience = builder.AddParameter("JwtConfigOptionsAudience", secret: true);
 var jwtExpiresIn = builder.AddParameter("JwtConfigOptionsExpiresIn", secret: true);
 
-var adminService = builder.AddProject<Projects.Hrs_Presentation>("admin-service")
+var adminService = builder.AddProject<Projects.Admin_Presentation>("admin-service")
     .WithReference(rabbitmq)
     .WithReference(postgres)
     .WithReference(mailpit)

@@ -23,7 +23,7 @@ namespace ReservationService.Infrastructure.Database.Migrations.Reservations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.GuestProfile", b =>
+            modelBuilder.Entity("Admin.Domain.Entities.Reservation.GuestProfile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +59,7 @@ namespace ReservationService.Infrastructure.Database.Migrations.Reservations
                     b.ToTable("GuestProfiles", "reservations");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.Reservation", b =>
+            modelBuilder.Entity("Admin.Domain.Entities.Reservation.Reservation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,9 +114,9 @@ namespace ReservationService.Infrastructure.Database.Migrations.Reservations
                     b.ToTable("Reservations", "reservations");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.Reservation", b =>
+            modelBuilder.Entity("Admin.Domain.Entities.Reservation.Reservation", b =>
                 {
-                    b.HasOne("Hrs.Domain.Entities.Reservation.GuestProfile", "GuestProfile")
+                    b.HasOne("Admin.Domain.Entities.Reservation.GuestProfile", "GuestProfile")
                         .WithMany("Reservations")
                         .HasForeignKey("GuestProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -125,7 +125,7 @@ namespace ReservationService.Infrastructure.Database.Migrations.Reservations
                     b.Navigation("GuestProfile");
                 });
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Reservation.GuestProfile", b =>
+            modelBuilder.Entity("Admin.Domain.Entities.Reservation.GuestProfile", b =>
                 {
                     b.Navigation("Reservations");
                 });

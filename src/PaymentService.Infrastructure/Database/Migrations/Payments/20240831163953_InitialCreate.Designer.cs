@@ -23,7 +23,7 @@ namespace PaymentService.Infrastructure.Database.Migrations.Payments
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Hrs.Domain.Entities.Payment.Payment", b =>
+            modelBuilder.Entity("Admin.Domain.Entities.Payment.Payment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
