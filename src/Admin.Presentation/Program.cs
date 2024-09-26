@@ -12,9 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 const string corsPolicy = "any origin";
 
 builder.AddServiceDefaults();
-builder.AddNpgsqlDbContext<AdminDataContext>("hrs-db",
-    configureDbContextOptions: o => o.UseNpgsql(y =>
-        y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "admin")));
 
 builder.AddRabbitMQClient("rabbitmq");
 
@@ -67,8 +64,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.ConfigureInfrastructureServices(builder.Environment);
 builder.Services.ConfigureApplicationServices();
+builder.Services.ConfigureInfrastructureServices(builder.Environment, builder.Configuration);
 
 var app = builder.Build();
 

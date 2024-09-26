@@ -37,8 +37,9 @@ public static class InfrastructureServicesRegistration
             });
         });
 
-        services.AddDbContext<ReservationDataContext>(o => o.UseNpgsql(configuration.GetConnectionString("hrs-db"), y =>
-            y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations")));
+        services.AddDbContext<ReservationDataContext>(options => options.UseNpgsql(
+            configuration.GetConnectionString("hrs-db"), y =>
+                y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "reservations")));
 
         return services;
     }

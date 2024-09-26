@@ -34,8 +34,9 @@ public static class InfrastructureServicesRegistration
             });
         });
 
-        services.AddDbContext<PaymentDataContext>(o => o.UseNpgsql(configuration.GetConnectionString("hrs-db"), y =>
-            y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments")));
+        services.AddDbContext<PaymentDataContext>(options => options.UseNpgsql(
+            configuration.GetConnectionString("hrs-db"), y =>
+                y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "payments")));
 
         return services;
     }

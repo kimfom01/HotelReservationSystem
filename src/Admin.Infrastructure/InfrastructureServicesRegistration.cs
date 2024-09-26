@@ -11,6 +11,8 @@ using Admin.Infrastructure.Email;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,7 +23,7 @@ namespace Admin.Infrastructure;
 public static class InfrastructureServicesRegistration
 {
     public static IServiceCollection ConfigureInfrastructureServices(
-        this IServiceCollection services, IWebHostEnvironment environment
+        this IServiceCollection services, IWebHostEnvironment environment, IConfiguration configuration
     )
     {
         services.Configure<MassTransitHostOptions>(options => { options.WaitUntilStarted = true; });
@@ -35,7 +37,7 @@ public static class InfrastructureServicesRegistration
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
                 var config = context.GetRequiredService<IConfiguration>();
-                
+
                 configurator.Host(config.GetConnectionString("rabbitmq"));
 
                 configurator.ConfigureEndpoints(context);
@@ -44,6 +46,11 @@ public static class InfrastructureServicesRegistration
 
         services.AddScoped<IAdminUnitOfWork, AdminUnitOfWork>();
 
+
+        services.AddDbContext<AdminDataContext>(options => options.UseNpgsql(
+            configuration.GetConnectionString("hrs-db"), y =>
+                y.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "admin")));
+
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IPasswordManager, PasswordManager>();
         services.ConfigureOptions<JwtConfigOptionsSetup>();
@@ -51,10 +58,10 @@ public static class InfrastructureServicesRegistration
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
-        
+
         services.AddScoped<IEmailSender, EmailSender>();
         services.ConfigureOptions<EmailOptionsSetup>();
-        
+
         var emailOptions = services.BuildServiceProvider()
             .GetRequiredService<IOptions<EmailOptions>>().Value;
 
