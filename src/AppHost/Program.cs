@@ -30,7 +30,7 @@ var jwtIssuer = builder.AddParameter("JwtConfigOptionsIssuer", secret: true);
 var jwtAudience = builder.AddParameter("JwtConfigOptionsAudience", secret: true);
 var jwtExpiresIn = builder.AddParameter("JwtConfigOptionsExpiresIn", secret: true);
 
-builder.AddProject<Projects.Hrs_Presentation>("hrs-backend")
+var adminService = builder.AddProject<Projects.Admin_Presentation>("admin-service")
     .WithReference(rabbitmq)
     .WithReference(postgres)
     .WithReference(mailpit)
@@ -45,6 +45,19 @@ builder.AddProject<Projects.Hrs_Presentation>("hrs-backend")
     .WithExternalHttpEndpoints()
     .WaitFor(postgres)
     .WaitFor(rabbitmq);
+
+builder.AddProject<Projects.ReservationService_Presentation>("presentation-service")
+    .WithReference(rabbitmq)
+    .WithReference(postgres)
+    .WithReference(adminService)
+    .WaitFor(rabbitmq)
+    .WaitFor(postgres);
+
+builder.AddProject<Projects.PaymentService_Presentation>("payment-service")
+    .WithReference(rabbitmq)
+    .WithReference(postgres)
+    .WaitFor(rabbitmq)
+    .WaitFor(postgres);
 
 await builder
     .Build()

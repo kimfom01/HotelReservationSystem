@@ -18,7 +18,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Hrs.Presentation\Hrs.Presentation.csproj" />
+      <ProjectReference Include="..\Admin.Presentation\Admin.Presentation.csproj" />
+      <ProjectReference Include="..\PaymentService.Presentation\PaymentService.Presentation.csproj" />
+      <ProjectReference Include="..\ReservationService.Presentation\ReservationService.Presentation.csproj" />
     </ItemGroup>
 
 </Project>

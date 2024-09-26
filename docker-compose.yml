@@ -42,13 +42,45 @@ services:
       MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
-  backend:
+  admin-service:
     restart: always
     build:
-      context: ./src
-      dockerfile: Dockerfile.backend
+      context: ./src/Admin.Presentation/
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - nginx-network
+  payment-service:
+    restart: always
+    build:
+      context: ./src/PaymentService.Presentation/
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - nginx-network
+  reservation-service:
+    restart: always
+    build:
+      context: ./src/ReservationService.Presentation/
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
     depends_on:
       rabbitmq:
         condition: service_healthy
