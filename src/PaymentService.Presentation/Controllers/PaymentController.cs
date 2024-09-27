@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -6,8 +7,9 @@ using PaymentService.Application.Features.Payments.Commands;
 
 namespace PaymentService.Presentation.Controllers;
 
+[ApiVersion("1.0")]
 [ApiController]
-[Route("/api/[controller]")]
+[Route("/api/v{v:apiVersion}/[controller]")]
 public class PaymentController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -18,6 +20,7 @@ public class PaymentController : ControllerBase
     }
 
     [HttpGet]
+    [MapToApiVersion(1)]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     public IActionResult HelloPayment()
     {
@@ -25,6 +28,7 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost("pay")]
+    [MapToApiVersion(1)]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PayForReservation(AddPaymentRequest paymentRequest,

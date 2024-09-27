@@ -46,7 +46,7 @@ var adminService = builder.AddProject<Projects.Admin_Presentation>("admin-servic
     .WaitFor(postgres)
     .WaitFor(rabbitmq);
 
-builder.AddProject<Projects.ReservationService_Presentation>("presentation-service")
+builder.AddProject<Projects.ReservationService_Presentation>("reservation-service")
     .WithReference(rabbitmq)
     .WithReference(postgres)
     .WithReference(adminService)

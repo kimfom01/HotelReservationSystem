@@ -2,8 +2,7 @@ using System.Text.Json.Serialization;
 using Admin.Application;
 using Admin.Infrastructure;
 using Admin.Infrastructure.Database;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
+using Asp.Versioning;
 using Microsoft.OpenApi.Models;
 using ServiceDefaults;
 
@@ -12,13 +11,23 @@ var builder = WebApplication.CreateBuilder(args);
 const string corsPolicy = "any origin";
 
 builder.AddServiceDefaults();
-
-builder.AddRabbitMQClient("rabbitmq");
-
 builder.Services.AddControllers()
     .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApiVersioning(options =>
+    {
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.ReportApiVersions = true;
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader());
+    })
+    .AddMvc()
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'V";
+        options.SubstituteApiVersionInUrl = true;
+    });
 builder.Services.AddLogging(opt => { opt.AddSimpleConsole(options => { options.TimestampFormat = "[HH:mm:ss] "; }); });
 builder.Services.AddCors(options =>
 {

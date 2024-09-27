@@ -10,6 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
         <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.0" />
         <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.2.0" />
         <PackageReference Include="AutoMapper" Version="13.0.1" />
@@ -35,6 +37,19 @@
       <Content Include="..\..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+      <Content Remove="react-web\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="react-web\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="react-web\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="react-web\**" />
     </ItemGroup>
 
 </Project>

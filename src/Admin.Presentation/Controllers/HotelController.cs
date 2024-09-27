@@ -3,6 +3,7 @@ using FluentValidation;
 using Admin.Application.Dtos.Admin.Hotels;
 using Admin.Application.Features.Admin.Hotels.Commands;
 using Admin.Application.Features.Admin.Hotels.Queries;
+using Asp.Versioning;
 using Hrs.Common.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Presentation.Controllers;
 
+[ApiVersion("1.0")]
 [ApiController]
-[Route("/api/[controller]")]
+[Route("/api/v{v:apiVersion}/[controller]")]
 public class HotelController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -22,6 +24,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpGet]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<GetHotelResponse>>> GetHotels(CancellationToken cancellationToken)
     {
@@ -31,6 +34,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpGet("{hotelId:guid}")]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<ActionResult<GetHotelResponse>> GetHotel(Guid hotelId, CancellationToken cancellationToken)
@@ -51,6 +55,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpPost]
+    [MapToApiVersion(1)]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]

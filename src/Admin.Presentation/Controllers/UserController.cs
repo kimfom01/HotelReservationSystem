@@ -3,6 +3,7 @@ using FluentValidation;
 using Admin.Application.Dtos.Admin.Users;
 using Admin.Application.Features.Admin.Users.Commands;
 using Admin.Application.Features.Admin.Users.Queries;
+using Asp.Versioning;
 using Hrs.Common.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Presentation.Controllers;
 
+[ApiVersion("1.0")]
 [ApiController]
-[Route("/api/[controller]")]
+[Route("/api/v{v:apiVersion}/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -22,6 +24,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<LoginUserResponse>> LoginUser(LoginUserRequest loginUser,
@@ -47,6 +50,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("admin/register")]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<GetUserResponse>> RegisterAdmin(CreateUserRequest userRequest,
@@ -73,6 +77,7 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpGet]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -98,6 +103,7 @@ public class UserController : ControllerBase
     
     [Authorize(Roles = "Admin")]
     [HttpPost("employee/register")]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<GetUserResponse>> CreateEmployee(CreateEmployeeRequest request,

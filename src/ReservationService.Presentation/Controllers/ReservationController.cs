@@ -1,4 +1,5 @@
 using System.Net;
+using Asp.Versioning;
 using FluentValidation;
 using Hrs.Common.Exceptions;
 using MediatR;
@@ -9,8 +10,9 @@ using ReservationService.Application.Features.Reservations.Queries;
 
 namespace ReservationService.Presentation.Controllers;
 
+[ApiVersion("1.0")]
 [ApiController]
-[Route("/api/[controller]")]
+[Route("/api/v{v:apiVersion}/[controller]")]
 public class ReservationController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -21,6 +23,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet("{id:Guid}")]
+    [MapToApiVersion(1)]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetReservation(Guid id, CancellationToken cancellationToken)
@@ -41,6 +44,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet]
+    [MapToApiVersion(1)]
     [ProducesResponseType(200)]
     public async Task<IActionResult> GetReservations(CancellationToken cancellationToken)
     {
@@ -50,6 +54,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpPost]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]

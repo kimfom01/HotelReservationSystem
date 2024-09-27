@@ -3,6 +3,7 @@ using FluentValidation;
 using Admin.Application.Dtos.Admin.RoomTypes;
 using Admin.Application.Features.Admin.RoomTypes.Command;
 using Admin.Application.Features.Admin.RoomTypes.Queries;
+using Asp.Versioning;
 using Hrs.Common.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Presentation.Controllers;
 
+[ApiVersion("1.0")]
 [ApiController]
-[Route("/api/[controller]")]
+[Route("/api/v{v:apiVersion}/[controller]")]
 public class RoomTypeController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -22,6 +24,7 @@ public class RoomTypeController : ControllerBase
     }
 
     [HttpGet("s")]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<ActionResult<GetRoomTypeResponse>> GetRoomType(Guid roomTypeId, Guid hotelId,
@@ -45,6 +48,7 @@ public class RoomTypeController : ControllerBase
 
     [Authorize]
     [HttpPost]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<GetRoomTypeResponse>> CreateRoomType(CreateRoomTypeRequest roomTypeRequest,
@@ -72,6 +76,7 @@ public class RoomTypeController : ControllerBase
     }
 
     [HttpGet]
+    [MapToApiVersion(1)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<GetRoomTypeResponse>>> GetRoomTypes(Guid hotelId,
         CancellationToken cancellationToken)
